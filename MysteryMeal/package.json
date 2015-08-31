@@ -1,11 +1,26 @@
 {
   "name": "mysteryMeal",
   "version": "0.0.1",
-  "private": true,
+  "license": "MIT",
   "scripts": {
-    "start": "node_modules/react-native/packager/packager.sh"
+    "start": "node_modules/react-native/packager/packager.sh",
+    "webpack": "webpack --config webpack.config.js"
   },
   "dependencies": {
-    "react-native": "^0.10.1"
+    "react-native": "^0.10.1",
+    "react-native-mapbox-gl": "^0.4.0"
+  },
+  "devDependencies": {
+    "anybar-webpack": "^1.0.7",
+    "babel": "^5.8.21",
+    "babel-loader": "^5.0.0",
+    "babel-runtime": "^5.1.8",
+    "babel-core": "^5.8.22",
+    "babel-eslint": "^4.0.10",
+    "eslint": "^1.2.1",
+    "eslint-config-airbnb": "0.0.7",
+    "eslint-plugin-react": "^3.2.3",
+    "babelify": "^6.1.1",
+    "webpack": "^1.8.4"
   }
 }

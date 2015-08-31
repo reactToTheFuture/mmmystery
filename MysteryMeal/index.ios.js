@@ -5,49 +5,30 @@
 'use strict';
 
 var React = require('react-native');
-var {
+var MapDisplaySection = require('./components/MapSection.io.js');
+
+let {
   AppRegistry,
   StyleSheet,
   Text,
   View,
 } = React;
 
-var MysteryMeal = React.createClass({
-  render: function() {
+let styles = StyleSheet.create({
+  map: {
+    flex: 1,
+  },
+});
+
+class MysteryMeal extends React.Component{
+  render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+      <View style={styles.map}>
+        <MapDisplaySection />
       </View>
     );
   }
-});
+}
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 AppRegistry.registerComponent('MysteryMeal', () => MysteryMeal);
