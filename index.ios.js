@@ -5,9 +5,9 @@
 'use strict';
 
 var React = require('react-native');
-var MapDisplaySection = require('./components/MapSection.io.js');
-var DisplayDirections = require('./components/DisplayDirections.io.js');
-
+var DisplayDirections = require('./app/components/DisplayDirections.io.js');
+var MapDisplaySection = require('./app/components/MapSection.io.js');
+var mapbox_api = require('./app/utils/mapbox-api');
 
 let {
   AppRegistry,

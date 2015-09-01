@@ -1,6 +1,7 @@
 var React = require('react-native');
 var MapboxGLMap = require('react-native-mapbox-gl');
 var mapRef = 'mapRef';
+var mapbox_keys = require('../utils/config').mapbox;
 
 var {
   StyleSheet,
@@ -63,7 +64,7 @@ var MapDisplaySection = React.createClass({
           showsUserLocation={true}
           ref={mapRef}
           annotations={this.state.annotations}
-          accessToken={'pk.eyJ1Ijoic3RldmVsZWVtIiwiYSI6IjgzZThjNzViM2U0Yjk0NjUyNzQxM2E2YWY1NDEyZmQxIn0.3VNCjC8-V2Y6ger0kSLjhQ'}
+          accessToken={mapbox_keys.token}
           styleURL={'asset://styles/mapbox-streets-v7.json'}
           centerCoordinate={this.state.center}
           userLocationVisible={true}
