@@ -1,45 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
 var React = require('react-native');
-var DisplayDirections = require('./app/components/DisplayDirections.io.js');
-var MapDisplaySection = require('./app/components/MapSection.io.js');
-var mapbox_api = require('./app/utils/mapbox-api');
+var Main = require('./app/components/Main');
 
 let {
   AppRegistry,
   StyleSheet,
+  NavigatorIOS,
   Text,
   View,
   Image
 } = React;
 
-let styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
+var styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     flex: 1,
-    flexDirection: 'column',
-  },
+    backgroundColor: '#ffffff'
+  }
 });
 
 class MysteryMeal extends React.Component{
   render() {
     return (
-        <View style={styles.container}>
-          <DisplayDirections />
-          <View style={styles.map}>
-            <MapDisplaySection />
-          </View>
-        </View>
+      <NavigatorIOS
+        style={styles.container}
+        initialRoute={{
+          title: 'Mystery Meal',
+          component: Main
+        }}
+      />
     );
   }
 }
-
 
 AppRegistry.registerComponent('MysteryMeal', () => MysteryMeal);
