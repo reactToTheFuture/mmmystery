@@ -19,7 +19,7 @@ var styles = StyleSheet.create({
   },
 });
 
-var MapDisplaySection = React.createClass({
+var Map = React.createClass({
   mixins: [MapboxGLMap.Mixin],
   getInitialState: function() {
     return {
@@ -75,5 +75,5 @@ var MapDisplaySection = React.createClass({
   },
 });
 
-module.exports = MapDisplaySection;
+module.exports = Map;
 

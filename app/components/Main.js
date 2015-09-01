@@ -1,6 +1,5 @@
 var React = require('react-native');
-var DisplayDirections = require('./DisplayDirections.io.js');
-var MapDisplaySection = require('./MapSection.io.js');
+var PlatesDashBoard = require('./Plates-Dashboard');
 
 var {
   View,
@@ -33,7 +32,7 @@ class Main extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => this.setState({initialPosition}),
-      (error) => console.warn(error.message),
+      (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.state.watchID = navigator.geolocation.watchPosition((lastPosition) => {
@@ -45,12 +44,7 @@ class Main extends React.Component {
   }
   render() {
     return (
-      <View style={styles.mainContainer}>
-        <DisplayDirections />
-        <View style={styles.map}>
-          <MapDisplaySection />
-        </View>
-      </View>
+      <PlatesDashBoard />
     );
   }
 }
