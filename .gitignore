@@ -28,4 +28,4 @@ node_modules/
 npm-debug.log
 
 # keys
-utils/config.js
+app/utils/config.js
