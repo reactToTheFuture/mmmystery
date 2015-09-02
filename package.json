@@ -19,6 +19,7 @@
   "dependencies": {
     "firebase": "^2.2.9",
     "geofire": "^3.2.2",
+    "jasmine-es6": "0.0.17",
     "q": "^1.4.1",
     "re-base": "^1.1.2",
     "react-native": "^0.10.1",
