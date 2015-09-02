@@ -26,51 +26,34 @@ var styles = StyleSheet.create({
   },
 });
 
-const Plates = [
-  'http://s3-media4.fl.yelpcdn.com/bphoto/vnwQT-DqwR2VKGrXrtgGNw/o.jpg',
-  'http://s3-media2.fl.yelpcdn.com/bphoto/XY7ShWc9r04qocYg62gfaA/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/0Vcw-scCuHWWlstbmw9rCA/o.jpg',
-  'http://s3-media2.fl.yelpcdn.com/bphoto/U5NExON4sMfUTe_vhq13MA/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/_f_F0jfO_8BwUdWuOUHy_g/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/sAnqRoiZqkdtwOwt-pAP2A/o.jpg',
-  'http://s3-media4.fl.yelpcdn.com/bphoto/oBLzvCaruGzjMX5xTh9LeA/o.jpg',
-  'http://s3-media4.fl.yelpcdn.com/bphoto/g8OpXz2utIE5_HS0ICb74w/o.jpg',
-  'http://s3-media2.fl.yelpcdn.com/bphoto/H_c8HLo28PrbHpfFQfEIiA/o.jpg',
-  'http://s3-media4.fl.yelpcdn.com/bphoto/CghtT8RwkWcFWarZvUjwKg/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/0ZCKQZKy23THoMAor2Mxmg/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/ZncTSLGTwSX6VCNLtvsoBg/o.jpg',
-  'http://s3-media4.fl.yelpcdn.com/bphoto/ZGBor6OA-s6BQ090xnafjQ/o.jpg',
-  'http://s3-media3.fl.yelpcdn.com/bphoto/Jvavw4449QZbFfR883kTfQ/o.jpg',
-  'http://s3-media4.fl.yelpcdn.com/bphoto/EAPI6_mlDeoD9Op9SWabZw/o.jpg',
-  'http://s3-media2.fl.yelpcdn.com/bphoto/ba3nUiff6ylZIBHo4_eptQ/o.jpg',
-  'http://s3-media2.fl.yelpcdn.com/bphoto/DeA3rO3bS3HjrmACZFvbIw/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/ZNIHPSvPrDpCTzVIIaMspg/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/qaB_pZqs5AaDdFI-bg35KQ/o.jpg',
-  'http://s3-media3.fl.yelpcdn.com/bphoto/BzEVvDaPk0P7ER1xH6PwQQ/o.jpg',
-  'http://s3-media2.fl.yelpcdn.com/bphoto/cf5CNR5k3t22neDBWA8JfA/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/fwBUx-yOi7uVe5oJ56yINg/o.jpg',
-  'http://s3-media1.fl.yelpcdn.com/bphoto/iyQNU133lhwm8utr5LdFuQ/o.jpg'
-];
-
-var SWIPE_THRESHOLD = 120;
-
 class PlatesDashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      plate: Plates[0],
+      plateIndex: 0,
+      plate: null,
     };
   }
 
   _goToNextPlate() {
-    let currentPlateIdx = Plates.indexOf(this.state.plate);
-    let newIdx = currentPlateIdx + 1;
+    let newPlateIndex = this.state.plateIndex + 1;
+    newPlateIndex = newPlateIndex >= this.props.plates.length ? 0 : newPlateIndex;
 
     this.setState({
-      plate: Plates[newIdx > Plates.length - 1 ? 0 : newIdx],
+      plateIndex: newPlateIndex,
+      plate: this.props.plates[newPlateIndex]
     });
+  }
+
+  componentWillUpdate(nextProps) {
+    if( !this.state.plate && nextProps.plates.length ) {
+      this.setState({
+        plate: nextProps.plates[0]
+      })
+    }
   }
 
   componentWillMount() {
@@ -97,7 +80,7 @@ class PlatesDashBoard extends React.Component {
           velocity = clamp(vx * -1, 3, 5) * -1;
         }
 
-        if (Math.abs(this.state.pan.x._value) > SWIPE_THRESHOLD) {
+        if (Math.abs(this.state.pan.x._value) > this.state.SWIPE_THRESHOLD) {
           Animated.decay(this.state.pan.x, {
             velocity: velocity,
             deceleration: 0.98,
@@ -159,7 +142,7 @@ class PlatesDashBoard extends React.Component {
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
           <Image
             style={{flex: 1}}
-            source={{uri: this.state.plate}}
+            source={{uri: this.state.plate ? this.state.plate.img_url : null}}
           />
         </Animated.View>
       </View>
