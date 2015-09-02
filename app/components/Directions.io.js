@@ -1,6 +1,5 @@
 var React = require('react-native');
 var mapbox_api = require('../utils/mapbox-api');
-var stepsToFollow = [];
 
 let {
   StyleSheet,
@@ -24,13 +23,14 @@ let styles = StyleSheet.create({
 });
 
 async function getAsyncDirections (origin, destination) {
-   var responseDirections = await (mapbox_api.getDirections(origin, destination)
-        .then(function(data) {
-          data.routes[0].steps.map(function(step){
-            stepsToFollow.push(step.maneuver.instruction);
-          })
-          return stepsToFollow;
-        }));
+  var stepsToFollow = [];
+  var responseDirections = await (mapbox_api.getDirections(origin, destination)
+    .then(function(data) {
+      data.routes[0].steps.map((step) => {
+        stepsToFollow.push(step.maneuver.instruction);
+      });
+      return stepsToFollow;
+    }));
   return responseDirections;
 }
 
@@ -55,7 +55,8 @@ class Directions extends React.Component{
     };
 
     getAsyncDirections(userPosition, this.props.image.location)
-    .then(function(response){
+    .then(function(response) {
+      console.log(response);
       _this.setState({stepsDirections: response});
     })
     .catch(function (err) { console.log('Something went wrong: ' + err); });

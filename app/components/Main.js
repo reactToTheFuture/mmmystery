@@ -48,9 +48,11 @@ class Main extends React.Component {
         }
 
         var morePlates = plates.map((plate) => {
-          var numOfImgs = plate.images.length;
+          var firebaseKeys = Object.keys(plate.images);
+          var numOfImgs = firebaseKeys.length;
           var randomI = Math.floor(Math.random() * numOfImgs);
-          var img_url = plate.images[randomI];
+          var randomKey = firebaseKeys[randomI];
+          var img_url = plate.images[randomKey];
 
           return {
             name: plate.key,
@@ -83,7 +85,7 @@ class Main extends React.Component {
         this.setState({initialPosition, lastPosition: initialPosition});
         var {latitude, longitude} = initialPosition.coords;
 
-        this.buildPlatesArray({latitude, longitude}, 6);
+        this.buildPlatesArray({latitude, longitude}, 60);
       },
       (error) => console.warn(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}

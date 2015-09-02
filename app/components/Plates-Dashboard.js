@@ -30,12 +30,19 @@ class PlatesDashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      SWIPE_THRESHOLD: 100,
+      SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
       plateIndex: 0,
       plate: null,
     };
+  }
+
+  _springBack() {
+    Animated.spring(this.state.pan, {
+      toValue: {x: 0, y: 0},
+      friction: 4
+    }).start();
   }
 
   _goToNextPlate() {
@@ -73,6 +80,8 @@ class PlatesDashBoard extends React.Component {
       onPanResponderRelease: (e, {vx, vy}) => {
         this.state.pan.flattenOffset();
         var velocity;
+        var acceptedDish = false;
+        var cb = this._resetState.bind(this);
 
         if (vx > 0) {
           velocity = clamp(vx, 3, 5);
@@ -80,29 +89,27 @@ class PlatesDashBoard extends React.Component {
           velocity = clamp(vx * -1, 3, 5) * -1;
         }
 
-        if (Math.abs(this.state.pan.x._value) > this.state.SWIPE_THRESHOLD) {
-
-          Animated.decay(this.state.pan.x, {
-            velocity: velocity,
-            deceleration: 0.98,
-          }).start(this._resetState.bind(this))
-
-          Animated.decay(this.state.pan.y, {
-            velocity: vy,
-            deceleration: 0.985,
-          }).start();
-
-          // Accepted a dish
-          if( this.state.pan.x._value > 0 ) {
-            this.props.onSelection(this.state.plate);
-          }
-
-        } else {
-          Animated.spring(this.state.pan, {
-            toValue: {x: 0, y: 0},
-            friction: 4
-          }).start()
+        // didn't swipe far enough
+        if (Math.abs(this.state.pan.x._value) < this.state.SWIPE_THRESHOLD) {
+          this._springBack();
+          return;
         }
+
+        if( this.state.pan.x._value > 0 ) {
+          acceptedDish = true;
+          cb = this._springBack.bind(this);
+          this.props.onSelection(this.state.plate);
+        }
+
+        Animated.decay(this.state.pan.x, {
+          velocity: velocity,
+          deceleration: 0.98,
+        }).start(cb)
+
+        Animated.decay(this.state.pan.y, {
+          velocity: vy,
+          deceleration: 0.985,
+        }).start();
       }
     });
   }
