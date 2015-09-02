@@ -10,6 +10,11 @@ var helpers = {
     }
 
     return array;
+  },
+  formatIdString: function(string) {
+    return string.replace(/-/g,' ').toLowerCase().replace( /\b\w/g, function (m) {
+      return m.toUpperCase();
+    });
   }
 };
  

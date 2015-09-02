@@ -25,7 +25,7 @@ let styles = StyleSheet.create({
 async function getAsyncDirections (origin, destination) {
   var stepsToFollow = [];
   var responseDirections = await (mapbox_api.getDirections(origin, destination)
-    .then(function(data) {
+    .then((data) => {
       data.routes[0].steps.map((step) => {
         stepsToFollow.push(step.maneuver.instruction);
       });
@@ -45,8 +45,6 @@ class Directions extends React.Component{
   }
 
   componentDidMount() {
-    var _this = this;
-
     var userCoords = this.props.userPosition.coords;
 
     var userPosition = {
@@ -55,15 +53,15 @@ class Directions extends React.Component{
     };
 
     getAsyncDirections(userPosition, this.props.image.location)
-    .then(function(response) {
-      _this.setState({stepsDirections: response});
+    .then((response) => {
+      this.setState({stepsDirections: response});
+      this.props.onDirectionsLoaded();
     })
-    .catch(function (err) { console.log('Something went wrong: ' + err); });
+    .catch((err) => { console.log('Something went wrong: ' + err); });
   }
 
   _onPressButton() {
     if ( this.state.stepProgress < this.state.stepsDirections.length-1) {
-      console.log(this.state.stepProgress);
       this.setState({stepProgress: this.state.stepProgress + 1});
     }
   }

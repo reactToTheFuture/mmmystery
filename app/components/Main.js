@@ -43,10 +43,12 @@ class Main extends React.Component {
           return;
         }
 
-        var foodLocation = {
+        var location = {
           lat: locationTuple[0],
           lng: locationTuple[1]
         };
+
+        var restaurant = helpers.formatIdString(restaurantId);
 
         var morePlates = plates.map((plate) => {
           var firebaseKeys = Object.keys(plate.images);
@@ -57,7 +59,8 @@ class Main extends React.Component {
 
           return {
             name: plate.key,
-            location: foodLocation,
+            restaurant,
+            location,
             img_url
           };
         });
