@@ -33,7 +33,6 @@ class PlatesDashBoard extends React.Component {
       SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      plateIndex: 0,
       plate: null,
     };
   }
@@ -46,11 +45,12 @@ class PlatesDashBoard extends React.Component {
   }
 
   _goToNextPlate() {
-    let newPlateIndex = this.state.plateIndex + 1;
+    let newPlateIndex = this.props.currPlateIndex + 1;
     newPlateIndex = newPlateIndex >= this.props.plates.length ? 0 : newPlateIndex;
 
+    this.props.onRejection(newPlateIndex);
+
     this.setState({
-      plateIndex: newPlateIndex,
       plate: this.props.plates[newPlateIndex]
     });
   }
@@ -115,7 +115,6 @@ class PlatesDashBoard extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigator);
     this._animateEntrance();
   }
 

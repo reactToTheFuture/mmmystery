@@ -1,12 +1,15 @@
-function shuffle(o){
-    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-}
-
 var helpers = {
-  shuffle: function(o) {
-    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
+  shuffle: function(array, start) {
+    var m = array.length, t, i;
+    start = start || 0;
+    while (m > start) {
+      i = Math.floor(Math.random()*(--m - start+1)+start);
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+
+    return array;
   }
 };
  

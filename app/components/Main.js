@@ -28,6 +28,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       watchID: null,
+      currPlateIndex: -1,
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       plates: []
@@ -45,7 +46,7 @@ class Main extends React.Component {
         var foodLocation = {
           lat: locationTuple[0],
           lng: locationTuple[1]
-        }
+        };
 
         var morePlates = plates.map((plate) => {
           var firebaseKeys = Object.keys(plate.images);
@@ -62,7 +63,8 @@ class Main extends React.Component {
         });
 
         this.setState({
-          plates: helpers.shuffle(this.state.plates.concat(morePlates))
+          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+1),
+          currPlateIndex: this.state.currPlateIndex === -1 ? 0 : this.state.currPlateIndex
         });
       });
     });
@@ -76,6 +78,12 @@ class Main extends React.Component {
         image,
         userPosition: this.state.lastPosition
       }
+    });
+  }
+
+  handleRejection(imageIndex) {
+    this.setState({
+      currPlateIndex: imageIndex
     });
   }
 
@@ -104,7 +112,9 @@ class Main extends React.Component {
     return (
       <PlatesDashBoard
         plates={this.state.plates}
+        currPlateIndex={this.state.currPlateIndex}
         onSelection={this.handleSelection.bind(this)}
+        onRejection={this.handleRejection.bind(this)}
       />
     );
   }

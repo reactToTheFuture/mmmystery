@@ -56,7 +56,6 @@ class Directions extends React.Component{
 
     getAsyncDirections(userPosition, this.props.image.location)
     .then(function(response) {
-      console.log(response);
       _this.setState({stepsDirections: response});
     })
     .catch(function (err) { console.log('Something went wrong: ' + err); });
