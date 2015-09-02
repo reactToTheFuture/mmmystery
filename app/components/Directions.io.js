@@ -43,7 +43,7 @@ async function getAsyncDirections (origin, destiny) {
   return responseDirections;
 }
 
-class DisplayDirections extends React.Component{
+class Directions extends React.Component{
 
   constructor(props) {
     super(props);
@@ -80,4 +80,4 @@ class DisplayDirections extends React.Component{
   };
 }
 
-module.exports = DisplayDirections;
+module.exports = Directions;
