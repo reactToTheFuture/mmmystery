@@ -25,9 +25,14 @@ class MapDashBoard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Directions />
+        <Directions
+          image={this.props.image}
+          userPosition={this.props.userPosition}
+        />
         <View style={styles.map}>
-          <Map />
+          <Map 
+            userPosition={this.props.userPosition}
+          />
         </View>
       </View>
     );

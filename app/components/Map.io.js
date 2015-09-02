@@ -22,19 +22,21 @@ var styles = StyleSheet.create({
 var Map = React.createClass({
   mixins: [MapboxGLMap.Mixin],
   getInitialState: function() {
+    var userCoords = this.props.userPosition.coords;
+    var lat = userCoords.latitude;
+    var lng = userCoords.longitude;
     return {
       meters: [],
       loaded: false,
-      center: { // Santa Monica
-        latitude: 34.019370,
-        longitude: -118.494474,
+      userPosition: {
+        latitude: lat,
+        longitude: lng,
       },
       annotations: [{
-         latitude: 34.019370,
-         longitude: -118.494474,
+         latitude: lat,
+         longitude: lng,
          title: 'MakerSquare',
          subtitle: '',
-
          annotationImage: {
            url: 'https://pbs.twimg.com/profile_images/542918126111703041/wP1SX3kg_400x400.png',
            height: 25,
@@ -66,7 +68,9 @@ var Map = React.createClass({
           annotations={this.state.annotations}
           accessToken={mapbox_keys.token}
           styleURL={'asset://styles/mapbox-streets-v7.json'}
-          centerCoordinate={this.state.center}
+          onRegionChange={this.onRegionChange}
+          onRegionWillChange={this.onRegionWillChange}
+          centerCoordinate={this.state.userPosition}
           userLocationVisible={true}
           zoomLevel={this.state.zoom}
           />

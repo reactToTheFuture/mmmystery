@@ -1,5 +1,6 @@
 var React = require('react-native');
 var PlatesDashBoard = require('./Plates-Dashboard');
+var MapDashBoard = require('./Map-Dashboard');
 var firebase_api = require('../utils/firebase');
 var helpers = require('../utils/helpers');
 
@@ -33,12 +34,17 @@ class Main extends React.Component {
     };
   }
 
-  buildPlatesArray(locationObj,radius) {
-    firebase_api.getNearbyRestaurants(locationObj, radius, (restaurantId, locationTuple, dist) => {
+  buildPlatesArray(userLocation,radius) {
+    firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if( !plates.length ) {
           return;
+        }
+
+        var foodLocation = {
+          lat: locationTuple[0],
+          lng: locationTuple[1]
         }
 
         var morePlates = plates.map((plate) => {
@@ -48,7 +54,7 @@ class Main extends React.Component {
 
           return {
             name: plate.key,
-            location: locationObj,
+            location: foodLocation,
             img_url
           };
         });
@@ -60,10 +66,21 @@ class Main extends React.Component {
     });
   }
 
+  handleSelection(image) {
+    this.props.navigator.push({
+      title: 'Map DashBoard',
+      component: MapDashBoard,
+      passProps: {
+        image,
+        userPosition: this.state.lastPosition
+      }
+    });
+  }
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
-        this.setState({initialPosition});
+        this.setState({initialPosition, lastPosition: initialPosition});
         var {latitude, longitude} = initialPosition.coords;
 
         this.buildPlatesArray({latitude, longitude}, 6);
@@ -85,6 +102,7 @@ class Main extends React.Component {
     return (
       <PlatesDashBoard
         plates={this.state.plates}
+        onSelection={this.handleSelection.bind(this)}
       />
     );
   }

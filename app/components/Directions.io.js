@@ -23,17 +23,8 @@ let styles = StyleSheet.create({
   },
 });
 
-var origin = {
-      'lat': 34.019370,
-      'lng': -118.494474
-    };
-var destiny = {
-      'lat': 34.0186152,
-      'lng': -118.487058
-    };
-
-async function getAsyncDirections (origin, destiny) {
-   var responseDirections = await (mapbox_api.getDirections(origin, destiny)
+async function getAsyncDirections (origin, destination) {
+   var responseDirections = await (mapbox_api.getDirections(origin, destination)
         .then(function(data) {
           data.routes[0].steps.map(function(step){
             stepsToFollow.push(step.maneuver.instruction);
@@ -47,12 +38,23 @@ class Directions extends React.Component{
 
   constructor(props) {
     super(props);
-    this.state = {stepsDirections: ["Loading directions ... Wait."], stepProgress: 0};
+    this.state = {
+      stepsDirections: ["Loading directions ... Wait."],
+      stepProgress: 0
+    };
   }
 
   componentDidMount() {
     var _this = this;
-    getAsyncDirections(origin, destiny)
+
+    var userCoords = this.props.userPosition.coords;
+
+    var userPosition = {
+      lat: userCoords.latitude,
+      lng: userCoords.longitude
+    };
+
+    getAsyncDirections(userPosition, this.props.image.location)
     .then(function(response){
       _this.setState({stepsDirections: response});
     })
