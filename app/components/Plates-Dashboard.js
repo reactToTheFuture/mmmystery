@@ -16,21 +16,21 @@ var {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   card: {
-    paddingTop: 20,
+    marginTop: 100,
     width: window.width,
-    height: window.height,
-  },
+    height: window.height/2
+  }
 });
 
 class PlatesDashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      SWIPE_THRESHOLD: 120,
+      SWIPE_THRESHOLD: 100,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
       plateIndex: 0,
@@ -81,6 +81,7 @@ class PlatesDashBoard extends React.Component {
         }
 
         if (Math.abs(this.state.pan.x._value) > this.state.SWIPE_THRESHOLD) {
+
           Animated.decay(this.state.pan.x, {
             velocity: velocity,
             deceleration: 0.98,
@@ -90,6 +91,12 @@ class PlatesDashBoard extends React.Component {
             velocity: vy,
             deceleration: 0.985,
           }).start();
+
+          // Accepted a dish
+          if( this.state.pan.x._value > 0 ) {
+            this.props.onSelection(this.state.plate);
+          }
+
         } else {
           Animated.spring(this.state.pan, {
             toValue: {x: 0, y: 0},
@@ -101,6 +108,7 @@ class PlatesDashBoard extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.navigator);
     this._animateEntrance();
   }
 
