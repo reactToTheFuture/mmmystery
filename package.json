@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "testj": "jasmine",
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "jest": {
@@ -16,16 +17,24 @@
       "source-map"
     ]
   },
+  "main": "node_modules/jasmine-es6/index.js",
+  "bin": {
+    "jasmine": "node_modules/jasmine-es6/bin/jasmine.js"
+  },
   "dependencies": {
     "firebase": "^2.2.9",
     "geofire": "^3.2.2",
+    "jasmine-es6": "0.0.17",
     "q": "^1.4.1",
     "re-base": "^1.1.2",
     "react-native": "^0.10.1",
     "react-native-mapbox-gl": "^0.4.0",
-    "react-native-overlay": "^0.3.0"
+    "react-native-overlay": "^0.3.0",
+    "yelp": "^0.2.0"
   },
   "devDependencies": {
+    "jasmine-core": "^2.2.0",
+    "jasmine": "^2.2.1",
     "anybar-webpack": "^1.0.7",
     "babel": "^5.8.21",
     "babel-core": "^5.8.22",
@@ -34,9 +43,12 @@
     "babel-runtime": "^5.1.8",
     "babelify": "^6.1.1",
     "eslint": "^1.2.1",
+    "es6-promise": "^3.0.2",
     "eslint-config-airbnb": "0.0.7",
     "eslint-plugin-react": "^3.2.3",
     "jest-cli": "^0.5.0",
-    "webpack": "^1.8.4"
+    "webpack": "^1.8.4",
+    "dist-es6": "^0.0.17",
+    "node-promise-es6": "^0.0.6"
   }
 }

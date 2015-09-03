@@ -36,6 +36,7 @@
 		9F40AD021B95005A00EFDDCA /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F40AD011B95005A00EFDDCA /* libc++.dylib */; };
 		9F40AD041B95006400EFDDCA /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F40AD031B95006400EFDDCA /* libsqlite3.dylib */; };
 		9F40AD061B95006B00EFDDCA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F40AD051B95006B00EFDDCA /* libz.dylib */; };
+		9F85BC331B96868300C1189B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F85BC321B96868300C1189B /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +175,7 @@
 		9F40AD011B95005A00EFDDCA /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		9F40AD031B95006400EFDDCA /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		9F40AD051B95006B00EFDDCA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		9F85BC321B96868300C1189B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,6 +358,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				9F85BC321B96868300C1189B /* Default-568h@2x.png */,
 				9F40AD051B95006B00EFDDCA /* libz.dylib */,
 				9F40AD031B95006400EFDDCA /* libsqlite3.dylib */,
 				9F40AD011B95005A00EFDDCA /* libc++.dylib */,
@@ -627,6 +630,7 @@
 				008F07F31AC5B25A0029DE68 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				9F85BC331B96868300C1189B /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
