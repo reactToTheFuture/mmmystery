@@ -25,6 +25,7 @@ var Map = React.createClass({
     var userCoords = this.props.userPosition.coords;
     var lat = userCoords.latitude;
     var lng = userCoords.longitude;
+
     return {
       meters: [],
       loaded: false,
@@ -48,7 +49,11 @@ var Map = React.createClass({
     };
   },
 
-  render () {
+  componentWillReceiveProps(newProps) {
+    this.addAnnotations(mapRef,newProps.stepAnnotations);
+  },
+
+  render() {
     return (
       <View style={styles.container}>
         <MapboxGLMap

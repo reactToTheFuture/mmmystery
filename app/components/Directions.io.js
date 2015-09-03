@@ -24,7 +24,7 @@ let styles = StyleSheet.create({
 class Directions extends React.Component{
 
   _onPressButton() {
-    if( this.props.stepProgress+1 === this.props.stepsDirections.length-1 ) {
+    if( this.props.stepProgress+1 === this.props.stepDirections.length-1 ) {
       this.props.onArrived();
       return;
     }
@@ -35,7 +35,7 @@ class Directions extends React.Component{
   render () {
     return (
       <View style={styles.directions}>
-        <Text> {this.props.stepsDirections[this.props.stepProgress]} </Text>
+        <Text> {this.props.stepDirections[this.props.stepProgress]} </Text>
         <TouchableHighlight
           onPress={this._onPressButton.bind(this)}
           style={styles.button}>
