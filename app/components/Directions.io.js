@@ -39,7 +39,7 @@ class Directions extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      stepsDirections: ["Loading directions ... Wait."],
+      stepsDirections: [],
       stepProgress: 0
     };
   }
@@ -52,7 +52,7 @@ class Directions extends React.Component{
       lng: userCoords.longitude
     };
 
-    getAsyncDirections(userPosition, this.props.image.location)
+    getAsyncDirections(userPosition, this.props.imageInfo.location)
     .then((response) => {
       this.setState({stepsDirections: response});
       this.props.onDirectionsLoaded();
@@ -61,9 +61,13 @@ class Directions extends React.Component{
   }
 
   _onPressButton() {
-    if ( this.state.stepProgress < this.state.stepsDirections.length-1) {
-      this.setState({stepProgress: this.state.stepProgress + 1});
+
+    if( this.state.stepProgress+1 === this.state.stepsDirections.length-1 ) {
+      this.props.onArrived();
+      return;
     }
+
+    this.setState({stepProgress: this.state.stepProgress + 1});
   }
 
   render () {

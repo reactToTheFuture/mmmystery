@@ -2,6 +2,8 @@ var React = require('react-native');
 var Directions = require('./Directions.io.js');
 var RouteLoadingOverlay = require('./Route-Loading-Overlay');
 var RouteConfirmationOverlay = require('./Route-Confirmation-Overlay');
+var ArrivalOverlay = require('./Arrival-Overlay');
+var Main = require('./Main');
 var Map = require('./Map.io.js');
 
 var {
@@ -28,7 +30,9 @@ class MapDashBoard extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      isConfirmed: false
+      isConfirmed: false,
+      hasArrived: false,
+      hasLeft: false
     };
   }
 
@@ -38,10 +42,23 @@ class MapDashBoard extends React.Component {
     });
   }
 
-  handleConfirmation() {
+  handleRouteConfirmation() {
     this.setState({
       isConfirmed: true
     });
+  }
+
+  handleArrived() {
+    this.setState({
+      hasArrived: true
+    });
+  }
+
+  handleArrivalConfirmation() {
+    this.setState({
+      hasLeft: true
+    });
+    this.props.navigator.pop();
   }
 
   render() {
@@ -49,17 +66,22 @@ class MapDashBoard extends React.Component {
       <View
         style={styles.container}>
         <Directions
-          image={this.props.image}
+          imageInfo={this.props.image}
           userPosition={this.props.userPosition}
-          onDirectionsLoaded={this.handleDirectionsLoaded.bind(this)} />
+          onDirectionsLoaded={this.handleDirectionsLoaded.bind(this)} 
+          onArrived={this.handleArrived.bind(this)} />
         <Map 
           style={styles.map}
           userPosition={this.props.userPosition} />
-        <RouteLoadingOverlay
-          isVisible={this.state.isLoading} />
         <RouteConfirmationOverlay
           isVisible={!this.state.isLoading && !this.state.isConfirmed}
-          onConfirmation={this.handleConfirmation.bind(this)} />
+          onConfirmation={this.handleRouteConfirmation.bind(this)} />
+        <RouteLoadingOverlay
+          isVisible={this.state.isLoading} />
+        <ArrivalOverlay
+          imageInfo={this.props.image}
+          isVisible={!this.state.hasLeft && this.state.hasArrived} 
+          onConfirmation={this.handleArrivalConfirmation.bind(this)} />
       </View>
     );
   }

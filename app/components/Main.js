@@ -51,14 +51,16 @@ class Main extends React.Component {
         var restaurant = helpers.formatIdString(restaurantId);
 
         var morePlates = plates.map((plate) => {
+
           var firebaseKeys = Object.keys(plate.images);
           var numOfImgs = firebaseKeys.length;
           var randomI = Math.floor(Math.random() * numOfImgs);
           var randomKey = firebaseKeys[randomI];
           var img_url = plate.images[randomKey];
+          var name = helpers.formatIdString(plate.key);
 
           return {
-            name: plate.key,
+            name,
             restaurant,
             location,
             img_url

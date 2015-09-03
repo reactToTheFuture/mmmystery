@@ -6,37 +6,48 @@ var Overlay = require('react-native-overlay');
 var {
   View,
   Text,
+  Image,
   TouchableHighlight,
   StyleSheet
 } = React;
 
 let styles = StyleSheet.create({
-  button: {
-  },
-  confirmationOverlay: {
+  arrivalOverlay: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     width: window.width,
     height: window.height,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+  },
+  button: {
+  },
+  arrivalImg: {
+    flex: 1,
+    width: window.width,
+    height: window.height/4
   }
 });
 
-class RouteConfirmationOverlay extends React.Component {
+class ArrivalOverlay extends React.Component {
   render() {
     return (
       <Overlay
         isVisible={this.props.isVisible}
       >
-        <View style={styles.confirmationOverlay}>
-          <Text>Okay, we're all set!</Text>
-          <Text>This being a mmmystery and all, we're only going to show you one step at a time.</Text>
-          <Text>When you arrive at a step, click next to receive your next directions!</Text>
+        <View style={styles.arrivalOverlay}>
+          <Text>Congrats, you've arrrived at...</Text>
+          <Text>{this.props.imageInfo.restaurant}</Text>
+          <Image
+            style={styles.arrivalImg}
+            source={{uri: this.props.imageInfo.img_url}}
+          />
+          <Text>{this.props.imageInfo.name}</Text>
+          <Text>Take a pic when your meal arrives!</Text>
           <TouchableHighlight
           onPress={this.props.onConfirmation}
           style={styles.button}>
-            <Text>OKAY</Text>
+            <Text>SOUNDS GOOD</Text>
           </TouchableHighlight>
         </View>
       </Overlay>
@@ -44,4 +55,4 @@ class RouteConfirmationOverlay extends React.Component {
   }
 }
 
-module.exports = RouteConfirmationOverlay;
+module.exports = ArrivalOverlay;
