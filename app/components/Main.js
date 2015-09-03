@@ -1,4 +1,5 @@
 var React = require('react-native');
+var InitialLoadingOverlay = require('./Initial-Loading-Overlay');
 var PlatesDashBoard = require('./Plates-Dashboard');
 var MapDashBoard = require('./Map-Dashboard');
 var firebase_api = require('../utils/firebase');
@@ -27,6 +28,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: 'Finding your location...',
       watchID: null,
       currPlateIndex: -1,
       initialPosition: 'unknown',
@@ -37,6 +39,11 @@ class Main extends React.Component {
 
   buildPlatesArray(userLocation,radius) {
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
+
+      this.setState({
+        status: 'Finding nearby restaurants...'
+      });
+
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if( !plates.length ) {
@@ -95,7 +102,7 @@ class Main extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
-        this.setState({initialPosition, lastPosition: initialPosition});
+        this.setState({initialPosition});
         var {latitude, longitude} = initialPosition.coords;
 
         this.buildPlatesArray({latitude, longitude}, 60);
@@ -115,12 +122,16 @@ class Main extends React.Component {
 
   render() {
     return (
-      <PlatesDashBoard
-        plates={this.state.plates}
-        currPlateIndex={this.state.currPlateIndex}
-        onSelection={this.handleSelection.bind(this)}
-        onRejection={this.handleRejection.bind(this)}
-      />
+      <View>
+        <InitialLoadingOverlay 
+          isVisible={!this.state.plates.length}
+          status={this.state.status} />
+        <PlatesDashBoard
+          plates={this.state.plates}
+          currPlateIndex={this.state.currPlateIndex}
+          onSelection={this.handleSelection.bind(this)}
+          onRejection={this.handleRejection.bind(this)} />
+      </View>
     );
   }
 }

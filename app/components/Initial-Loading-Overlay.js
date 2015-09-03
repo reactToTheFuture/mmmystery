@@ -12,24 +12,25 @@ var {
 let styles = StyleSheet.create({
   loadingOverlay: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
     width: window.width,
     height: window.height,
-    backgroundColor: 'orange',
-    justifyContent: 'center'
+    backgroundColor: '#ffffff',
   }
 });
 
-class RouteLoadingOverlay extends React.Component {
+class initialLoadingOverlay extends React.Component {
   render() {
     return (
       <Overlay
-        isVisible={this.props.isVisible}>
+        isVisible={this.props.isVisible} >
         <View style={styles.loadingOverlay}>
-          <Text>one moment while we get your route</Text>
+          <Text>{this.props.status}</Text>
         </View>
       </Overlay>
     );
   }
 }
 
-module.exports = RouteLoadingOverlay;
+module.exports = initialLoadingOverlay;

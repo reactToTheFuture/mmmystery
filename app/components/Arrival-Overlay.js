@@ -33,8 +33,7 @@ class ArrivalOverlay extends React.Component {
   render() {
     return (
       <Overlay
-        isVisible={this.props.isVisible}
-      >
+        isVisible={this.props.isVisible}>
         <View style={styles.arrivalOverlay}>
           <Text>Congrats, you've arrrived at...</Text>
           <Text>{this.props.imageInfo.restaurant}</Text>
