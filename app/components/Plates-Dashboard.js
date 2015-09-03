@@ -23,6 +23,9 @@ var styles = StyleSheet.create({
     marginTop: 100,
     width: window.width,
     height: window.height/2
+  },
+  img: {
+    flex: 1
   }
 });
 
@@ -155,7 +158,7 @@ class PlatesDashBoard extends React.Component {
       <View style={styles.container}>
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
           <Image
-            style={{flex: 1}}
+            style={styles.img}
             source={{uri: this.state.plate ? this.state.plate.img_url : null}}
           />
         </Animated.View>

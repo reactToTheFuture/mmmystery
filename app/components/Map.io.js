@@ -16,7 +16,7 @@ var styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     flex: 2
-  },
+  }
 });
 
 var Map = React.createClass({
@@ -25,6 +25,7 @@ var Map = React.createClass({
     var userCoords = this.props.userPosition.coords;
     var lat = userCoords.latitude;
     var lng = userCoords.longitude;
+
     return {
       meters: [],
       loaded: false,
@@ -38,7 +39,7 @@ var Map = React.createClass({
          title: 'MakerSquare',
          subtitle: '',
          annotationImage: {
-           url: 'https://pbs.twimg.com/profile_images/542918126111703041/wP1SX3kg_400x400.png',
+           url: 'http://img1.wikia.nocookie.net/__cb20130425161142/scribblenauts/images/a/a4/Hamburger.png',
            height: 25,
            width: 25
          },
@@ -48,13 +49,11 @@ var Map = React.createClass({
     };
   },
 
-  onRegionChange(location) {
-    // console.log('onRegionChange', this.state.isMoving);
+  componentWillReceiveProps(newProps) {
+    this.addAnnotations(mapRef,newProps.stepAnnotations);
   },
-  onRegionWillChange(location) {
-    // console.log('onRegionWillChange', location);
-  },
-  render () {
+
+  render() {
     return (
       <View style={styles.container}>
         <MapboxGLMap
@@ -68,12 +67,8 @@ var Map = React.createClass({
           annotations={this.state.annotations}
           accessToken={mapbox_keys.token}
           styleURL={'asset://styles/mapbox-streets-v7.json'}
-          onRegionChange={this.onRegionChange}
-          onRegionWillChange={this.onRegionWillChange}
           centerCoordinate={this.state.userPosition}
-          userLocationVisible={true}
-          zoomLevel={this.state.zoom}
-          />
+          zoomLevel={this.state.zoom} />
       </View>
     );
   },
