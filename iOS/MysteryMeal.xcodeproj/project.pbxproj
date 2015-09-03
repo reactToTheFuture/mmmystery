@@ -22,6 +22,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		4A6F5E201B97FBC90006685C /* mealTestLocation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4A6F5E1F1B97FBC90006685C /* mealTestLocation.gpx */; };
 		6FBBEC561B97B8190095F89E /* libRNOverlay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FBBEC551B97B7E30095F89E /* libRNOverlay.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9F40ACF01B94FF4F00EFDDCA /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F40ACE71B94FF2D00EFDDCA /* libRCTMapboxGL.a */; };
@@ -160,6 +161,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		4A6F5E1F1B97FBC90006685C /* mealTestLocation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = mealTestLocation.gpx; path = ../../../../Downloads/mealTestLocation.gpx; sourceTree = "<group>"; };
 		6FBBEC441B97B7E30095F89E /* RNOverlay.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNOverlay.xcodeproj; path = "../node_modules/react-native-overlay/RNOverlay.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4A6F5E1F1B97FBC90006685C /* mealTestLocation.gpx */,
 				9F85BC321B96868300C1189B /* Default-568h@2x.png */,
 				9F40AD051B95006B00EFDDCA /* libz.dylib */,
 				9F40AD031B95006400EFDDCA /* libsqlite3.dylib */,
@@ -629,6 +632,7 @@
 				9F40ACF21B94FFD700EFDDCA /* MapboxGL.bundle in Resources */,
 				008F07F31AC5B25A0029DE68 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				4A6F5E201B97FBC90006685C /* mealTestLocation.gpx in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				9F85BC331B96868300C1189B /* Default-568h@2x.png in Resources */,
 			);
