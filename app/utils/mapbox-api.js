@@ -6,5 +6,5 @@ var mapbox_api = {
     return fetch(url).then((res) => res.json());
   }
 };
- 
+
 module.exports = mapbox_api;
