@@ -1,5 +1,7 @@
 var React = require('react-native');
 var Directions = require('./Directions.io.js');
+var RouteLoadingOverlay = require('./Route-Loading-Overlay');
+var RouteConfirmationOverlay = require('./Route-Confirmation-Overlay');
 var Map = require('./Map.io.js');
 
 var {
@@ -22,18 +24,42 @@ let styles = StyleSheet.create({
 });
 
 class MapDashBoard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      isConfirmed: false
+    };
+  }
+
+  handleDirectionsLoaded() {
+    this.setState({
+      isLoading: false
+    });
+  }
+
+  handleConfirmation() {
+    this.setState({
+      isConfirmed: true
+    });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <View
+        style={styles.container}>
         <Directions
           image={this.props.image}
           userPosition={this.props.userPosition}
-        />
-        <View style={styles.map}>
-          <Map 
-            userPosition={this.props.userPosition}
-          />
-        </View>
+          onDirectionsLoaded={this.handleDirectionsLoaded.bind(this)} />
+        <Map 
+          style={styles.map}
+          userPosition={this.props.userPosition} />
+        <RouteLoadingOverlay
+          isVisible={this.state.isLoading} />
+        <RouteConfirmationOverlay
+          isVisible={!this.state.isLoading && !this.state.isConfirmed}
+          onConfirmation={this.handleConfirmation.bind(this)} />
       </View>
     );
   }

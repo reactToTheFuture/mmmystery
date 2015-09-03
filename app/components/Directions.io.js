@@ -1,6 +1,5 @@
 var React = require('react-native');
 var mapbox_api = require('../utils/mapbox-api');
-var stepsToFollow = [];
 
 let {
   StyleSheet,
@@ -24,13 +23,14 @@ let styles = StyleSheet.create({
 });
 
 async function getAsyncDirections (origin, destination) {
-   var responseDirections = await (mapbox_api.getDirections(origin, destination)
-        .then(function(data) {
-          data.routes[0].steps.map(function(step){
-            stepsToFollow.push(step.maneuver.instruction);
-          })
-          return stepsToFollow;
-        }));
+  var stepsToFollow = [];
+  var responseDirections = await (mapbox_api.getDirections(origin, destination)
+    .then((data) => {
+      data.routes[0].steps.map((step) => {
+        stepsToFollow.push(step.maneuver.instruction);
+      });
+      return stepsToFollow;
+    }));
   return responseDirections;
 }
 
@@ -45,8 +45,6 @@ class Directions extends React.Component{
   }
 
   componentDidMount() {
-    var _this = this;
-
     var userCoords = this.props.userPosition.coords;
 
     var userPosition = {
@@ -55,15 +53,15 @@ class Directions extends React.Component{
     };
 
     getAsyncDirections(userPosition, this.props.image.location)
-    .then(function(response){
-      _this.setState({stepsDirections: response});
+    .then((response) => {
+      this.setState({stepsDirections: response});
+      this.props.onDirectionsLoaded();
     })
-    .catch(function (err) { console.log('Something went wrong: ' + err); });
+    .catch((err) => { console.log('Something went wrong: ' + err); });
   }
 
   _onPressButton() {
     if ( this.state.stepProgress < this.state.stepsDirections.length-1) {
-      console.log(this.state.stepProgress);
       this.setState({stepProgress: this.state.stepProgress + 1});
     }
   }

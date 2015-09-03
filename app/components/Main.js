@@ -28,6 +28,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       watchID: null,
+      currPlateIndex: -1,
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       plates: []
@@ -42,25 +43,31 @@ class Main extends React.Component {
           return;
         }
 
-        var foodLocation = {
+        var location = {
           lat: locationTuple[0],
           lng: locationTuple[1]
-        }
+        };
+
+        var restaurant = helpers.formatIdString(restaurantId);
 
         var morePlates = plates.map((plate) => {
-          var numOfImgs = plate.images.length;
+          var firebaseKeys = Object.keys(plate.images);
+          var numOfImgs = firebaseKeys.length;
           var randomI = Math.floor(Math.random() * numOfImgs);
-          var img_url = plate.images[randomI];
+          var randomKey = firebaseKeys[randomI];
+          var img_url = plate.images[randomKey];
 
           return {
             name: plate.key,
-            location: foodLocation,
+            restaurant,
+            location,
             img_url
           };
         });
 
         this.setState({
-          plates: helpers.shuffle(this.state.plates.concat(morePlates))
+          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+1),
+          currPlateIndex: this.state.currPlateIndex === -1 ? 0 : this.state.currPlateIndex
         });
       });
     });
@@ -77,13 +84,19 @@ class Main extends React.Component {
     });
   }
 
+  handleRejection(imageIndex) {
+    this.setState({
+      currPlateIndex: imageIndex
+    });
+  }
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
         this.setState({initialPosition, lastPosition: initialPosition});
         var {latitude, longitude} = initialPosition.coords;
 
-        this.buildPlatesArray({latitude, longitude}, 6);
+        this.buildPlatesArray({latitude, longitude}, 60);
       },
       (error) => console.warn(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
@@ -102,7 +115,9 @@ class Main extends React.Component {
     return (
       <PlatesDashBoard
         plates={this.state.plates}
+        currPlateIndex={this.state.currPlateIndex}
         onSelection={this.handleSelection.bind(this)}
+        onRejection={this.handleRejection.bind(this)}
       />
     );
   }
