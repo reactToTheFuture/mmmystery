@@ -1,5 +1,8 @@
 var React = require('react-native');
 var Directions = require('./Directions.io.js');
+
+var mapbox_api = require('../utils/mapbox-api');
+
 var RouteLoadingOverlay = require('./Route-Loading-Overlay');
 var RouteConfirmationOverlay = require('./Route-Confirmation-Overlay');
 var ArrivalOverlay = require('./Arrival-Overlay');
@@ -29,11 +32,41 @@ class MapDashBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      stepsDirections: [],
+      stepProgress: 0,
       isLoading: true,
       isConfirmed: false,
       hasArrived: false,
       hasLeft: false
     };
+  }
+
+  componentDidMount() {
+    var userCoords = this.props.userPosition.coords;
+
+    var userPosition = {
+      lat: userCoords.latitude,
+      lng: userCoords.longitude
+    };
+
+    this.getAsyncDirections(userPosition, this.props.image.location)
+    .then((response) => {
+      this.setState({stepsDirections: response});
+      this.handleDirectionsLoaded();
+    })
+    .catch((err) => { console.log('Something went wrong: ' + err); });
+  }
+
+  async getAsyncDirections(origin, destination) {
+    var stepsToFollow = [];
+    var responseDirections = await (mapbox_api.getDirections(origin, destination)
+      .then((data) => {
+        data.routes[0].steps.map((step) => {
+          stepsToFollow.push(step.maneuver.instruction);
+        });
+        return stepsToFollow;
+      }));
+    return responseDirections;
   }
 
   handleDirectionsLoaded() {
@@ -45,6 +78,12 @@ class MapDashBoard extends React.Component {
   handleRouteConfirmation() {
     this.setState({
       isConfirmed: true
+    });
+  }
+
+  handleStepIncrement() {
+    this.setState({
+      stepProgress: this.state.stepProgress + 1
     });
   }
 
@@ -66,9 +105,9 @@ class MapDashBoard extends React.Component {
       <View
         style={styles.container}>
         <Directions
-          imageInfo={this.props.image}
-          userPosition={this.props.userPosition}
-          onDirectionsLoaded={this.handleDirectionsLoaded.bind(this)} 
+          stepsDirections={this.state.stepsDirections}
+          stepProgress={this.state.stepProgress}
+          onStepIncrement={this.handleStepIncrement.bind(this)}
           onArrived={this.handleArrived.bind(this)} />
         <Map 
           style={styles.map}
