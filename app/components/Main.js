@@ -5,7 +5,7 @@ var PlatesDashBoard = require('./Plates-Dashboard');
 var MapDashBoard = require('./Map-Dashboard');
 var NavigationBar = require('react-native-navbar');
 
-var firebase_api = require('../utils/firebase');
+var firebase_api = require('../utils/firebase-api');
 var helpers = require('../utils/helpers');
 
 var {
@@ -34,8 +34,6 @@ class Main extends React.Component {
       status: 'Finding your location...',
       watchID: null,
       currPlateIndex: -1,
-      initialPosition: 'unknown',
-      lastPosition: 'unknown',
       plates: []
     };
   }
@@ -92,13 +90,19 @@ class Main extends React.Component {
     });
   }
 
+  componentWillReceiveProps(newProps) {
+    if( !this.props.initialPosition && newProps.initialPosition ) {
+      var {latitude, longitude} = newProps.initialPosition.coords;
+      this.buildPlatesArray({latitude, longitude}, 60);
+    }
+  }
+
   handleSelection(image) {
     this.props.navigator.push({
-      title: 'Map DashBoard',
       component: MapDashBoard,
       props: {
         image,
-        userPosition: this.state.lastPosition
+        userPosition: this.props.lastPosition
       },
       navigationBar: (
         <NavigationBar
@@ -111,27 +115,6 @@ class Main extends React.Component {
     this.setState({
       currPlateIndex: imageIndex
     });
-  }
-
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (initialPosition) => {
-        this.setState({initialPosition});
-        var {latitude, longitude} = initialPosition.coords;
-
-        this.buildPlatesArray({latitude, longitude}, 60);
-      },
-      (error) => console.warn(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-
-    this.state.watchID = navigator.geolocation.watchPosition((lastPosition) => {
-      this.setState({lastPosition});
-    });
-  }
-
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.state.watchID);
   }
 
   render() {

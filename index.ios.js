@@ -20,7 +20,16 @@ var styles = StyleSheet.create({
   }
 });
 
-class MysteryMeal extends React.Component{
+class MysteryMeal extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      initialPosition: null,
+      lastPosition: null
+    };
+  }
+
   cameraBtnPress(navigator, route) {
     navigator.push({
       title: 'Camera',
@@ -45,9 +54,27 @@ class MysteryMeal extends React.Component{
     return (
       <View style={styles.app}>
         {navBar}
-        <Component navigator={navigator} route={route} />
+        <Component navigator={navigator} route={route} initialPosition={this.state.initialPosition} lastPosition={this.state.lastPosition} />
       </View>
     );
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (initialPosition) => {
+        this.setState({initialPosition});
+      },
+      (error) => console.warn(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+
+    this.state.watchID = navigator.geolocation.watchPosition((lastPosition) => {
+      this.setState({lastPosition});
+    });
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.state.watchID);
   }
 
   render() {
