@@ -53,6 +53,10 @@ class Main extends React.Component {
           return;
         }
 
+        this.setState({
+          status: 'Fetching yummy dishes...'
+        });
+
         var location = {
           lat: locationTuple[0],
           lng: locationTuple[1]
