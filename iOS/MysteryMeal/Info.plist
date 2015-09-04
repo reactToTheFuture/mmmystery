@@ -21,6 +21,19 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+      <key>CFBundleURLTypes</key>
+      <array>
+        <dict>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>fb487362291439985</string>
+          </array>
+        </dict>
+      </array>
+      <key>FacebookAppID</key>
+      <string>487362291439985</string>
+      <key>FacebookDisplayName</key>
+      <string>Gut Instinct</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
