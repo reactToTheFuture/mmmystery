@@ -3,43 +3,66 @@
 var React = require('react-native');
 var Main = require('./app/components/Main');
 var CameraDashboard = require('./app/components/Camera-Dashboard');
+var NavigationBar = require('react-native-navbar');
 
 let {
   AppRegistry,
   StyleSheet,
-  NavigatorIOS,
+  Navigator,
   Text,
   View,
   Image
 } = React;
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff'
+  app: {
+    flex: 1
   }
 });
 
 class MysteryMeal extends React.Component{
-
-  onRightButtonPress() {
-    this.refs.nav.push({
+  cameraBtnPress(navigator, route) {
+    navigator.push({
       title: 'Camera',
       component: CameraDashboard,
-      passProps: { navigator: this.refs.nav },
+      navigationBar: (
+        <NavigationBar
+          title="Picture Time" />
+      )
     })
+  }
+
+  renderScene(route, navigator) {
+    const Component = route.component;
+    let navBar = route.navigationBar;
+
+    if (navBar) {
+      navBar = React.addons.cloneWithProps(navBar, {
+        navigator, route
+      });
+    }
+
+    return (
+      <View style={styles.app}>
+        {navBar}
+        <Component navigator={navigator} route={route} />
+      </View>
+    );
   }
 
   render() {
     return (
-      <NavigatorIOS
-        ref="nav"
-        style={styles.container}
+      <Navigator
+        renderScene={this.renderScene.bind(this)}
         initialRoute={{
-          title: 'Mystery Meal',
           component: Main,
-          rightButtonTitle: 'camera',
-          onRightButtonPress: this.onRightButtonPress.bind(this),
+          navigationBar: (
+            <NavigationBar
+              title="Mystery Meal"
+              onNext={this.cameraBtnPress.bind(this)}
+              hidePrev={true}
+              nextTitle={"camera"} />
+          )
         }}
       />
     );

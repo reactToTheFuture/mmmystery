@@ -1,7 +1,10 @@
 var React = require('react-native');
+
 var InitialLoadingOverlay = require('./Initial-Loading-Overlay');
 var PlatesDashBoard = require('./Plates-Dashboard');
 var MapDashBoard = require('./Map-Dashboard');
+var NavigationBar = require('react-native-navbar');
+
 var firebase_api = require('../utils/firebase');
 var helpers = require('../utils/helpers');
 
@@ -46,6 +49,7 @@ class Main extends React.Component {
 
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
+
         if( !plates.length ) {
           return;
         }
@@ -58,8 +62,14 @@ class Main extends React.Component {
         var restaurant = helpers.formatIdString(restaurantId);
 
         var morePlates = plates.map((plate) => {
+          var firebaseKeys;
 
-          var firebaseKeys = Object.keys(plate.images);
+          if( plate['images-lo'] ) {
+            firebaseKeys = Object.keys(plate['images-lo']);
+          } else {
+            firebaseKeys = Object.keys(plate['images']);
+          }
+
           var numOfImgs = firebaseKeys.length;
           var randomI = Math.floor(Math.random() * numOfImgs);
           var randomKey = firebaseKeys[randomI];
@@ -86,10 +96,14 @@ class Main extends React.Component {
     this.props.navigator.push({
       title: 'Map DashBoard',
       component: MapDashBoard,
-      passProps: {
+      props: {
         image,
         userPosition: this.state.lastPosition
-      }
+      },
+      navigationBar: (
+        <NavigationBar
+          title="Directions" />
+      )
     });
   }
 
