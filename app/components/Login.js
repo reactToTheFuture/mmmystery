@@ -11,7 +11,37 @@ var {
   FBSDKLoginButton,
 } = FBSDKLogin;
 
+var Main = require('./Main');
+var NavigationBar = require('react-native-navbar');
+var CameraDashboard = require('./Camera-Dashboard');
+
 var Login = React.createClass({
+
+  cameraBtnPress(navigator, route) {
+    navigator.push({
+      title: 'Camera',
+      component: CameraDashboard,
+      navigationBar: (
+        <NavigationBar
+          title="Picture Time" />
+      )
+    })
+  },
+
+  switchToMain() {
+    this.props.navigator.push({
+      component: Main,
+      props: {},
+      navigationBar: (
+        <NavigationBar
+          title="Mystery Meal"
+          onNext={this.cameraBtnPress.bind(this)}
+          hidePrev={true}
+          nextTitle={"camera"} />
+      )
+    });
+  },
+
   render: function() {
     return (
       <View style={styles.loginContainer}>
@@ -24,7 +54,7 @@ var Login = React.createClass({
               if (result.isCanceled) {
                 alert('Login cancelled.');
               } else {
-                alert('Logged in.');
+                this.switchToMain();
               }
             }
           }}

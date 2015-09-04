@@ -1,10 +1,9 @@
 'use strict';
 
 var React = require('react-native');
-var Main = require('./app/components/Main');
-var CameraDashboard = require('./app/components/Camera-Dashboard');
-var NavigationBar = require('react-native-navbar');
 
+var NavigationBar = require('react-native-navbar');
+var Login = require('./app/components/Login');
 let {
   AppRegistry,
   StyleSheet,
@@ -30,19 +29,10 @@ class MysteryMeal extends React.Component {
     };
   }
 
-  cameraBtnPress(navigator, route) {
-    navigator.push({
-      title: 'Camera',
-      component: CameraDashboard,
-      navigationBar: (
-        <NavigationBar
-          title="Picture Time" />
-      )
-    })
-  }
+
 
   renderScene(route, navigator) {
-    const Component = route.component;
+    let Component = route.component;
     let navBar = route.navigationBar;
 
     if (navBar) {
@@ -82,14 +72,7 @@ class MysteryMeal extends React.Component {
       <Navigator
         renderScene={this.renderScene.bind(this)}
         initialRoute={{
-          component: Main,
-          navigationBar: (
-            <NavigationBar
-              title="Mystery Meal"
-              onNext={this.cameraBtnPress.bind(this)}
-              hidePrev={true}
-              nextTitle={"camera"} />
-          )
+          component: Login
         }}
       />
     );

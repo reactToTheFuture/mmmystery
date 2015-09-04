@@ -1,10 +1,11 @@
+'use strict';
+
 var React = require('react-native');
 
 var InitialLoadingOverlay = require('./Initial-Loading-Overlay');
 var PlatesDashBoard = require('./Plates-Dashboard');
 var MapDashBoard = require('./Map-Dashboard');
 var NavigationBar = require('react-native-navbar');
-
 var firebase_api = require('../utils/firebase-api');
 var helpers = require('../utils/helpers');
 
@@ -120,7 +121,7 @@ class Main extends React.Component {
   render() {
     return (
       <View>
-        <InitialLoadingOverlay 
+        <InitialLoadingOverlay
           isVisible={!this.state.plates.length}
           status={this.state.status} />
         <PlatesDashBoard
