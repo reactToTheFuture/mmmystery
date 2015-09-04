@@ -5,7 +5,7 @@ var {
   StyleSheet,
   View,
 } = React;
-
+var FBSDKCore = require('react-native-fbsdkcore');
 var FBSDKLogin = require('react-native-fbsdklogin');
 var {
   FBSDKLoginButton,
@@ -14,6 +14,10 @@ var {
 var Main = require('./Main');
 var NavigationBar = require('react-native-navbar');
 var CameraDashboard = require('./Camera-Dashboard');
+
+var {
+  FBSDKAccessToken
+} = FBSDKCore;
 
 var Login = React.createClass({
 
@@ -54,6 +58,12 @@ var Login = React.createClass({
               if (result.isCanceled) {
                 alert('Login cancelled.');
               } else {
+                FBSDKAccessToken.getCurrentAccessToken((token) => {
+                  if (token) {
+                    console.log(token);
+                  }
+                });
+                console.log('Here inside login');
                 this.switchToMain();
               }
             }
