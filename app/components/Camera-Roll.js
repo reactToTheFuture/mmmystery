@@ -1,4 +1,6 @@
 var React = require('react-native');
+var RestaurantSelection = require('./Restaurant-Selection');
+var NavigationBar = require('react-native-navbar');
 
 var {
   StyleSheet,
@@ -39,12 +41,26 @@ class CameraRollView extends React.Component {
   }
 
   selectImage (image) {
+
+    var base64;
+
     this.setState({
       selected: image.uri,
     });
 
     NativeModules.ReadImageData.readImage(image.uri, (image) => {
-      console.log('BASE64 is: ', image);
+      base64 = image;
+    });
+
+    this.props.navigator.push({
+      component: RestaurantSelection,
+      props: {
+        base64
+      },
+      navigationBar: (
+        <NavigationBar
+          title="What Restaurant?" />
+      )
     });
   }
 
@@ -52,10 +68,16 @@ class CameraRollView extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.imageGrid}>
-          { this.state.images.map((image) => {
+          { this.state.images.map((image, i) => {
             return (
-              <TouchableHighlight onPress={this.selectImage.bind(this, image)}>
-                <Image style={styles.image} source={{ uri: image.uri}} />
+              <TouchableHighlight
+                key={i}
+                underlayColor={'orange'}
+                style={styles.button}
+                onPress={this.selectImage.bind(this, image)}>
+                <Image
+                  style={[styles.image, this.state.selected === image.uri && styles.selectedImage]}
+                  source={{ uri: image.uri}} />
               </TouchableHighlight>
             );
           })}
@@ -76,11 +98,20 @@ var styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
-  image: {
-    width: 100,
-    height: 100,
-    margin: 10,
+  button: {
+    width: 110,
+    height: 110,
+    margin: 5
   },
+  image: {
+    width: 110,
+    height: 110,
+    borderWidth: 5,
+    borderColor: '#ffffff'
+  },
+  selectedImage: {
+    borderColor: 'orange'
+  }
 });
 
 module.exports = CameraRollView;

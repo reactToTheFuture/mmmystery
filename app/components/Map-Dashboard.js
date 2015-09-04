@@ -41,14 +41,14 @@ class MapDashBoard extends React.Component {
   }
 
   componentDidMount() {
-    var userCoords = this.props.userPosition.coords;
+    var userCoords = this.props.route.props.userPosition.coords;
 
     var userPosition = {
       lat: userCoords.latitude,
       lng: userCoords.longitude
     };
 
-    this.getAsyncDirections(userPosition, this.props.image.location)
+    this.getAsyncDirections(userPosition, this.props.route.props.image.location)
     .then((res) => {
       this.setState({
         steps: res.steps,
@@ -147,14 +147,14 @@ class MapDashBoard extends React.Component {
           onArrived={this.handleArrived.bind(this)} />
         <Map 
           stepAnnotations={this.state.stepAnnotations}
-          userPosition={this.props.userPosition} />
+          userPosition={this.props.route.props.userPosition} />
         <RouteConfirmationOverlay
           isVisible={!this.state.isLoading && !this.state.isConfirmed}
           onConfirmation={this.handleRouteConfirmation.bind(this)} />
         <RouteLoadingOverlay
           isVisible={this.state.isLoading} />
         <ArrivalOverlay
-          imageInfo={this.props.image}
+          imageInfo={this.props.route.props.image}
           isVisible={!this.state.hasLeft && this.state.hasArrived} 
           onConfirmation={this.handleArrivalConfirmation.bind(this)} />
       </View>

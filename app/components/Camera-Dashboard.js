@@ -1,4 +1,5 @@
 var React = require('react-native');
+var NavigationBar = require('react-native-navbar');
 
 var {
   View,
@@ -11,14 +12,14 @@ var {
 var CameraRollView = require('./Camera-Roll');
 
 class CameraDashboard extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   goToCameraRollScreen() {
     this.props.navigator.push({
       title: 'Camera Roll',
       component: CameraRollView,
+      navigationBar: (
+        <NavigationBar
+          title="Camera Roll" />
+      )
     });
   }
 
