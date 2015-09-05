@@ -30,8 +30,6 @@ class MysteryMeal extends React.Component {
     };
   }
 
-
-
   renderScene(route, navigator) {
     let Component = route.component;
     let navBar = route.navigationBar;
