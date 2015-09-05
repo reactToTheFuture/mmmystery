@@ -7,6 +7,7 @@ var Login = require('./app/components/Login');
 let {
   AppRegistry,
   StyleSheet,
+  AlertIOS,
   Navigator,
   Text,
   View,
@@ -29,8 +30,6 @@ class MysteryMeal extends React.Component {
     };
   }
 
-
-
   renderScene(route, navigator) {
     let Component = route.component;
     let navBar = route.navigationBar;
@@ -49,18 +48,31 @@ class MysteryMeal extends React.Component {
     );
   }
 
-  componentDidMount() {
+  getUserLocation() {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
         this.setState({initialPosition});
       },
-      (error) => console.warn(error.message),
+      (error) => {
+        AlertIOS.alert(
+          'Yikes',
+          'We are having trouble finding your location.',
+          [
+            {text: 'Try Again', onPress: this.getUserLocation.bind(this)}
+          ]
+        )
+        console.warn(error.message);
+      },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
 
     this.state.watchID = navigator.geolocation.watchPosition((lastPosition) => {
       this.setState({lastPosition});
     });
+  }
+
+  componentDidMount() {
+    this.getUserLocation();
   }
 
   componentWillUnmount() {

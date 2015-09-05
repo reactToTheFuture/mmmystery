@@ -31,8 +31,12 @@ let styles = StyleSheet.create({
 class Main extends React.Component {
   constructor(props) {
     super(props);
+
+    var {latitude, longitude} = props.initialPosition.coords;
+    this.buildPlatesArray({latitude, longitude}, 60);
+
     this.state = {
-      status: 'Finding your location...',
+      status: 'Finding nearby restaurants...',
       watchID: null,
       currPlateIndex: -1,
       plates: []
@@ -43,7 +47,7 @@ class Main extends React.Component {
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
 
       this.setState({
-        status: 'Finding nearby restaurants...'
+        status: 'Fetching yummy dishes...'
       });
 
       firebase_api.getPlatesByRestaurantId(restaurantId)

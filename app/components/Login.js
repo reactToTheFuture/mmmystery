@@ -1,25 +1,29 @@
 'use strict';
 
 var React = require('react-native');
-var {
-  StyleSheet,
-  View,
-} = React;
 var FBSDKCore = require('react-native-fbsdkcore');
 var FBSDKLogin = require('react-native-fbsdklogin');
-var {
-  FBSDKLoginButton,
-} = FBSDKLogin;
 
 var Main = require('./Main');
 var NavigationBar = require('react-native-navbar');
 var CameraDashboard = require('./Camera-Dashboard');
 
 var {
+  StyleSheet,
+  AlertIOS,
+  View
+} = React;
+
+var {
+  FBSDKLoginButton,
+} = FBSDKLogin;
+
+
+var {
   FBSDKAccessToken
 } = FBSDKCore;
 
-var Login = React.createClass({
+class Login extends React.Component {
 
   cameraBtnPress(navigator, route) {
     navigator.push({
@@ -30,43 +34,52 @@ var Login = React.createClass({
           title="Picture Time" />
       )
     })
-  },
+  }
 
   switchToMain() {
     this.props.navigator.push({
       component: Main,
-      props: {},
       navigationBar: (
         <NavigationBar
           title="Mystery Meal"
-          onNext={this.cameraBtnPress.bind(this)}
+          onNext={this.cameraBtnPress}
           hidePrev={true}
           nextTitle={"camera"} />
       )
     });
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <View style={styles.loginContainer}>
         <FBSDKLoginButton
           style={styles.loginButton}
           onLoginFinished={(error, result) => {
             if (error) {
-              alert('Error logging in.');
-            } else {
-              if (result.isCanceled) {
-                alert('Login cancelled.');
-              } else {
-                FBSDKAccessToken.getCurrentAccessToken((token) => {
-                  if (token) {
-                    console.log(token);
-                  }
-                });
-                console.log('Here inside login');
-                this.switchToMain();
-              }
+              AlertIOS.alert(
+                'Error Logging In'
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')}
+                ]
+              );
+              return;
             }
+            if (result.isCanceled) {
+              AlertIOS.alert(
+                'Login Canceled'
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')}
+                ]
+              );
+              return;
+            }
+            FBSDKAccessToken.getCurrentAccessToken((token) => {
+              if (token) {
+                console.log(token);
+              }
+            });
+            console.log('Here inside login');
+            this.switchToMain.call(this);
           }}
           onLogoutFinished={() => alert('Logged out.')}
           readPermissions={[]}
@@ -74,7 +87,7 @@ var Login = React.createClass({
       </View>
     );
   }
-});
+};
 
 var styles = StyleSheet.create({
   loginContainer: {
