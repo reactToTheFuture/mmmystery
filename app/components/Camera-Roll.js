@@ -9,7 +9,7 @@ var {
   Image,
   CameraRoll,
   TouchableHighlight,
-  NativeModules,
+  NativeModules
 } = React;
 
 class CameraRollView extends React.Component {
@@ -41,6 +41,7 @@ class CameraRollView extends React.Component {
   }
 
   selectImage (image) {
+    console.log('Here is the image', image);
 
     var base64;
 

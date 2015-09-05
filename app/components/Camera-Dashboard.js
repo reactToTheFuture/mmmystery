@@ -10,6 +10,7 @@ var {
 } = React;
 
 var CameraRollView = require('./Camera-Roll');
+var CameraLiveView = require('./Camera-Live');
 
 class CameraDashboard extends React.Component {
   goToCameraRollScreen() {
@@ -23,14 +24,25 @@ class CameraDashboard extends React.Component {
     });
   }
 
+  goToCameraLiveScreen() {
+    this.props.navigator.push({
+      title: 'Picture Time',
+      component:  CameraLiveView,
+    })
+  }
+
   render () {
     return (
       <View style={styles.container}>
         <Text style={styles.headline}>Now take an image</Text>
         <Text style={styles.subheadline}>blah blah blah</Text>
 
-        <TouchableHighlight onPress={this.goToCameraRollScreen.bind(this)}>
+        <TouchableHighlight style={styles.button} onPress={this.goToCameraRollScreen.bind(this)}>
             <Text style={styles.buttonText}>Camera Roll</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress={this.goToCameraLiveScreen.bind(this)}>
+            <Text style={styles.buttonText}>Take a photo</Text>
         </TouchableHighlight>
       </View>
     );
