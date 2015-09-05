@@ -1,5 +1,5 @@
 var helpers = {
-  shuffle: function(array, start) {
+  shuffle(array, start) {
     var m = array.length, t, i;
     start = start || 0;
     while (m > start) {
@@ -11,10 +11,13 @@ var helpers = {
 
     return array;
   },
-  formatIdString: function(string) {
+  formatIdString(string) {
     return string.replace(/-/g,' ').toLowerCase().replace( /\b\w/g, function (m) {
       return m.toUpperCase();
     });
+  },
+  metersToMiles(meters) {
+    return (meters * 0.00062137).toFixed(2);
   }
 };
  

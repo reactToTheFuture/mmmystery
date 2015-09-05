@@ -1,10 +1,11 @@
-var React = require('react-native');
-var RestaurantSelection = require('./Restaurant-Selection');
-var NavigationBar = require('react-native-navbar');
+import React from 'react-native';
+import RestaurantSelection from './Restaurant-Selection';
+import NavigationBar from 'react-native-navbar';
 
 var {
   StyleSheet,
   View,
+  ActivityIndicatorIOS,
   ScrollView,
   Image,
   CameraRoll,
@@ -17,47 +18,41 @@ class CameraRollView extends React.Component {
     super(props);
     this.state = {
       images: [],
-      selected: ''
+      loading: false,
+      selectedImageUri: '',
+      selectedImageBase64: null
     };
   }
 
   componentDidMount() {
     var fetchParams = {
-      first: 25,
+      first: 25
     };
-    CameraRoll.getPhotos(fetchParams, this.storeImages.bind(this), this.logImageError);
+
+    this.setState({
+      loading: true
+    });
+
+    CameraRoll.getPhotos(fetchParams, this.storeImages.bind(this), this.logError);
   }
 
   storeImages (data) {
     var assets = data.edges;
     var images = assets.map((asset) => asset.node.image);
     this.setState({
+      loading: false,
       images: images
     });
   }
 
-  logImageError (error) {
+  logError (error) {
     console.log(error);
   }
 
-  selectImage (image) {
-    console.log('Here is the image', image);
-
-    var base64;
-
-    this.setState({
-      selected: image.uri,
-    });
-
-    NativeModules.ReadImageData.readImage(image.uri, (image) => {
-      base64 = image;
-    });
-
+  goToRestaurantSelection(props) {
     this.props.navigator.push({
       component: RestaurantSelection,
-      props: {
-        base64
-      },
+      props,
       navigationBar: (
         <NavigationBar
           title="What Restaurant?" />
@@ -65,9 +60,35 @@ class CameraRollView extends React.Component {
     });
   }
 
+  selectImage (image) {
+    this.setState({
+      loading: true
+    });
+
+    NativeModules.ReadImageData.readImage(image.uri, (base64) => {
+      this.setState({
+        loading: false
+      });
+
+      var props = {
+        image: {
+          base64,
+          uri: image.uri
+        }
+      };
+
+      this.goToRestaurantSelection(props);
+    });
+  }
+
   render () {
     return (
       <ScrollView style={styles.container}>
+        <ActivityIndicatorIOS
+          animating={this.state.loading}
+          style={[styles.centering, {height: 80}]}
+          size="large"
+        />
         <View style={styles.imageGrid}>
           { this.state.images.map((image, i) => {
             return (

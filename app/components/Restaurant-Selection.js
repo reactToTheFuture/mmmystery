@@ -1,8 +1,12 @@
-var React = require('react-native');
-var firebase_api = require('../utils/firebase-api');
-var yelp_api = require('../utils/yelp-api');
-var _ = require('underscore');
-var helpers = require('../utils/helpers');
+import React from 'react-native';
+
+import MealSelection from './Meal-Selection';
+import NavigationBar from 'react-native-navbar';
+
+import firebase_api from '../utils/firebase-api';
+import yelp_api from '../utils/yelp-api';
+import _ from 'underscore';
+import helpers from '../utils/helpers';
 
 var {
   StyleSheet,
@@ -30,49 +34,61 @@ class RestaurantSelection extends React.Component {
   }
 
   componentDidMount() {
-    firebase_api.getNearbyRestaurants(this.props.lastPosition.coords,60, (key, loc, dist) => {
+    firebase_api.getNearbyRestaurants(this.props.lastPosition.coords,60, (id, loc, dist) => {
       var restaurants = this.state.restaurantKeys;
 
-      if( Object.keys(restaurants).length < 40 ) {
-        restaurants[key] = {
-          key,
-          dist: dist.toFixed(2),
-          name: helpers.formatIdString(key)
+      if( Object.keys(restaurants).length < 20 ) {
+        restaurants[id] = {
+          id,
+          distance: dist.toFixed(2),
+          name: helpers.formatIdString(id)
         };
 
         return;
       }
       
-      this.renderRestaurants();
+      this.setState({
+        loading: false,
+        restaurants: this.state.restaurants.cloneWithRows(_.sortBy(this.state.restaurantKeys, 'distance'))
+      });
     });
   }
 
-  _renderRow(restaurant) {
+  _renderRestaurant(restaurant) {
     return (
       <TouchableHighlight
         underlayColor={'orange'}
         style={styles.restaurant}
         onPress={this.selectRestaurant.bind(this, restaurant)}>
-        <Text>{restaurant.name} | {restaurant.dist} miles away</Text>
+        <Text>{restaurant.name} | {restaurant.distance} miles away</Text>
       </TouchableHighlight>
     );
   }
 
-  renderRestaurants() {
-    this.setState({
-      loading: false,
-      restaurants: this.state.restaurants.cloneWithRows(_.sortBy(this.state.restaurantKeys, 'dist'))
-    });
-  }
-
   handleTextInput(searchText) {
+
+    this.setState({
+      loading: true
+    });
 
     clearTimeout(this.state.searchingTimer);
 
     var searchingTimer = setTimeout(() => {
 
       yelp_api.getRestaurantsByTerms(searchText,this.props.lastPosition.coords)
-      .then((data) => console.log(data));
+      .then((data) => {
+
+        var restaurants = data.businesses.map(function(restaurant) {
+          restaurant.distance = helpers.metersToMiles(restaurant.distance);
+          return restaurant;
+        });
+
+        this.setState({
+          loading: false,
+          restaurants: this.state.restaurants.cloneWithRows(restaurants)
+        });
+
+      });
 
     },1000);
     
@@ -82,8 +98,33 @@ class RestaurantSelection extends React.Component {
     });
   }
 
+  goToMealSelection(props) {
+    this.props.navigator.push({
+      component: MealSelection,
+      props,
+      navigationBar: (
+        <NavigationBar
+          title="Find your meal" />
+      )
+    });
+  }
+
   selectRestaurant(restaurant) {
-    console.log(restaurant);
+    firebase_api.getRestaurantById(restaurant.id)
+    .then((found) => {
+
+      if(!found) {
+        firebase_api.addRestaurant(restaurant);
+      }
+      
+    });
+
+    var props = {
+      restaurant,
+      image: this.props.route.props.image
+    };
+
+    this.goToMealSelection(props);
   }
 
   render() {
@@ -92,6 +133,8 @@ class RestaurantSelection extends React.Component {
         <TextInput
           style={styles.textInput}
           onChangeText={this.handleTextInput.bind(this)}
+          placeholder="Search for a restaurant"
+          placeholderTextColor="grey"
           value={this.state.searchText}
         />
         <ActivityIndicatorIOS
@@ -101,7 +144,7 @@ class RestaurantSelection extends React.Component {
         />
         <ListView
           dataSource={this.state.restaurants}
-          renderRow={this._renderRow.bind(this)}>
+          renderRow={this._renderRestaurant.bind(this)}>
         </ListView>
       </View>
     );

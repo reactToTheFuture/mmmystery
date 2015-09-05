@@ -9,10 +9,10 @@ var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
 var geoFire = new GeoFire(geoFireRef);
 
 var firebase_api = {
-  getReBase: function() {
+  getReBase() {
     return base;
   },
-  getAllRestaurants: function() {
+  getAllRestaurants() {
     var deferred = Q.defer();
 
     base.fetch('restaurants', {
@@ -25,7 +25,7 @@ var firebase_api = {
 
     return deferred.promise;
   },
-  getAllPlates: function() {
+  getAllPlates() {
     var deferred = Q.defer();
 
     base.fetch('plates', {
@@ -38,7 +38,29 @@ var firebase_api = {
 
     return deferred.promise;
   },
-  getPlatesByRestaurantId: function(id) {
+  addRestaurant(restaurant) {
+    var {id, categories, location, phone, name, url} = restaurant;
+
+    base.post(`restaurants/${id}`, {
+      data: {categories, location, phone, name, url},
+      then() {
+        console.log('added');
+      }
+    });
+  },
+  getRestaurantById(id) {
+    var deferred = Q.defer();
+
+    base.fetch(`restaurants/${id}`, {
+      context: this,
+      then(data) {
+        deferred.resolve(data);
+      }
+    });
+
+    return deferred.promise;
+  },
+  getPlatesByRestaurantId(id) {
     var deferred = Q.defer();
 
     base.fetch(`plates/${id}`, {
@@ -51,7 +73,7 @@ var firebase_api = {
 
     return deferred.promise;
   },
-  getNearbyRestaurants: function(loc,radius,cb) {
+  getNearbyRestaurants(loc,radius,cb) {
     var geoQuery = geoFire.query({
       center: [loc.latitude, loc.longitude],
       radius: radius
@@ -60,8 +82,8 @@ var firebase_api = {
     // cb gets key, location and distance as params
     geoQuery.on("key_entered", cb);
   },
-  updateGeoFireLocations: function() {
-    restaurantsRef.on('child_added', function(childSnapshot, prevChildKey) {
+  updateGeoFireLocations() {
+    restaurantsRef.on('child_added', (childSnapshot, prevChildKey) => {
       var restaurantId = childSnapshot.key();
       var location = childSnapshot.child('location').child('coordinate').val();
       var lat = location.latitude;
