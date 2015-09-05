@@ -24,6 +24,26 @@ var {
 } = FBSDKCore;
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: null,
+    };
+  }
+
+  getAccesToken(){
+    console.log('Inside componentDidMount');
+    FBSDKAccessToken.getCurrentAccessToken((token) => {
+        if (token) {
+          console.log('tokenFBSDK', token);
+          this.setState(token);
+          console.log(this.state.token);
+        } else {
+          console.log(this.state.token);
+          console.log('No token founded');
+        }
+      });
+  }
 
   cameraBtnPress(navigator, route) {
     navigator.push({
@@ -73,17 +93,14 @@ class Login extends React.Component {
               );
               return;
             }
-            FBSDKAccessToken.getCurrentAccessToken((token) => {
-              if (token) {
-                console.log(token);
-              }
-            });
             console.log('Here inside login');
+            console.log('result', result);
+            this.getAccesToken();
             this.switchToMain.call(this);
           }}
           onLogoutFinished={() => alert('Logged out.')}
           readPermissions={[]}
-          publishPermissions={[]}/>
+          publishPermissions={['publish_actions']}/>
       </View>
     );
   }
