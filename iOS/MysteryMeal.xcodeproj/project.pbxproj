@@ -110,9 +110,9 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
-		4A2FF2251B9902A700C30763 /* PBXContainerItemProxy */ = {
+		4A531B061B9A279F005CB8B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4A2FF2201B9902A700C30763 /* RCTCamera.xcodeproj */;
+			containerPortal = 4A531B021B9A279F005CB8B1 /* RCTCamera.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
@@ -232,7 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A2FF2331B9902D800C30763 /* libRCTCamera.a in Frameworks */,
+				4A531B081B9A27B9005CB8B1 /* libRCTCamera.a in Frameworks */,
 				6FBBEC561B97B8190095F89E /* libRNOverlay.a in Frameworks */,
 				9F40AD061B95006B00EFDDCA /* libz.dylib in Frameworks */,
 				9F832C841B9A5F18008C4FEC /* libRCTFBSDKCore.a in Frameworks */,
@@ -373,7 +373,7 @@
 		4A2FF2211B9902A700C30763 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4A2FF2261B9902A700C30763 /* libRCTCamera.a */,
+				4A531B071B9A279F005CB8B1 /* libRCTCamera.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -687,11 +687,11 @@
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4A2FF2261B9902A700C30763 /* libRCTCamera.a */ = {
+		4A531B071B9A279F005CB8B1 /* libRCTCamera.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTCamera.a;
-			remoteRef = 4A2FF2251B9902A700C30763 /* PBXContainerItemProxy */;
+			remoteRef = 4A531B061B9A279F005CB8B1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6FBBEC551B97B7E30095F89E /* libRNOverlay.a */ = {

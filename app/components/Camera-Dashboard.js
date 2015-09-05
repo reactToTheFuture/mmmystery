@@ -28,10 +28,6 @@ class CameraDashboard extends React.Component {
     this.props.navigator.push({
       title: 'Picture Time',
       component:  CameraLiveView,
-      navigationBarHidden: true,
-      passProps: {
-        navigationBarHidden: true
-      }
     })
   }
 
