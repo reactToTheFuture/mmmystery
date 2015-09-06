@@ -112,11 +112,9 @@ class RestaurantSelection extends React.Component {
   selectRestaurant(restaurant) {
     firebase_api.getRestaurantById(restaurant.id)
     .then((found) => {
-
       if(!found) {
         firebase_api.addRestaurant(restaurant);
       }
-      
     });
 
     var props = {
