@@ -11,6 +11,9 @@ var helpers = {
 
     return array;
   },
+  formatNameString(string) {
+    return string.replace(/\s+/g,'-').toLowerCase();
+  },
   formatIdString(string) {
     return string.replace(/-/g,' ').toLowerCase().replace( /\b\w/g, function (m) {
       return m.toUpperCase();

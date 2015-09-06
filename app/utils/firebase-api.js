@@ -4,7 +4,7 @@ var Q = require('q');
 
 var ENDPOINT_URI = require('./config').firebase.ENDPOINT_URI;
 var base = Rebase.createClass(ENDPOINT_URI);
-var restaurantsRef = new Firebase(ENDPOINT_URI + '/restaurants');
+var platesRef = new Firebase(ENDPOINT_URI + '/plates');
 var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
 var geoFire = new GeoFire(geoFireRef);
 
@@ -38,16 +38,6 @@ var firebase_api = {
 
     return deferred.promise;
   },
-  addRestaurant(restaurant) {
-    var {id, categories, location, phone, name, url} = restaurant;
-
-    base.post(`restaurants/${id}`, {
-      data: {categories, location, phone, name, url},
-      then() {
-        console.log('added');
-      }
-    });
-  },
   getRestaurantById(id) {
     var deferred = Q.defer();
 
@@ -73,7 +63,7 @@ var firebase_api = {
 
     return deferred.promise;
   },
-  getNearbyRestaurants(loc,radius,cb) {
+  getNearbyRestaurants(loc, radius, cb) {
     var geoQuery = geoFire.query({
       center: [loc.latitude, loc.longitude],
       radius: radius
@@ -82,20 +72,32 @@ var firebase_api = {
     // cb gets key, location and distance as params
     geoQuery.on("key_entered", cb);
   },
-  updateGeoFireLocations() {
-    restaurantsRef.on('child_added', (childSnapshot, prevChildKey) => {
-      var restaurantId = childSnapshot.key();
-      var location = childSnapshot.child('location').child('coordinate').val();
-      var lat = location.latitude;
-      var lng = location.longitude;
+  addRestaurant(restaurant) {
+    var {id, categories, location, phone, name, url} = restaurant;
+    var that = this;
 
-      geoFire.set(restaurantId, [lat, lng]).then(function() {
-        console.log("Provided key has been added to GeoFire");
-      }, function(error) {
-        console.log("Error: " + error);
-      });
+    base.post(`restaurants/${id}`, {
+      data: {categories, location, phone, name, url},
+      then() {
+        that.addGeoFireLocation(restaurant);
+      }
+    });
+  },
+  addPlate(restaurantID, plateID, imageURL) {
+    platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
+  },
+  addGeoFireLocation(restaurant) {
+    var id = restaurant.id;
+    var name = restaurant.name;
+    var coords = restaurant.location.coordinate;
+    var lat = coords.latitude;
+    var lng = coords.longitude;
 
-    }); 
+    geoFire.set(id, [lat, lng]).then(() => {
+      console.log(`Added ${name} to GeoFire`);
+    }, (error) => {
+      console.log("Geofire Error: " + error);
+    });
   }
 };
  
