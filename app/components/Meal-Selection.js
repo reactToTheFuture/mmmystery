@@ -1,4 +1,6 @@
 import React from 'react-native';
+import AddMealOverlay from './AddMeal-Overlay';
+
 import firebase_api from '../utils/firebase-api';
 import yelp_api from '../utils/yelp-api';
 import _ from 'underscore';
@@ -23,6 +25,7 @@ class MealSelection extends React.Component {
       loading: true,
       meals: ds.cloneWithRows([]),
       noPlates: false,
+      isOverlayShowing: false,
       searchText: ''
     };
   }
@@ -57,8 +60,16 @@ class MealSelection extends React.Component {
     );
   }
 
-  handleTextInput(searchText) {
+  handleOverlayClose() {
+    this.setState({
+      isOverlayShowing: false
+    });
+  }
 
+  handleOverlayOpen() {
+    this.setState({
+      isOverlayShowing: true
+    });
   }
 
   selectMeal(meal) {
@@ -67,27 +78,37 @@ class MealSelection extends React.Component {
 
   render() {
 
-    var text = this.state.noPlates ? 'Oh no! There are no meals.' : '';
+    var noPlatesText = '';
+    var addPlatesText = "Don't see what you're looking for?";
+
+    if(this.state.noPlates) {
+      noPlatesText = 'Oh no! There are no meals.';
+      addPlatesText = '';
+    }
 
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={this.handleTextInput.bind(this)}
-          placeholder="Search for your meal"
-          placeholderTextColor="grey"
-          value={this.state.searchText}
-        />
         <ActivityIndicatorIOS
           animating={this.state.loading}
           style={[styles.centering, {height: 80}]}
           size="large"
         />
-        <Text>{text}</Text>
+        <Text>{noPlatesText}</Text>
         <ListView
           dataSource={this.state.meals}
           renderRow={this._renderMeal.bind(this)}>
         </ListView>
+        <Text>{addPlatesText}</Text>
+        <TouchableHighlight
+          underlayColor={'orange'}
+          style={styles.button}
+          onPress={this.handleOverlayOpen.bind(this)}>
+          <Text>Add a new meal</Text>
+        </TouchableHighlight>
+        <AddMealOverlay
+          isVisible={this.state.isOverlayShowing}
+          onAddMeal={this.selectMeal.bind(this)}
+          onOverlayClose={this.handleOverlayClose.bind(this)}/>
       </View>
     );
   }
@@ -101,6 +122,9 @@ var styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     flex: 2
+  },
+  button: {
+
   },
   meal: {
   },
