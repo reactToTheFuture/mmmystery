@@ -90,9 +90,19 @@ class Main extends React.Component {
           };
         });
 
+        var shuffleIndexIncrement = 2;
+        var currPlateIndex = this.state.currPlateIndex;
+
+        // initally, shuffle entire array of images
+        // otherwise, start shuffling 2 indexes up from current plate index
+        if( currPlateIndex === -1 ) {
+          shuffleIndexIncrement = 1;
+          currPlateIndex = 0;
+        }
+
         this.setState({
-          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+1),
-          currPlateIndex: this.state.currPlateIndex === -1 ? 0 : this.state.currPlateIndex
+          currPlateIndex,
+          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
         });
       });
     });

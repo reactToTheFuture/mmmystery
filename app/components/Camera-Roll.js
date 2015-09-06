@@ -125,6 +125,10 @@ var styles = StyleSheet.create({
     height: 110,
     margin: 5
   },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   image: {
     width: 110,
     height: 110,

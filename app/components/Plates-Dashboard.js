@@ -6,28 +6,13 @@ var window = Dimensions.get('window');
 var {
   StyleSheet,
   PanResponder,
+  ActivityIndicatorIOS,
   View,
   Text,
   Image,
   LayoutAnimation,
   Animated,
 } = React;
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
-  card: {
-    marginTop: 100,
-    width: window.width,
-    height: window.height/2
-  },
-  img: {
-    flex: 1
-  }
-});
 
 class PlatesDashBoard extends React.Component {
   constructor(props) {
@@ -36,14 +21,15 @@ class PlatesDashBoard extends React.Component {
       SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      plate: null,
+      loadingImage: true,
+      plate: null
     };
   }
 
   _springBack() {
     Animated.spring(this.state.pan, {
       toValue: {x: 0, y: 0},
-      friction: 4
+      friction: 10
     }).start();
   }
 
@@ -54,6 +40,7 @@ class PlatesDashBoard extends React.Component {
     this.props.onRejection(newPlateIndex);
 
     this.setState({
+      loadingImage: true,
       plate: this.props.plates[newPlateIndex]
     });
   }
@@ -62,7 +49,7 @@ class PlatesDashBoard extends React.Component {
     if( !this.state.plate && nextProps.plates.length ) {
       this.setState({
         plate: nextProps.plates[0]
-      })
+      });
     }
   }
 
@@ -83,8 +70,6 @@ class PlatesDashBoard extends React.Component {
       onPanResponderRelease: (e, {vx, vy}) => {
         this.state.pan.flattenOffset();
         var velocity;
-        var acceptedDish = false;
-        var cb = this._resetState.bind(this);
 
         if (vx > 0) {
           velocity = clamp(vx, 3, 5);
@@ -98,26 +83,23 @@ class PlatesDashBoard extends React.Component {
           return;
         }
 
+        // Accepted Dish
         if( this.state.pan.x._value > 0 ) {
-          acceptedDish = true;
-          cb = this._springBack.bind(this);
           this.props.onSelection(this.state.plate);
+          this._springBack();
+          return;
         }
 
-        Animated.decay(this.state.pan.x, {
-          velocity: velocity,
-          deceleration: 0.98,
-        }).start(cb)
-
-        Animated.decay(this.state.pan.y, {
-          velocity: vy,
-          deceleration: 0.985,
-        }).start();
+        this._resetState();
+        this._goToNextPlate();
       }
     });
   }
 
-  componentDidMount() {
+  _imageLoaded() {
+    this.setState({
+      loadingImage: false
+    });
     this._animateEntrance();
   }
 
@@ -131,8 +113,6 @@ class PlatesDashBoard extends React.Component {
   _resetState() {
     this.state.pan.setValue({x: 0, y: 0});
     this.state.enter.setValue(0);
-    this._goToNextPlate();
-    this._animateEntrance();
   }
 
   render() {
@@ -156,15 +136,41 @@ class PlatesDashBoard extends React.Component {
 
     return (
       <View style={styles.container}>
+        <ActivityIndicatorIOS
+          animating={this.state.loadingImage}
+          style={[styles.centering, {height: 80}]}
+          size="large"
+        />
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
           <Image
             style={styles.img}
             source={{uri: this.state.plate ? this.state.plate.img_url : null}}
+            onLoad={this._imageLoaded.bind(this)}
           />
         </Animated.View>
       </View>
     );
   }
 }
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  card: {
+    marginTop: 100,
+    width: window.width,
+    height: window.height/2
+  },
+  img: {
+    flex: 1
+  },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+});
 
 module.exports = PlatesDashBoard;

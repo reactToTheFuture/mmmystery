@@ -93,10 +93,9 @@ class MealSelection extends React.Component {
 
     //upload image, get image url, then
       // firebase_api.addPlate(restaurantID, plateID, 'http://google.com');
-    
-    this.setState({
-      mealSubmitted: true
-    });
+      this.setState({
+        mealSubmitted: true
+      });
   }
 
   render() {
