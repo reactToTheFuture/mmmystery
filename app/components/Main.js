@@ -32,15 +32,18 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    var {latitude, longitude} = props.initialPosition.coords;
-    this.buildPlatesArray({latitude, longitude}, 60);
-
     this.state = {
-      status: 'Finding nearby restaurants...',
+      status: 'Finding your location...',
       watchID: null,
       currPlateIndex: -1,
       plates: []
     };
+
+    if(props.initialPosition) {
+      this.state.status = 'Finding nearby restaurants...';
+      var {latitude, longitude} = props.initialPosition.coords;
+      this.buildPlatesArray({latitude, longitude}, 60); 
+    }
   }
 
   buildPlatesArray(userLocation,radius) {
@@ -97,6 +100,9 @@ class Main extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if( !this.props.initialPosition && newProps.initialPosition ) {
+      this.setState({
+        status: 'Finding nearby restaurants...'
+      });
       var {latitude, longitude} = newProps.initialPosition.coords;
       this.buildPlatesArray({latitude, longitude}, 60);
     }
