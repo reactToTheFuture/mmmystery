@@ -54,9 +54,9 @@ var {
 
       this.switchToMain();
       } else {
+        this.setState({responseToken: true});
         console.log('No token founded');
       }
-      this.setState({responseToken: true});
     }));
   }
 
@@ -71,12 +71,18 @@ var {
     })
   }
 
-  componentWillMount(){
-    this.setState({responseToken: false});
+  responseToken() {
+    // prompts login process after logout
+    this.setState({responseToken: true});
+  }
+
+  componentDidMount(){
     this.getAccesToken();
   }
 
   _onPressButton(){
+    // Shows transition between login and Main screen
+    this.setState({responseToken: false});
     FBSDKLoginManager.setLoginBehavior('native');
     FBSDKLoginManager.setDefaultAudience('friends');
     FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
@@ -100,7 +106,8 @@ var {
       props: {
         result: this.state.result,
         token: this.state.token,
-        userInfo: this.state.userInfo
+        userInfo: this.state.userInfo,
+        responseToken: this.responseToken.bind(this)
       },
       navigationBar: (
         <NavigationBar
@@ -113,11 +120,14 @@ var {
   }
 
   render() {
+    // this pages appears after login process and main screen
+    // will be replaced by a loading screen
     if (!this.state.responseToken){
       return (
-        <Text>Loading</Text>
+        <Text>Loading screen after login process</Text>
       );
     }
+
     return (
       <View
         style={styles.container}>

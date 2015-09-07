@@ -131,7 +131,7 @@ class Main extends React.Component {
 
   _onPressButton() {
    FBSDKLoginManager.logOut();
-   var responseToken = false;
+   this.props.route.props.responseToken();
    this.props.navigator.popToTop();
   }
 
