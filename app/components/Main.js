@@ -8,11 +8,18 @@ var MapDashBoard = require('./Map-Dashboard');
 var NavigationBar = require('react-native-navbar');
 var firebase_api = require('../utils/firebase-api');
 var helpers = require('../utils/helpers');
-
+var FBSDKLogin = require('react-native-fbsdklogin');
+var Login = require('./Login');
 var {
   View,
-  StyleSheet
+  StyleSheet,
+  Text,
+  TouchableHighlight,
 } = React;
+
+var {
+  FBSDKLoginManager,
+} = FBSDKLogin;
 
 let styles = StyleSheet.create({
   map: {
@@ -122,9 +129,19 @@ class Main extends React.Component {
     });
   }
 
+  _onPressButton() {
+   FBSDKLoginManager.logOut();
+   var responseToken = false;
+   this.props.navigator.popToTop();
+  }
+
   render() {
     return (
       <View>
+        <TouchableHighlight
+        onPress={this._onPressButton.bind(this)}>
+          <Text>LogOut test</Text>
+        </TouchableHighlight>
         <InitialLoadingOverlay
           isVisible={!this.state.plates.length}
           status={this.state.status} />

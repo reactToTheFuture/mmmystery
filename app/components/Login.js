@@ -14,7 +14,8 @@ var {
   AlertIOS,
   View,
   TouchableHighlight,
-  Text
+  Text,
+  Image
 } = React;
 
 var {
@@ -70,12 +71,12 @@ var {
     })
   }
 
-  componentDidMount(){
+  componentWillMount(){
+    this.setState({responseToken: false});
     this.getAccesToken();
   }
 
   _onPressButton(){
-    var _this = this;
     FBSDKLoginManager.setLoginBehavior('native');
     FBSDKLoginManager.setDefaultAudience('friends');
     FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
@@ -91,7 +92,6 @@ var {
         }
       }
     });
-    // FBSDKLoginManager.logOut(); link with logOut screnn
   };
 
   switchToMain() {
@@ -119,44 +119,58 @@ var {
       );
     }
     return (
-      <TouchableHighlight
-      style={styles.loginButton}
-      onPress={this._onPressButton.bind(this)}>
-       <Text>Proper Touch Handling</Text>
-      </TouchableHighlight>
+      <View
+        style={styles.container}>
+        <Image
+          source={require('image!gut-instinct-back')}
+          style={styles.loginImage}>
+          <View style={styles.loginContainer}>
+            <TouchableHighlight
+            style={styles.loginButton}
+            onPress={this._onPressButton.bind(this)}>
+              <Text style={styles.loginText}>Sign in with
+                <Text style={styles.facebook}>Facebook</Text>
+              </Text>
+            </TouchableHighlight>
+          </View>
+        </Image>
+      </View>
     );
   }
 };
 
 var styles = StyleSheet.create({
   loginContainer: {
+    paddingTop: 400,
     flex: 0.15,
     alignItems: 'center',
     justifyContent: 'center',
   },
   loginButton: {
-    width: 200,
-    height: 50,
-    shadowRadius: 5,
-    shadowColor: '#000000',
-    shadowOpacity: 1,
-    shadowOffset: {width: 0, height: 0},
+    width: 295,
+    height: 67,
+    borderRadius: 30,
+    borderColor: '#FEE7B3',
+    borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    alignItems: 'stretch',
+    backgroundColor: 'transparent'
   },
-  welcome: {
+  loginText: {
+    color: 'white',
     fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  facebook: {
+    fontWeight: 'bold',
+  },
+  loginImage: {
+    flex: 1,
+    alignSelf: 'auto',
   }
 });
 
