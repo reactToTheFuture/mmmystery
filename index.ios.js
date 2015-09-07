@@ -1,10 +1,10 @@
 'use strict';
 
-import React from 'react-native';
-import NavigationBar from 'react-native-navbar';
-import Login from './app/components/Login';
+var React = require('react-native');
 
-const {
+var NavigationBar = require('react-native-navbar');
+var Login = require('./app/components/Login');
+let {
   AppRegistry,
   StyleSheet,
   AlertIOS,
@@ -14,7 +14,7 @@ const {
   Image
 } = React;
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   app: {
     flex: 1
   }
@@ -31,7 +31,7 @@ class MysteryMeal extends React.Component {
   }
 
   renderScene(route, navigator) {
-    const Component = route.component;
+    let Component = route.component;
     let navBar = route.navigationBar;
 
     if (navBar) {

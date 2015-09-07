@@ -16,13 +16,10 @@ var {
   Text
 } = React;
 
-// var {
-//   FBSDKLoginButton,
-// } = FBSDKLogin;
-
 var FBSDKLogin = require('react-native-fbsdklogin');
 var {
   FBSDKLoginManager,
+  FBSDKLoginButton,
 } = FBSDKLogin;
 
 
@@ -31,25 +28,27 @@ var {
   FBSDKGraphRequest
 } = FBSDKCore;
 
-var fetchProfileRequest = new FBSDKGraphRequest((error, result) => {
-  if (error) {
-    alert('Error making request.');
-  } else {
-    console.log('fetchProfileRequest');
-    console.log(result);
-  }
-}, '/me');
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       token: null,
+      responseToken: false,
+      result: null
     };
   }
 
-  getAccesToken() {
-
+  async getAccesToken() {
+   var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
+         if (token) {
+           console.log('tokenFBSDK', token);
+           this.switchToMain();
+         } else {
+           console.log('No token founded');
+         }
+         this.setState({responseToken: true});
+       }));
   }
 
   cameraBtnPress(navigator, route) {
@@ -63,28 +62,25 @@ class Login extends React.Component {
     })
   }
 
+  componentDidMount(){
+    this.getAccesToken();
+  }
+
   _onPressButton(){
-    // FBSDKLoginManager.setLoginBehavior(GlobalStore.getItem('behavior', 'native'));
-    FBSDKLoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends'], (error, result) => {
+    var _this = this;
+    FBSDKLoginManager.setLoginBehavior('native');
+    FBSDKLoginManager.setDefaultAudience('friends');
+    FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
       if (error) {
         alert('Error logging in.');
       } else {
         if (result.isCanceled) {
           alert('Login cancelled.');
         } else {
+          console.log('Inside LogIn');
           console.log(result);
-          console.log('Inside componentDidMount');
-          FBSDKAccessToken.getCurrentAccessToken((token) => {
-            if (token) {
-              console.log('tokenFBSDK', token);
-              this.setState(token);
-              console.log(this.state.token);
-            } else {
-              // console.log(this.state.token);
-              console.log('No token founded');
-            }
-          });
-          fetchProfileRequest.start();
+          this.setState({result});
+          this.getAccesToken();
         }
       }
     });
@@ -93,6 +89,10 @@ class Login extends React.Component {
   switchToMain() {
     this.props.navigator.push({
       component: Main,
+      props: {
+        result: this.state.result,
+        token: this.state.result
+      },
       navigationBar: (
         <NavigationBar
           title="Mystery Meal"
@@ -103,47 +103,16 @@ class Login extends React.Component {
     });
   }
 
-  // render() {
-  //   return (
-  //     <View style={styles.loginContainer}>
-  //       <FBSDKLoginButton
-  //         style={styles.loginButton}
-  //         onLoginFinished={(error, result) => {
-  //           if (error) {
-  //             AlertIOS.alert(
-  //               'Error Logging In'
-  //               [
-  //                 {text: 'OK', onPress: () => console.log('OK Pressed')}
-  //               ]
-  //             );
-  //             return;
-  //           }
-  //           if (result.isCanceled) {
-  //             AlertIOS.alert(
-  //               'Login Canceled'
-  //               [
-  //                 {text: 'OK', onPress: () => console.log('OK Pressed')}
-  //               ]
-  //             );
-  //             return;
-  //           }
-  //           console.log('Here inside login');
-  //           console.log('result', result);
-  //           this.getAccesToken();
-  //           this.switchToMain.call(this);
-  //         }}
-  //         onLogoutFinished={() => alert('Logged out.')}
-  //         readPermissions={[]}
-  //         publishPermissions={['publish_actions']}/>
-  //     </View>
-  //   );
-  // }
-
   render() {
+    if (!this.state.responseToken){
+      return (
+        <Text>Loading</Text>
+      );
+    }
     return (
       <TouchableHighlight
       style={styles.loginButton}
-      onPress={this._onPressButton}>
+      onPress={this._onPressButton.bind(this)}>
        <Text>Proper Touch Handling</Text>
       </TouchableHighlight>
     );
@@ -163,6 +132,22 @@ var styles = StyleSheet.create({
     shadowColor: '#000000',
     shadowOpacity: 1,
     shadowOffset: {width: 0, height: 0},
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
   }
 });
 
