@@ -7,6 +7,7 @@ var FBSDKLogin = require('react-native-fbsdklogin');
 var Main = require('./Main');
 var NavigationBar = require('react-native-navbar');
 var CameraDashboard = require('./Camera-Dashboard');
+var FBSDKLogin = require('react-native-fbsdklogin');
 
 var {
   StyleSheet,
@@ -16,10 +17,8 @@ var {
   Text
 } = React;
 
-var FBSDKLogin = require('react-native-fbsdklogin');
 var {
   FBSDKLoginManager,
-  FBSDKLoginButton,
 } = FBSDKLogin;
 
 
@@ -28,27 +27,36 @@ var {
   FBSDKGraphRequest
 } = FBSDKCore;
 
-
-class Login extends React.Component {
+ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       token: null,
       responseToken: false,
-      result: null
+      result: null,
+      userInfo: null,
     };
   }
 
   async getAccesToken() {
-   var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
-         if (token) {
-           console.log('tokenFBSDK', token);
-           this.switchToMain();
-         } else {
-           console.log('No token founded');
-         }
-         this.setState({responseToken: true});
-       }));
+    var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
+      if (token) {
+      this.setState({token});
+
+      // GraphQL query for user information
+      let fetchProfileRequest = new FBSDKGraphRequest((error, result) => {
+        console.log('FBSDKGraphRequest', error, result);
+        this.setState({userInfo: result});
+        alert('Welcome ' + result.first_name + "!");
+      }, 'me?fields=first_name,last_name,picture');
+      fetchProfileRequest.start(0);
+
+      this.switchToMain();
+      } else {
+        console.log('No token founded');
+      }
+      this.setState({responseToken: true});
+    }));
   }
 
   cameraBtnPress(navigator, route) {
@@ -77,13 +85,13 @@ class Login extends React.Component {
         if (result.isCanceled) {
           alert('Login cancelled.');
         } else {
-          console.log('Inside LogIn');
           console.log(result);
           this.setState({result});
           this.getAccesToken();
         }
       }
     });
+    // FBSDKLoginManager.logOut(); link with logOut screnn
   };
 
   switchToMain() {
@@ -91,7 +99,8 @@ class Login extends React.Component {
       component: Main,
       props: {
         result: this.state.result,
-        token: this.state.result
+        token: this.state.token,
+        userInfo: this.state.userInfo
       },
       navigationBar: (
         <NavigationBar
