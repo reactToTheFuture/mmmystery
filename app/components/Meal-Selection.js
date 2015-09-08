@@ -4,6 +4,7 @@ import AddMealOverlay from './AddMeal-Overlay';
 import MealSubmittedOverlay from './MealSubmitted-Overlay';
 
 import firebase_api from '../utils/firebase-api';
+import aws_api from '../utils/aws-api';
 import yelp_api from '../utils/yelp-api';
 import _ from 'underscore';
 import helpers from '../utils/helpers';
@@ -87,15 +88,17 @@ class MealSelection extends React.Component {
 
     var props = this.props.route.props;
     var restaurantID = props.restaurant.id;
+    var plateID = helpers.formatNameString(meal);
     var image = props.image;
-    
-    plateID = helpers.formatNameString(meal);
 
-    //upload image, get image url, then
-      // firebase_api.addPlate(restaurantID, plateID, 'http://google.com');
+    aws_api.uploadToSW3(image)
+    .then((imageUrl) => {
+      firebase_api.addPlate(restaurantID, plateID, imageUrl);
+
       this.setState({
         mealSubmitted: true
       });
+    });
   }
 
   render() {
