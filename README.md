@@ -10,6 +10,23 @@ Thesis project at MKS-20 implemented by using React, React-Native and Relay.
 6. Press `Enter` after @end to create a newline (XCode specific syntax rule)
 7. `Save`
 
+##When using the app font system
+###San Francisco Display
+- fontFamily: 'SanFranciscoDisplay-Light'
+- fontFamily: 'SanFranciscoDisplay-Regular'
+- fontFamily: 'SanFranciscoDisplay-Semibold'
+
+###San Francisco Text
+- fontFamily: 'SanFranciscoText-Regular'
+- fontFamily: 'SanFranciscoText-RegularItalic'
+- fontFamily: 'SanFranciscoText-Medium'
+- fontFamily: 'SanFrancisco-Semibold'
+
+##Color Guide
+These are located within the globalVariables.js file at the root of the directory. Just require either the whole set or choose which ones...
+
+![Colorguide](https://s3-us-west-2.amazonaws.com/mystery-meal/color-guide.png)
+
 License
 -------
 
