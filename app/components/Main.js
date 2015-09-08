@@ -44,15 +44,18 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    var {latitude, longitude} = props.initialPosition.coords;
-    this.buildPlatesArray({latitude, longitude}, 60);
-
     this.state = {
-      status: 'Finding nearby restaurants...',
+      status: 'Finding your location...',
       watchID: null,
       currPlateIndex: -1,
       plates: []
     };
+
+    if(props.initialPosition) {
+      this.state.status = 'Finding nearby restaurants...';
+      var {latitude, longitude} = props.initialPosition.coords;
+      this.buildPlatesArray({latitude, longitude}, 60); 
+    }
   }
 
   buildPlatesArray(userLocation,radius) {
@@ -99,9 +102,19 @@ class Main extends React.Component {
           };
         });
 
+        var shuffleIndexIncrement = 2;
+        var currPlateIndex = this.state.currPlateIndex;
+
+        // initally, shuffle entire array of images
+        // otherwise, start shuffling 2 indexes up from current plate index
+        if( currPlateIndex === -1 ) {
+          shuffleIndexIncrement = 1;
+          currPlateIndex = 0;
+        }
+
         this.setState({
-          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+1),
-          currPlateIndex: this.state.currPlateIndex === -1 ? 0 : this.state.currPlateIndex
+          currPlateIndex,
+          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
         });
       });
     });
@@ -109,6 +122,9 @@ class Main extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if( !this.props.initialPosition && newProps.initialPosition ) {
+      this.setState({
+        status: 'Finding nearby restaurants...'
+      });
       var {latitude, longitude} = newProps.initialPosition.coords;
       this.buildPlatesArray({latitude, longitude}, 60);
     }
