@@ -27,6 +27,31 @@ These are located within the globalVariables.js file at the root of the director
 
 ![Colorguide](https://s3-us-west-2.amazonaws.com/mystery-meal/color-guide.png)
 
+##Icon Guide
+The available icons are located [here](https://raw.githubusercontent.com/scottdixon/react-native-upload-from-camera-roll/master/RCTCustom.m). To see the name you use, just click on one and it's the words after the 'ion'.
+
+```
+var { Icon, } = require('react-native-icons');
+
+<Icon
+  name='ion|beer'
+  size={30}
+  color='#887700'
+  style={styles.beer}
+/>
+```
+
+Do note, you must explicitly include the width and height in the styles for the icon. so for this instance it would be...
+
+```
+styles = StyleSheet.create({
+  beer: {
+    width: 30,
+    height: 30
+  }
+});
+```
+
 License
 -------
 
