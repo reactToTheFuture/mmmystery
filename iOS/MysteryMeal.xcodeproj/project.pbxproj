@@ -44,6 +44,7 @@
 		9F832C851B9A5F18008C4FEC /* libRCTFBSDKShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F832C6F1B9A5CAA008C4FEC /* libRCTFBSDKShare.a */; };
 		9F832C861B9A5F18008C4FEC /* libRCTFBSDKLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F832C631B9A5C8D008C4FEC /* libRCTFBSDKLogin.a */; };
 		9F85BC331B96868300C1189B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F85BC321B96868300C1189B /* Default-568h@2x.png */; };
+		9FFDCBA91B9B9E770099ABFB /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FFDCBA81B9B9E770099ABFB /* Bolts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,6 +219,7 @@
 		9F832C7D1B9A5DE4008C4FEC /* MapboxGL.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = MapboxGL.bundle; path = "../node_modules/react-native-mapbox-gl/RCTMapboxGL/MapboxGL.bundle"; sourceTree = "<group>"; };
 		9F832C7F1B9A5E0A008C4FEC /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = "../node_modules/react-native-mapbox-gl/RCTMapboxGL/Settings.bundle"; sourceTree = "<group>"; };
 		9F85BC321B96868300C1189B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		9FFDCBA81B9B9E770099ABFB /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Users/steveleec/Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +243,7 @@
 				5163F1951B9A93E300538E9A /* FBSDKShareKit.framework in Frameworks */,
 				9F40AD041B95006400EFDDCA /* libsqlite3.dylib in Frameworks */,
 				9F40AD021B95005A00EFDDCA /* libc++.dylib in Frameworks */,
+				9FFDCBA91B9B9E770099ABFB /* Bolts.framework in Frameworks */,
 				9F40AD001B95004F00EFDDCA /* SystemConfiguration.framework in Frameworks */,
 				9F40ACFA1B95002600EFDDCA /* QuartzCore.framework in Frameworks */,
 				9F40ACFE1B95004100EFDDCA /* MobileCoreServices.framework in Frameworks */,
@@ -372,6 +375,7 @@
 		5163F18F1B9A93A600538E9A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9FFDCBA81B9B9E770099ABFB /* Bolts.framework */,
 				5163F1901B9A93E300538E9A /* FBSDKCoreKit.framework */,
 				5163F1911B9A93E300538E9A /* FBSDKLoginKit.framework */,
 				5163F1921B9A93E300538E9A /* FBSDKShareKit.framework */,
@@ -861,6 +865,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"~/Documents/FacebookSDK",
+					/Users/steveleec/Documents/FacebookSDK,
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -886,6 +891,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"~/Documents/FacebookSDK",
+					/Users/steveleec/Documents/FacebookSDK,
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
