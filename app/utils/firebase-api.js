@@ -12,32 +12,6 @@ var firebase_api = {
   getReBase() {
     return base;
   },
-  getAllRestaurants() {
-    var deferred = Q.defer();
-
-    base.fetch('restaurants', {
-      context: this,
-      asArray: true,
-      then(data) {
-        deferred.resolve(data);
-      }
-    });
-
-    return deferred.promise;
-  },
-  getAllPlates() {
-    var deferred = Q.defer();
-
-    base.fetch('plates', {
-      context: this,
-      asArray: true,
-      then(data) {
-        deferred.resolve(data);
-      }
-    });
-
-    return deferred.promise;
-  },
   getRestaurantById(id) {
     var deferred = Q.defer();
 
