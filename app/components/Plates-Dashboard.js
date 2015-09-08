@@ -2,6 +2,7 @@ var React = require('react-native');
 var clamp = require('clamp');
 var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
+var mapbox_api = require('../utils/mapbox-api');
 
 var {
   StyleSheet,
@@ -21,8 +22,9 @@ class PlatesDashBoard extends React.Component {
       SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
+      distance: null,
       loadingImage: true,
-      plate: null
+      plate: null,
     };
   }
 
@@ -115,7 +117,31 @@ class PlatesDashBoard extends React.Component {
     this.state.enter.setValue(0);
   }
 
+  async getAsyncDirections(origin, dest) {
+    var responseDirections = await (mapbox_api.getDirections(origin, dest)
+      .then((data) => {
+        // Human: 5000 meters --> 60 min
+        return Math.round(data.routes[0].distance/5000*60);
+      }));
+   return responseDirections;
+  }
+
+  getDistance(origin, dest) {
+    var userCoords = origin.coords;
+    var userPosition = {
+      lat: userCoords.latitude,
+      lng: userCoords.longitude
+    };
+    this.getAsyncDirections(userPosition, dest)
+    .then((distance) => {
+      this.setState({distance});
+    })
+    .catch((err) => { console.log('Something went wrong: ' + err); });
+  }
+
   render() {
+    (!!this.state.plate && !!this.props.lastPosition) ? this.getDistance(this.props.lastPosition, this.state.plate.location) : null;
+
     let { pan, enter, } = this.state;
 
     let [translateX, translateY] = [pan.x, pan.y];
@@ -147,6 +173,17 @@ class PlatesDashBoard extends React.Component {
             source={{uri: this.state.plate ? this.state.plate.img_url : null}}
             onLoad={this._imageLoaded.bind(this)}
           />
+          <View style={styles.imageFooter}>
+            <View style={styles.textDisplayer}>
+              <Text styles={styles.introTime}> You're just
+                <Text style={styles.minutes}> {this.state.distance ? this.state.distance : null} minutes </Text>
+              away!</Text>
+              <Text style={styles.plateName}> {this.state.plate ? this.state.plate.name : null} </Text>
+            </View>
+            <Image
+              source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Dollar_sign_in_circle.svg/2000px-Dollar_sign_in_circle.svg.png'}}
+              style={styles.priceImage}/>
+          </View>
         </Animated.View>
       </View>
     );
@@ -170,6 +207,29 @@ var styles = StyleSheet.create({
   centering: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  imageFooter: {
+    flexDirection: 'row',
+    marginHorizontal: 15,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 15,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  textDisplayer: {
+    flexDirection: 'column',
+  },
+  priceImage: {
+    width: 60,
+    height: 60
+  },
+  plateName: {
+    fontSize: 25
+  },
+  minutes: {
+    color: '#FEBB27',
+    fontWeight: 'bold',
   }
 });
 

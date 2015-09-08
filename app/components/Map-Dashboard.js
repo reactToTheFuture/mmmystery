@@ -64,7 +64,7 @@ class MapDashBoard extends React.Component {
     var responseDirections = await (mapbox_api.getDirections(origin, destination)
       .then((data) => {
         var steps = data.routes[0].steps;
-
+        console.log('data', data);
         var annotationImage = {
           url: 'http://img1.wikia.nocookie.net/__cb20130425161142/scribblenauts/images/a/a4/Hamburger.png',
           height: 25,
@@ -145,7 +145,7 @@ class MapDashBoard extends React.Component {
           stepProgress={this.state.stepProgress}
           onStepIncrement={this.handleStepIncrement.bind(this)}
           onArrived={this.handleArrived.bind(this)} />
-        <Map 
+        <Map
           stepAnnotations={this.state.stepAnnotations}
           userPosition={this.props.route.props.userPosition} />
         <RouteConfirmationOverlay
@@ -155,7 +155,7 @@ class MapDashBoard extends React.Component {
           isVisible={this.state.isLoading} />
         <ArrivalOverlay
           imageInfo={this.props.route.props.image}
-          isVisible={!this.state.hasLeft && this.state.hasArrived} 
+          isVisible={!this.state.hasLeft && this.state.hasArrived}
           onConfirmation={this.handleArrivalConfirmation.bind(this)} />
       </View>
     );

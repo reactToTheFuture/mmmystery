@@ -26,12 +26,17 @@ let styles = StyleSheet.create({
     flex: 1,
   },
   mainContainer: {
-    flex: 1,
-    padding: 30,
-    marginTop: 65,
+    flex: 0.1,
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#ffffff'
+  },
+  footer: {
+    alignItems: 'center',
+    marginBottom: 15,
+    marginHorizontal: 15,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
   }
 });
 
@@ -153,7 +158,7 @@ class Main extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.mainContainer}>
         <TouchableHighlight
         onPress={this._onPressButton.bind(this)}>
           <Text>LogOut test</Text>
@@ -163,9 +168,16 @@ class Main extends React.Component {
           status={this.state.status} />
         <PlatesDashBoard
           plates={this.state.plates}
+          lastPosition={this.props.lastPosition}
           currPlateIndex={this.state.currPlateIndex}
           onSelection={this.handleSelection.bind(this)}
           onRejection={this.handleRejection.bind(this)} />
+        <View style={styles.footer}>
+          <Text>This is a footer</Text>
+          <TouchableHighlight>
+            <Text>Settings</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }

@@ -120,7 +120,7 @@ var {
   }
 
   render() {
-    // this pages appears after login process and main screen
+    // this page appears after login process and main screen
     // will be replaced by a loading screen
     if (!this.state.responseToken){
       return (
@@ -139,7 +139,7 @@ var {
             style={styles.loginButton}
             onPress={this._onPressButton.bind(this)}>
               <Text style={styles.loginText}>Sign in with
-                <Text style={styles.facebook}>Facebook</Text>
+                <Text style={styles.facebook}> Facebook</Text>
               </Text>
             </TouchableHighlight>
           </View>
