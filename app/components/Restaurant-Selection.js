@@ -18,6 +18,12 @@ var {
   View
 } = React;
 
+var { Icon } = require('react-native-icons');
+
+var Dimensions = require('Dimensions');
+var window = Dimensions.get('window');
+var globals = require('../../globalVariables');
+
 class RestaurantSelection extends React.Component {
 
   constructor(props) {
@@ -57,10 +63,13 @@ class RestaurantSelection extends React.Component {
   _renderRestaurant(restaurant) {
     return (
       <TouchableHighlight
-        underlayColor={'orange'}
+        underlayColor={globals.primary}
         style={styles.restaurant}
         onPress={this.selectRestaurant.bind(this, restaurant)}>
-        <Text>{restaurant.name} | {restaurant.distance} miles away</Text>
+        <View>
+          <Text style={styles.headline}>{restaurant.name}</Text>
+          <Text style={styles.subheadline}>{restaurant.distance} miles</Text>
+        </View>
       </TouchableHighlight>
     );
   }
@@ -112,9 +121,10 @@ class RestaurantSelection extends React.Component {
   selectRestaurant(restaurant) {
     firebase_api.getRestaurantById(restaurant.id)
     .then((found) => {
-      if(!found) {
-        firebase_api.addRestaurant(restaurant);
+      if(found) {
+        return;
       }
+      firebase_api.addRestaurant(restaurant);
     });
 
     var props = {
@@ -128,42 +138,88 @@ class RestaurantSelection extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={this.handleTextInput.bind(this)}
-          placeholder="Search for a restaurant"
-          placeholderTextColor="grey"
-          value={this.state.searchText}
-        />
-        <ActivityIndicatorIOS
-          animating={this.state.loading}
-          style={[styles.centering, {height: 80}]}
-          size="large"
-        />
+        <View style={styles.textContainer}>
+          <Icon
+            name='ion|ios-search-strong'
+            size={30}
+            color={globals.lightText}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={this.handleTextInput.bind(this)}
+            placeholder="Search for a restaurant"
+            placeholderTextColor="grey"
+            value={this.state.searchText}
+          />
+        </View>
         <ListView
           dataSource={this.state.restaurants}
           renderRow={this._renderRestaurant.bind(this)}>
         </ListView>
+        <ActivityIndicatorIOS
+          animating={this.state.loading}
+          style={styles.loadingIcon}
+          size="large"
+        />
       </View>
     );
   }
 };
 
 var styles = StyleSheet.create({
-  centering: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  searchIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
   },
   container: {
-    flexDirection: 'column',
-    flex: 2
+    flex: 1,
+    position: 'relative',
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  textContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+  headline: {
+    marginBottom: 5,
+    fontSize: 16,
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: globals.darkText,
+  },
+  subheadline: {
+    fontFamily: 'SanFranciscoText-Regular',
+    fontSize: 16,
+    color: globals.lightText,
   },
   restaurant: {
+    paddingTop: 10,
+    paddingRight: 5,
+    paddingBottom: 10,
+    paddingLeft: 5,
+    borderBottomColor: globals.mediumText,
+    borderBottomWidth: 1,
+  },
+  loadingIcon: {
+    position: 'absolute',
+    top: (window.height/2 - 36),
+    left: (window.width/2 - 36),
+    backgroundColor: "transparent",
   },
   textInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1
+    flex: 1,
+    height: 50,
+    paddingTop: 15,
+    paddingRight: 5,
+    paddingBottom: 15,
+    paddingLeft: 5,
+    borderColor: globals.lightText,
+    fontFamily: 'SanFranciscoText-Regular',
+    borderWidth: 1,
   }
 });
 

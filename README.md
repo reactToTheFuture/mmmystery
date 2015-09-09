@@ -10,6 +10,9 @@ Thesis project at MKS-20 implemented by using React, React-Native and Relay.
 6. Press `Enter` after @end to create a newline (XCode specific syntax rule)
 7. `Save`
 
+##After doing an npm install, In react-native-fbsdk-cor/js-modules/FBSDKGraphRequest.ios.js:
+Change line 121 to be FBSDKGraphRequestManager.batchRequests([this], function(){}, timeout)
+
 ##When using the app font system
 ###San Francisco Display
 - fontFamily: 'SanFranciscoDisplay-Light'
@@ -20,7 +23,7 @@ Thesis project at MKS-20 implemented by using React, React-Native and Relay.
 - fontFamily: 'SanFranciscoText-Regular'
 - fontFamily: 'SanFranciscoText-RegularItalic'
 - fontFamily: 'SanFranciscoText-Medium'
-- fontFamily: 'SanFrancisco-Semibold'
+- fontFamily: 'SanFranciscoText-Semibold'
 
 ##Color Guide
 These are located within the globalVariables.js file at the root of the directory. Just require either the whole set or choose which ones...

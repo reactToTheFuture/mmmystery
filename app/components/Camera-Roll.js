@@ -59,7 +59,7 @@ class CameraRollView extends React.Component {
       props,
       navigationBar: (
         <NavigationBar
-          title="What Restaurant?" />
+          title="Where are you at?" />
       )
     });
   }
