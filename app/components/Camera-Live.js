@@ -46,6 +46,11 @@ class CameraLive extends React.Component {
           title="What Restaurant?" />
       )
     });
+
+    this.setState({
+      loading: false,
+      stage: 'capture'
+    });
   }
 
   usePhoto() {
@@ -54,10 +59,6 @@ class CameraLive extends React.Component {
     });
 
     NativeModules.ReadImageData.readImage(this.state.image.uri, (base64) => {
-      this.setState({
-        loading: false
-      });
-
       var props = {
         image: {
           base64,

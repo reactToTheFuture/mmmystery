@@ -10,6 +10,8 @@ var {
   NavigatorIOS,
 } = React;
 
+var { Icon } = require('react-native-icons');
+
 var CameraRollView = require('./Camera-Roll');
 var CameraLiveView = require('./Camera-Live');
 
@@ -70,7 +72,15 @@ class CameraDashboard extends React.Component {
             style={styles.mainBtn}
             onPress={this.goToCameraLiveScreen.bind(this)}
             underlayColor='#fdc969'>
-            <Text style={styles.btnText}>Let's take a photo</Text>
+            <View style={styles.innerBtn}>
+              <Icon
+                name='ion|ios-camera-outline'
+                size={30}
+                color='#ffffff'
+                style={styles.cameraIcon}
+              />
+              <Text style={styles.btnText}>Let's take a photo</Text>
+            </View>
           </TouchableHighlight>
 
           <TouchableHighlight
@@ -94,6 +104,11 @@ let styles = StyleSheet.create({
     paddingLeft: 50,
     backgroundColor: '#FFFFFF',
   },
+  innerBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headline: {
     marginBottom: 10,
     fontSize: 36,
@@ -107,19 +122,24 @@ let styles = StyleSheet.create({
     fontFamily: 'SanFranciscoDisplay-Light',
     color: globals.mediumText,
   },
+  cameraIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
   img: {
     width: 200,
     height: 200,
-    borderRadius: 100
+    borderRadius: 100,
   },
   tip: {
     color: globals.mediumText,
     textAlign: 'center',
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Regular'
+    fontFamily: 'SanFranciscoText-Regular',
   },
   btnContainer: {
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   mainBtn: {
     width: 300,
@@ -128,7 +148,7 @@ let styles = StyleSheet.create({
     paddingBottom: 20,
     borderRadius: 5,
     backgroundColor: globals.primaryDeep,
-    fontFamily: 'SanFranciscoText-Regular'
+    fontFamily: 'SanFranciscoText-Regular',
   },
   btnText: {
     fontSize: 20,
@@ -140,7 +160,7 @@ let styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     color: globals.primaryDeep,
-    fontFamily: 'SanFranciscoText-Regular'
+    fontFamily: 'SanFranciscoText-Regular',
   }
 });
 
