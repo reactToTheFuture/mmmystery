@@ -28,7 +28,7 @@ These are located within the globalVariables.js file at the root of the director
 ![Colorguide](https://s3-us-west-2.amazonaws.com/mystery-meal/color-guide.png)
 
 ##Icon Guide
-The available icons are located [here](https://http://ionicons.com/). To see the name you use, just click on one and it's the words after the 'ion'.
+The available icons are located [here](http://ionicons.com/). To see the name you use, just click on one and it's the words after the 'ion'.
 
 ```
 var { Icon, } = require('react-native-icons');
