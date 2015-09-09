@@ -138,7 +138,7 @@ class RestaurantSelection extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.textContainer}>
+        <View style={styles.inputContainer}>
           <Icon
             name='ion|ios-search-strong'
             size={30}
@@ -179,7 +179,7 @@ var styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  textContainer: {
+  inputContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',

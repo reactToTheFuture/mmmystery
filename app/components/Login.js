@@ -57,9 +57,14 @@ var {
       // GraphQL query for user information
       let fetchProfileRequest = new FBSDKGraphRequest((error, result) => {
         errorLogin = !!error;
-        if (error){
-          console.log('FBSDKGraphRequest', error);
-          alert('Error in login. Please, sing ing again');
+        if (error) {
+          console.warn('FBSDKGraphRequest', error);
+          AlertIOS.alert(
+            'Error logging in. Please try again.',
+            [
+              {text: 'OK', onPress: () => {}},
+            ]
+          );
           this.setState({responseToken: true});
         } else {
           console.log('FBSDKGraphRequest', result);
