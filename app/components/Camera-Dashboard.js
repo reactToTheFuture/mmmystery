@@ -16,6 +16,8 @@ var CameraLiveView = require('./Camera-Live');
 var tips_api = require('../utils/tips.js');
 var img_api = require('../utils/img.js');
 
+var globals = require('../../globalVariables');
+
 class CameraDashboard extends React.Component {
 
   constructor(props) {
@@ -88,21 +90,22 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 25,
-    paddingLeft: 25,
+    paddingRight: 50,
+    paddingLeft: 50,
     backgroundColor: '#FFFFFF',
   },
   headline: {
     marginBottom: 10,
     fontSize: 36,
-    fontWeight: 'bold',
     textAlign: 'center',
-    color: '#868D99',
+    fontFamily: 'SanFranciscoDisplay-Regular',
+    color: globals.darkText,
   },
   subheadline: {
     textAlign: 'center',
     fontSize: 20,
-    color: '#96A4B4',
+    fontFamily: 'SanFranciscoDisplay-Light',
+    color: globals.mediumText,
   },
   img: {
     width: 200,
@@ -110,8 +113,10 @@ let styles = StyleSheet.create({
     borderRadius: 100
   },
   tip: {
-    color: '#868D99',
+    color: globals.mediumText,
     textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-Regular'
   },
   btnContainer: {
     paddingBottom: 50
@@ -122,7 +127,8 @@ let styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     borderRadius: 5,
-    backgroundColor: '#FDB22A',
+    backgroundColor: globals.primaryDeep,
+    fontFamily: 'SanFranciscoText-Regular'
   },
   btnText: {
     fontSize: 20,
@@ -133,7 +139,8 @@ let styles = StyleSheet.create({
     width: 300,
     fontSize: 20,
     textAlign: 'center',
-    color: '#FDB22A',
+    color: globals.primaryDeep,
+    fontFamily: 'SanFranciscoText-Regular'
   }
 });
 
