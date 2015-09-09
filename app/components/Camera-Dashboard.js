@@ -148,12 +148,12 @@ let styles = StyleSheet.create({
     paddingBottom: 20,
     borderRadius: 5,
     backgroundColor: globals.primaryDeep,
-    fontFamily: 'SanFranciscoText-Regular',
   },
   btnText: {
     fontSize: 20,
     textAlign: 'center',
     color: '#ffffff',
+    fontFamily: 'SanFranciscoText-Regular',
   },
   secondaryBtn: {
     width: 300,
