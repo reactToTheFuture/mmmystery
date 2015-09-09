@@ -41,18 +41,27 @@ var {
 
   async getAccesToken() {
     var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
+      let errorLogin = false;
       if (token) {
       this.setState({token});
 
       // GraphQL query for user information
       let fetchProfileRequest = new FBSDKGraphRequest((error, result) => {
-        console.log('FBSDKGraphRequest', error, result);
-        this.setState({userInfo: result});
-        alert('Welcome ' + result.first_name + "!");
+        errorLogin = !!error;
+        if (error){
+          console.log('FBSDKGraphRequest', error);
+          alert('Error in login. Please, sing ing again');
+          this.setState({responseToken: true});
+        } else {
+          console.log('FBSDKGraphRequest', result);
+          this.setState({userInfo: result});
+          alert('Welcome ' + result.first_name + "!");
+        }
       }, 'me?fields=first_name,last_name,picture');
       fetchProfileRequest.start(0);
 
-      this.switchToMain();
+      // If error when making graphQL query, login again.
+      errorLogin ? null : this.switchToMain();
       } else {
         this.setState({responseToken: true});
         console.log('No token founded');
