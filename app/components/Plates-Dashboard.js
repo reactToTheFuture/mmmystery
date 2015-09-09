@@ -3,6 +3,7 @@ var clamp = require('clamp');
 var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
 var mapbox_api = require('../utils/mapbox-api');
+var prevIndex;
 
 var {
   StyleSheet,
@@ -25,6 +26,7 @@ class PlatesDashBoard extends React.Component {
       distance: null,
       loadingImage: true,
       plate: null,
+      showMinutes: false,
     };
   }
 
@@ -47,12 +49,31 @@ class PlatesDashBoard extends React.Component {
     });
   }
 
+  getDistance(origin, dest) {
+    var newDish=false;
+    var userPosition = {
+      lat: origin.coords.latitude,
+      lng: origin.coords.longitude
+    };
+    if (this.props.currPlateIndex === 0) prevIndex=this.props.currPlateIndex;
+    if (this.props.currPlateIndex!== prevIndex || this.props.currPlateIndex===0) {
+      prevIndex=this.props.currPlateIndex;
+      newDish=true;
+      this.getAsyncDirections(userPosition, dest)
+      .then((distance) => {
+        newDish ? this.setState({distance: distance}) : null;
+      })
+      .catch((err) => { console.log('Something went wrong: ' + err); });
+    }
+  }
+
   componentWillUpdate(nextProps) {
     if( !this.state.plate && nextProps.plates.length ) {
       this.setState({
         plate: nextProps.plates[0]
       });
     }
+    (!!this.state.plate && !!this.props.lastPosition) ? this.getDistance(this.props.lastPosition, this.state.plate.location) : null;
   }
 
   componentWillMount() {
@@ -126,21 +147,7 @@ class PlatesDashBoard extends React.Component {
    return responseDirections;
   }
 
-  getDistance(origin, dest) {
-    var userCoords = origin.coords;
-    var userPosition = {
-      lat: userCoords.latitude,
-      lng: userCoords.longitude
-    };
-    this.getAsyncDirections(userPosition, dest)
-    .then((distance) => {
-      this.setState({distance});
-    })
-    .catch((err) => { console.log('Something went wrong: ' + err); });
-  }
-
   render() {
-    (!!this.state.plate && !!this.props.lastPosition) ? this.getDistance(this.props.lastPosition, this.state.plate.location) : null;
 
     let { pan, enter, } = this.state;
 
@@ -176,8 +183,8 @@ class PlatesDashBoard extends React.Component {
           <View style={styles.imageFooter}>
             <View style={styles.textDisplayer}>
               <Text styles={styles.introTime}> You're just
-                <Text style={styles.minutes}> {this.state.distance ? this.state.distance : null} minutes </Text>
-              away!</Text>
+                  <Text style={styles.minutes}> {this.state.distance ? this.state.distance : null} minutes </Text>
+                away!</Text>
               <Text style={styles.plateName}> {this.state.plate ? this.state.plate.name : null} </Text>
             </View>
             <Image
