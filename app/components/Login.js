@@ -64,6 +64,7 @@ var {
         } else {
           console.log('FBSDKGraphRequest', result);
           this.setState({userInfo: result});
+        }
       }, 'me?fields=first_name,last_name,picture');
       fetchProfileRequest.start(0);
 

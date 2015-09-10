@@ -19,7 +19,7 @@ var {
   StyleSheet,
   Text,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
   Image,
 } = React;
 
@@ -205,7 +205,6 @@ class Main extends React.Component {
             currPlateIndex={this.state.currPlateIndex}
             onSelection={this.handleSelection.bind(this)}
             onRejection={this.handleRejection.bind(this)} />
-            />
           <PlatesFooter address={this.state.searchAddress} />
         </View>
       );
