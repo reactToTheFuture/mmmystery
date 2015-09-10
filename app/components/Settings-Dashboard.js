@@ -88,7 +88,7 @@ class SettingsDashboard extends React.Component {
               );
             })}
         </Swiper>
-        <View>
+        <View style={styles.moreSettings}>
           <Text>More settings here</Text>
         </View>
       </View>
@@ -99,9 +99,10 @@ class SettingsDashboard extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'yellow',
   },
   wrapper: {
+    backgroundColor: 'black',
   },
   imageGrid: {
     flex: 0.8,
@@ -129,7 +130,11 @@ var styles = StyleSheet.create({
     width: 110,
     height: 110,
     borderWidth: 5,
-    borderColor: 'orange'
+    borderColor: 'blue'
+  },
+  moreSettings: {
+    flex: 0.2,
+    backgroundColor: 'blue',
   },
 });
 
