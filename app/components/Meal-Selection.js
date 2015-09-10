@@ -80,8 +80,13 @@ class MealSelection extends React.Component {
     });
   }
 
-  handleConfirmation() {
+  returnHome() {
     var MainRoute = this.props.navigator.getCurrentRoutes()[1];
+    this.props.navigator.popToRoute(MainRoute);
+  }
+
+  uploadAnother() {
+    var MainRoute = this.props.navigator.getCurrentRoutes()[2];
     this.props.navigator.popToRoute(MainRoute);
   }
 
@@ -89,6 +94,10 @@ class MealSelection extends React.Component {
     if(!meal) {
       return;
     }
+
+    this.setState({
+      isLoading: true
+    });
 
     var props = this.props.route.props;
     var restaurantID = props.restaurant.id;
@@ -100,8 +109,11 @@ class MealSelection extends React.Component {
     //   firebase_api.addPlate(restaurantID, plateID, imageUrl);
 
       this.setState({
+        isLoading: false,
+        isAddingMeal: false,
         isMealSubmitted: true
       });
+
     // });
   }
 
@@ -142,13 +154,14 @@ class MealSelection extends React.Component {
           }
         </View>
 
-        <MealSubmittedOverlay
-          isVisible={this.state.isMealSubmitted}
-          onConfirmation={this.handleConfirmation.bind(this)} />
         <AddMealOverlay
           isVisible={this.state.isAddingMeal}
           onAddMeal={this.selectMeal.bind(this)}
           onOverlayClose={this.handleOverlayClose.bind(this)} />
+        <MealSubmittedOverlay
+          isVisible={this.state.isMealSubmitted}
+          onUploadAnother={this.uploadAnother.bind(this)}
+          onReturnHome={this.returnHome.bind(this)} />
         <ActivityIndicatorIOS
           animating={this.state.isLoading}
           style={styles.loadingIcon}

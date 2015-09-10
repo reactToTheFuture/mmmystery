@@ -5,6 +5,7 @@ var {
   Text,
   Modal,
   TextInput,
+  ActivityIndicatorIOS,
   TouchableHighlight,
   StyleSheet
 } = React;
@@ -20,7 +21,8 @@ class AddMealOverlay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      meal: ''
+      meal: '',
+      isLoading: false
     };
   }
 
@@ -31,8 +33,11 @@ class AddMealOverlay extends React.Component {
   }
 
   handleMealAdd() {
+    this.setState({
+      isLoading: true
+    });
+
     this.props.onAddMeal(this.state.meal);
-    this.props.onOverlayClose();
   }
 
   render() {
@@ -65,6 +70,11 @@ class AddMealOverlay extends React.Component {
             onPress={this.props.onOverlayClose}>
             <Text style={[styles.centerText, styles.button]}>CANCEL</Text>
           </TouchableHighlight>
+          <ActivityIndicatorIOS
+            animating={this.state.isLoading}
+            style={styles.loadingIcon}
+            size="large"
+          />
         </View>
       </Modal>
     );
@@ -107,10 +117,16 @@ let styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    marginBottom: 50,
+    marginBottom: 20,
     fontSize: 20,
     fontFamily: 'SanFranciscoText-Semibold',
     color: globals.primary,
+  },
+  loadingIcon: {
+    position: 'absolute',
+    top: 100,
+    left: (window.width/2 - 18),
+    backgroundColor: "transparent",
   },
 });
 

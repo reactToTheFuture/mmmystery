@@ -62,7 +62,6 @@ var firebase_api = {
   },
   addGeoFireLocation(restaurant) {
     var id = restaurant.id;
-    var name = restaurant.name;
     var coords = restaurant.location.coordinate;
     var lat = coords.latitude;
     var lng = coords.longitude;
