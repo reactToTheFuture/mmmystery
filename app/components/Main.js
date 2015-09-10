@@ -206,7 +206,7 @@ class Main extends React.Component {
             currPlateIndex={this.state.currPlateIndex}
             onSelection={this.handleSelection.bind(this)}
             onRejection={this.handleRejection.bind(this)} />
-          <PlatesFooter address={this.state.searchAddress} />
+          <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)}/>
         </View>
       );
     }

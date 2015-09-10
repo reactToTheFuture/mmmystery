@@ -23,6 +23,7 @@ class initialLoadingOverlay extends React.Component {
         </Overlay>
       </View>
     );
+  }
 }
 
 let styles = StyleSheet.create({

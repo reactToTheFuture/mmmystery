@@ -22,7 +22,7 @@ class PlatesFooter extends React.Component {
           <Text style={styles.footerLocationNear}>Near</Text> {this.props.address}
         </Text>
         <View>
-          <TouchableOpacity onPress={() => alert('categories') }>
+          <TouchableOpacity onPress={this.props.onPressSettings}>
             <Icon name='ion|ios-settings' size={32} color={Colors.lightText} style={styles.categories}/>
           </TouchableOpacity>
         </View>
