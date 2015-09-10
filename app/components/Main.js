@@ -3,48 +3,29 @@
 var React = require('react-native');
 
 var InitialLoadingOverlay = require('./Initial-Loading-Overlay');
-var PlatesDashBoard = require('./Plates-Dashboard');
+var PlatesDashBoard = require('./plate-screen/Plates-Dashboard');
+var PlatesFooter = require('./plate-screen/Plates-Footer');
 var MapDashBoard = require('./Map-Dashboard');
 var NavigationBar = require('react-native-navbar');
 var firebase_api = require('../utils/firebase-api');
 var helpers = require('../utils/helpers');
 var FBSDKLogin = require('react-native-fbsdklogin');
 var Login = require('./Login');
+var Colors = require('../../globalVariables');
 var SettingsDashboard = require('./Settings-Dashboard');
+var { Icon, } = require('react-native-icons');
 var {
   View,
   StyleSheet,
   Text,
   TouchableHighlight,
+  TouchableOpacity
   Image,
 } = React;
 
 var {
   FBSDKLoginManager,
 } = FBSDKLogin;
-
-let styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
-  mainContainer: {
-    flex: 0.1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff'
-  },
-  footer: {
-    alignItems: 'center',
-    marginBottom: 15,
-    marginHorizontal: 15,
-    justifyContent: 'space-between',
-    flexDirection: 'row'
-  },
-  settings: {
-    width: 40,
-    height: 40,
-  },
-});
 
 class Main extends React.Component {
   constructor(props) {
@@ -55,6 +36,7 @@ class Main extends React.Component {
       watchID: null,
       currPlateIndex: -1,
       plates: [],
+      searchLatLng: null,
       goSettings: false,
       categoryFilter: [],
     };
@@ -128,12 +110,26 @@ class Main extends React.Component {
     });
   }
 
+  _getAddress(lat, lng) {
+    fetch(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true`)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.state.searchAddress = responseData.results[0].formatted_address.slice(0, 30) + '...';
+      })
+      .done();
+  }
+
   componentWillReceiveProps(newProps) {
     if( !this.props.initialPosition && newProps.initialPosition ) {
       this.setState({
         status: 'Finding nearby restaurants...'
       });
       var {latitude, longitude} = newProps.initialPosition.coords;
+      // do the magic here....
+      this.setState({
+        searchLatLng: {latitude, longitude}
+      })
+      this._getAddress(latitude, longitude);
       this.buildPlatesArray({latitude, longitude}, 60);
     }
   }
@@ -193,34 +189,40 @@ class Main extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.mainContainer}>
-        <TouchableHighlight
-        onPress={this._onPressLogOut.bind(this)}>
-          <Text>LogOut test</Text>
-        </TouchableHighlight>
+    if (this.state.plates.length <= 0) {
+      return (
         <InitialLoadingOverlay
           isVisible={this.state.goSettings ? false : !this.state.plates.length}
-          status={this.state.status}/>
-        <PlatesDashBoard
-          plates={this.state.plates}
-          lastPosition={this.props.lastPosition}
-          currPlateIndex={this.state.currPlateIndex}
-          onSelection={this.handleSelection.bind(this)}
-          onRejection={this.handleRejection.bind(this)} />
-        <View style={styles.footer}>
-          <Text>This is a footer</Text>
-          <TouchableHighlight
-            onPress={this._onPressSettings.bind(this)}>
-             <Image
-              style={styles.settings}
-              source={{uri: 'http://zizaza.com/cache/big_thumb/iconset/580148/580162/PNG/128/android_icons/settings_android_mobile_icon_android_icon_png_settings_png_settings_icon.png'}}
+          status={this.state.status} />
+      )
+    } else {
+      return (
+        <View style={styles.mainContainer}>
+          <PlatesDashBoard
+
+            plates={this.state.plates}
+            lastPosition={this.props.lastPosition}
+            currPlateIndex={this.state.currPlateIndex}
+            onSelection={this.handleSelection.bind(this)}
+            onRejection={this.handleRejection.bind(this)} />
             />
-          </TouchableHighlight>
+          <PlatesFooter address={this.state.searchAddress} />
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
+
+let styles = StyleSheet.create({
+  map: {
+    flex: 1,
+  },
+  mainContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
+  }
+});
 
 module.exports = Main;

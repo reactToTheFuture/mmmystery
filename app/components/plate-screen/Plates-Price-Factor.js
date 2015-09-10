@@ -1,0 +1,68 @@
+var React = require('react-native');
+var Colors = require('../../../globalVariables');
+
+var {
+  View,
+  Text,
+  StyleSheet,
+} = React;
+
+class PlatesPriceFactor extends React.Component {
+  render() {
+
+    var dollarSigns;
+    var dollarSignsBold;
+    switch (this.props.priceFactor) {
+      case '1':
+        dollarSigns = '$$'; dollarSignsBold = '$';
+        break;
+      case '2':
+        dollarSigns = '$'; dollarSignsBold = '$$';
+        break;
+      case '3':
+        dollarSignsBold = '$$$';
+        break;
+      default:
+        dollarSigns = '$$'; dollarSignsBold = '$';
+    }
+
+    return (
+      <View style={styles.dollarSigns}>
+        <Text style={styles.dollarSign}><Text style={styles.dollarSignBold}>{dollarSignsBold}</Text>{dollarSigns}</Text>
+      </View>
+    );
+  }
+}
+
+let styles = StyleSheet.create({
+  dollarSigns: {
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
+    backgroundColor: Colors.primary,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  dollarSignBold: {
+    color: 'white',
+    fontFamily: 'SanFranciscoDisplay-Bold'
+  },
+  dollarSign: {
+    fontSize: 25,
+    color: Colors.yellowWhite,
+    fontFamily: 'SanFranciscoDisplay-Regular'
+  }
+});
+
+module.exports = PlatesPriceFactor;
+
+
+
+
+
+
+
+
+
