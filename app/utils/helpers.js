@@ -21,7 +21,33 @@ var helpers = {
   },
   metersToMiles(meters) {
     return (meters * 0.00062137).toFixed(2);
-  }
+  },
+
+  // Helpers functions used in Settings
+  // Matrix 3x3 for pics, category names and selected pics.
+  makeArrayOfNineArray(data, bool) {
+    var res = [],
+        temp = [];
+    for (var i=0; i<data.length; i++) {
+      bool ? temp.push(false) : temp.push(data[i])
+      if ((i + 1)%9 === 0 || i+1 === data.length) {
+        res.push(temp);
+        temp=[];
+      }
+     }
+     return res;
+  },
+
+// Returns and array with filtered categories
+  createSettingsFilter(setsOfSelected, setsOfNineNames) {
+    var res = [];
+    for (var i=0; i<setsOfSelected.length; i++) {
+      for (var j=0; j<setsOfSelected[i].length; j++) {
+        if (setsOfSelected[i][j]) res.push(setsOfNineNames[i][j]);
+      }
+    }
+    return res;
+  },
 };
- 
+
 module.exports = helpers;
