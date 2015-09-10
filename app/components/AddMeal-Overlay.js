@@ -9,6 +9,12 @@ var {
   StyleSheet
 } = React;
 
+var { Icon } = require('react-native-icons');
+
+var Dimensions = require('Dimensions');
+var window = Dimensions.get('window');
+var globals = require('../../globalVariables');
+
 class AddMealOverlay extends React.Component {
 
   constructor(props) {
@@ -34,22 +40,30 @@ class AddMealOverlay extends React.Component {
       <Modal
         visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={this.handleTextInput.bind(this)}
-            placeholder="What did you have?"
-            placeholderTextColor="grey"
-            value={this.state.meal}
-          />
+          <View style={styles.inputContainer}>
+            <Icon
+              name='ion|fork'
+              size={30}
+              color={globals.lightText}
+              style={styles.searchIcon}
+            />
+            <TextInput
+              style={styles.textInput}
+              onChangeText={this.handleTextInput.bind(this)}
+              placeholder="What did you have?"
+              placeholderTextColor="grey"
+              value={this.state.searchText}
+            />
+          </View>
           <TouchableHighlight
-            onPress={this.handleMealAdd.bind(this)}
-            style={styles.addBtn}>
-            <Text>ADD IT!</Text>
+            underlayColor={'#ffffff'}
+            onPress={this.handleMealAdd.bind(this)}>
+            <Text style={[styles.centerText, styles.button]}>ADD IT!</Text>
           </TouchableHighlight>
           <TouchableHighlight
-            onPress={this.props.onOverlayClose}
-            style={styles.cancelBtn}>
-            <Text>CANCEL</Text>
+            underlayColor={'#ffffff'}
+            onPress={this.props.onOverlayClose}>
+            <Text style={[styles.centerText, styles.button]}>CANCEL</Text>
           </TouchableHighlight>
         </View>
       </Modal>
@@ -58,19 +72,46 @@ class AddMealOverlay extends React.Component {
 }
 
 let styles = StyleSheet.create({
+  searchIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
   addMealOverlay: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: window.width,
+    paddingRight: 20,
+    paddingLeft: 20,
+    marginBottom: 50,
   },
   textInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1
+    flex: 3,
+    height: 50,
+    paddingTop: 15,
+    paddingRight: 5,
+    paddingBottom: 15,
+    paddingLeft: 5,
+    borderColor: globals.lightText,
+    fontFamily: 'SanFranciscoText-Regular',
+    borderWidth: 1,
   },
-  addBtn: {
+  centerText: {
+    textAlign: 'center',
   },
-  cancelBtn: {
-  }
+  button: {
+    marginBottom: 50,
+    fontSize: 20,
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: globals.primary,
+  },
 });
 
 module.exports = AddMealOverlay;
