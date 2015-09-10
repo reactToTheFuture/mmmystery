@@ -38,8 +38,11 @@ class Main extends React.Component {
       currPlateIndex: -1,
       plates: [],
       searchLatLng: null,
+      filteredPlates: [],
       goSettings: false,
       categoryFilter: [],
+      filterActivated: false,
+      userInfo: 'not null',
     };
 
     if(props.initialPosition) {
@@ -69,7 +72,6 @@ class Main extends React.Component {
         };
 
         var restaurant = helpers.formatIdString(restaurantId);
-
         var morePlates = plates.map((plate) => {
           var firebaseKeys;
 
@@ -84,6 +86,7 @@ class Main extends React.Component {
           var randomKey = firebaseKeys[randomI];
           var img_url = plate.images[randomKey];
           var name = helpers.formatIdString(plate.key);
+          // Add here category
 
           return {
             name,
@@ -163,14 +166,18 @@ class Main extends React.Component {
 
   doneButtonSettingsPressed() {
     this.props.navigator.pop();
-    console.log('Done pressed');
-    console.log('categoryFilter to apply', this.state.categoryFilter);
     // Applu category filter after Done is pressed.
+    this.setState({filterActivated: !!this.state.categoryFilter.length});
+    this.setState({filteredPlates: helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter)});
+
   }
 
   handleSettingsConfig(categoryFilter) {
     console.log('handleSettingsConfig category', categoryFilter);
     this.setState({categoryFilter: categoryFilter});
+  }
+
+  componentWillMount() {
   }
 
   _onPressSettings() {
@@ -200,7 +207,7 @@ class Main extends React.Component {
       return (
         <View style={styles.container}>
           <PlatesDashBoard
-
+            user={this.props.route.props.userInfo}
             plates={this.state.plates}
             lastPosition={this.props.lastPosition}
             currPlateIndex={this.state.currPlateIndex}

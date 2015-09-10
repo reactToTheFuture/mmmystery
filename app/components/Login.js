@@ -49,14 +49,15 @@ var {
   }
 
   async getAccesToken() {
+    let _this = this;
     var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
       let errorLogin = false;
       if (token) {
-      this.setState({token});
-
       // GraphQL query for user information
-      let fetchProfileRequest = new FBSDKGraphRequest((error, result) => {
+      console.log(this.state.token);
+      let fetchProfileRequest = new FBSDKGraphRequest((error, userInfo) => {
         errorLogin = !!error;
+
         if (error) {
           console.warn('FBSDKGraphRequest', error);
           AlertIOS.alert(
@@ -67,15 +68,14 @@ var {
           );
           this.setState({responseToken: true});
         } else {
-          console.log('FBSDKGraphRequest', result);
-          this.setState({userInfo: result});
-          console.log('Welcome ' + result.first_name + "!");
+          console.log('Welcome ' + userInfo.first_name + "!");
+          this.switchToMain(userInfo);
         }
       }, 'me?fields=first_name,last_name,picture');
-      fetchProfileRequest.start(0);
 
+      fetchProfileRequest.start(0);
       // If error when making graphQL query, login again.
-      errorLogin ? null : this.switchToMain();
+      // errorLogin ? null : this.switchToMain();
       } else {
         this.setState({responseToken: true});
         console.log('No token founded');
@@ -124,14 +124,12 @@ var {
     })
   }
 
-  switchToMain() {
+  switchToMain(userInfo) {
+    console.log('switchToMain userInfo', userInfo)
     this.props.navigator.push({
       component: Main,
       props: {
-        result: this.state.result,
-        token: this.state.token,
-        userInfo: this.state.userInfo,
-        responseToken: this.responseToken.bind(this)
+        userInfo: userInfo,
       },
       navigationBar: (
         <NavigationBar

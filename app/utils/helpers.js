@@ -23,6 +23,10 @@ var helpers = {
     return (meters * 0.00062137).toFixed(2);
   },
 
+  getFilteredPlates(plates, filterArr){
+
+  },
+
   // Helpers functions used in Settings
   // Matrix 3x3 for pics, category names and selected pics.
   makeArrayOfNineArray(data, bool) {
