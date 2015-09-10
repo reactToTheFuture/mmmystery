@@ -24,7 +24,7 @@ class PlatesDashboardContent extends React.Component {
         plateStyling = styles.plateName;
       }
     }
-
+    // console.log('PlatesDashboardContent', this.props.user);
     return (
       <View style={styles.imageFooter}>
         <View style={styles.footerText}>

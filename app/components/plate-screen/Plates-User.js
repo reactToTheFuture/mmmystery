@@ -5,6 +5,7 @@ var Colors = require('../../../globalVariables');
 var {
   View,
   Text,
+  Image,
   StyleSheet
 } = React;
 
@@ -13,8 +14,10 @@ class PlatesUser extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.picture}></View>
-        <Text style={styles.name}>{this.props.user.name}</Text>
+        <Image
+          style={styles.picture}
+          source={{uri: this.props.user.picture.data.url}}/>
+        <Text style={styles.name}>{this.props.user.first_name}</Text>
       </View>
     );
   }
@@ -26,10 +29,11 @@ let styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginTop: 5,
+    marginHorizontal: 4,
   },
   picture: {
-    width:25,
-    height: 25,
+    width:35,
+    height: 35,
     backgroundColor: Colors.yellowWhite,
     borderRadius: 25/2,
     marginRight: 5,
@@ -37,7 +41,7 @@ let styles = StyleSheet.create({
   name: {
     fontFamily: 'SanFranciscoText-Regular',
     color: Colors.lightText,
-    fontSize: 15
+    fontSize: 18
   },
 })
 

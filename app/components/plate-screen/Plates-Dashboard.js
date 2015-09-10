@@ -32,9 +32,6 @@ class PlatesDashBoard extends React.Component {
       priceFactor: 1,
       showMinutes: false,
       searchAddress: null,
-      user: {
-        name: 'Phil Keys'
-      }
     };
   }
 
@@ -174,7 +171,6 @@ class PlatesDashBoard extends React.Component {
     let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
     let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
     let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
-
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
@@ -185,7 +181,7 @@ class PlatesDashBoard extends React.Component {
             >
               <View style={styles.imageCrop}></View>
             </Image>
-            <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} user={this.state.user}/>
+            <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} user={this.props.user}/>
         </Animated.View>
       </View>
     );
