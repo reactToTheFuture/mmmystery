@@ -55,7 +55,7 @@ var {
         } else {
           console.log('FBSDKGraphRequest', result);
           this.setState({userInfo: result});
-          alert('Welcome ' + result.first_name + "!");
+          // alert('Welcome ' + result.first_name + "!");
         }
       }, 'me?fields=first_name,last_name,picture');
       fetchProfileRequest.start(0);

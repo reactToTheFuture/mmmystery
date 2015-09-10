@@ -10,11 +10,13 @@ var firebase_api = require('../utils/firebase-api');
 var helpers = require('../utils/helpers');
 var FBSDKLogin = require('react-native-fbsdklogin');
 var Login = require('./Login');
+var SettingsDashboard = require('./Settings-Dashboard');
 var {
   View,
   StyleSheet,
   Text,
   TouchableHighlight,
+  Image,
 } = React;
 
 var {
@@ -37,7 +39,11 @@ let styles = StyleSheet.create({
     marginHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row'
-  }
+  },
+  settings: {
+    width: 40,
+    height: 40,
+  },
 });
 
 class Main extends React.Component {
@@ -48,13 +54,15 @@ class Main extends React.Component {
       status: 'Finding your location...',
       watchID: null,
       currPlateIndex: -1,
-      plates: []
+      plates: [],
+      goSettings: false,
+      categoryFilter: [],
     };
 
     if(props.initialPosition) {
       this.state.status = 'Finding nearby restaurants...';
       var {latitude, longitude} = props.initialPosition.coords;
-      this.buildPlatesArray({latitude, longitude}, 60); 
+      this.buildPlatesArray({latitude, longitude}, 60);
     }
   }
 
@@ -150,22 +158,50 @@ class Main extends React.Component {
     });
   }
 
-  _onPressButton() {
+  _onPressLogOut() {
    FBSDKLoginManager.logOut();
    this.props.route.props.responseToken();
    this.props.navigator.popToTop();
+  }
+
+  doneButtonSettingsPressed() {
+    this.props.navigator.pop();
+    console.log('Done pressed');
+    console.log('categoryFilter to apply', this.state.categoryFilter);
+    // Applu category filter after Done is pressed.
+  }
+
+  handleSettingsConfig(categoryFilter) {
+    console.log('handleSettingsConfig category', categoryFilter);
+    this.setState({categoryFilter: categoryFilter});
+  }
+
+  _onPressSettings() {
+    this.props.navigator.push({
+      component: SettingsDashboard,
+      props: {
+        handleSettingsConfig: this.handleSettingsConfig.bind(this),
+      },
+      navigationBar: (
+        <NavigationBar
+          title="Discover Settings"
+          onNext={this.doneButtonSettingsPressed.bind(this)}
+          nextTitle="Done"/>
+      )
+    });
+    this.setState({goSettings: true});
   }
 
   render() {
     return (
       <View style={styles.mainContainer}>
         <TouchableHighlight
-        onPress={this._onPressButton.bind(this)}>
+        onPress={this._onPressLogOut.bind(this)}>
           <Text>LogOut test</Text>
         </TouchableHighlight>
         <InitialLoadingOverlay
-          isVisible={!this.state.plates.length}
-          status={this.state.status} />
+          isVisible={this.state.goSettings ? false : !this.state.plates.length}
+          status={this.state.status}/>
         <PlatesDashBoard
           plates={this.state.plates}
           lastPosition={this.props.lastPosition}
@@ -174,8 +210,12 @@ class Main extends React.Component {
           onRejection={this.handleRejection.bind(this)} />
         <View style={styles.footer}>
           <Text>This is a footer</Text>
-          <TouchableHighlight>
-            <Text>Settings</Text>
+          <TouchableHighlight
+            onPress={this._onPressSettings.bind(this)}>
+             <Image
+              style={styles.settings}
+              source={{uri: 'http://zizaza.com/cache/big_thumb/iconset/580148/580162/PNG/128/android_icons/settings_android_mobile_icon_android_icon_png_settings_png_settings_icon.png'}}
+            />
           </TouchableHighlight>
         </View>
       </View>
