@@ -29,9 +29,9 @@ class MealSelection extends React.Component {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     super(props);
     this.state = {
-      loading: true,
+      isLoading: true,
       meals: ds.cloneWithRows([]),
-      mealSubmitted: false,
+      isMealSubmitted: false,
       noPlates: false,
       isAddingMeal: false,
       searchText: ''
@@ -44,14 +44,14 @@ class MealSelection extends React.Component {
 
       if(!plates.length) {
         this.setState({
-          loading: false,
+          isLoading: false,
           noPlates: true
         });
         return;
       }
 
       this.setState({
-        loading: false,
+        isLoading: false,
         meals: this.state.meals.cloneWithRows(plates)
       })
     });
@@ -80,8 +80,13 @@ class MealSelection extends React.Component {
     });
   }
 
-  handleConfirmation() {
+  returnHome() {
     var MainRoute = this.props.navigator.getCurrentRoutes()[1];
+    this.props.navigator.popToRoute(MainRoute);
+  }
+
+  uploadAnother() {
+    var MainRoute = this.props.navigator.getCurrentRoutes()[2];
     this.props.navigator.popToRoute(MainRoute);
   }
 
@@ -90,19 +95,26 @@ class MealSelection extends React.Component {
       return;
     }
 
+    this.setState({
+      isLoading: true
+    });
+
     var props = this.props.route.props;
     var restaurantID = props.restaurant.id;
     var plateID = helpers.formatNameString(meal);
     var image = props.image;
 
-    aws_api.uploadToSW3(image)
-    .then((imageUrl) => {
-      firebase_api.addPlate(restaurantID, plateID, imageUrl);
+    // aws_api.uploadToSW3(image)
+    // .then((imageUrl) => {
+    //   firebase_api.addPlate(restaurantID, plateID, imageUrl);
 
       this.setState({
-        mealSubmitted: true
+        isLoading: false,
+        isAddingMeal: false,
+        isMealSubmitted: true
       });
-    });
+
+    // });
   }
 
   render() {
@@ -114,7 +126,7 @@ class MealSelection extends React.Component {
           { this.state.noPlates ?
             <View style={[styles.textContainer]}>
               <Text style={[styles.centerText, styles.headline, styles.callout]}>Oh no! There are no meals</Text>
-              <Text style={[styles.centerText, styles.headline, styles.subheadline]}>Add the title of your meal so others will know its delicious!</Text>
+              <Text style={[styles.centerText, styles.headline, styles.subheadline]}>Add your meal so others will know its delicious!</Text>
               <TouchableHighlight
                 underlayColor={'#ffffff'}
                 onPress={this.handleOverlayOpen.bind(this)}>
@@ -142,16 +154,17 @@ class MealSelection extends React.Component {
           }
         </View>
 
-        <MealSubmittedOverlay
-          isVisible={this.state.mealSubmitted}
-          onConfirmation={this.handleConfirmation.bind(this)} />
         <AddMealOverlay
           isVisible={this.state.isAddingMeal}
           onAddMeal={this.selectMeal.bind(this)}
           onOverlayClose={this.handleOverlayClose.bind(this)} />
+        <MealSubmittedOverlay
+          isVisible={this.state.isMealSubmitted}
+          onUploadAnother={this.uploadAnother.bind(this)}
+          onReturnHome={this.returnHome.bind(this)} />
         <ActivityIndicatorIOS
-          animating={this.state.loading}
-          style={[styles.centering, {height: 80}]}
+          animating={this.state.isLoading}
+          style={styles.loadingIcon}
           size="large"
         />
       </View>

@@ -38,6 +38,7 @@ let styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   text: {
+    width: window.width,
     textAlign: 'center'
   }
 });

@@ -5,16 +5,24 @@ var {
   Text,
   Modal,
   TextInput,
+  ActivityIndicatorIOS,
   TouchableHighlight,
   StyleSheet
 } = React;
+
+var { Icon } = require('react-native-icons');
+
+var Dimensions = require('Dimensions');
+var window = Dimensions.get('window');
+var globals = require('../../globalVariables');
 
 class AddMealOverlay extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      meal: ''
+      meal: '',
+      isLoading: false
     };
   }
 
@@ -25,8 +33,11 @@ class AddMealOverlay extends React.Component {
   }
 
   handleMealAdd() {
+    this.setState({
+      isLoading: true
+    });
+
     this.props.onAddMeal(this.state.meal);
-    this.props.onOverlayClose();
   }
 
   render() {
@@ -34,23 +45,36 @@ class AddMealOverlay extends React.Component {
       <Modal
         visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={this.handleTextInput.bind(this)}
-            placeholder="What did you have?"
-            placeholderTextColor="grey"
-            value={this.state.meal}
+          <View style={styles.inputContainer}>
+            <Icon
+              name='ion|fork'
+              size={30}
+              color={globals.lightText}
+              style={styles.searchIcon}
+            />
+            <TextInput
+              style={styles.textInput}
+              onChangeText={this.handleTextInput.bind(this)}
+              placeholder="What did you have?"
+              placeholderTextColor="grey"
+              value={this.state.searchText}
+            />
+          </View>
+          <TouchableHighlight
+            underlayColor={'#ffffff'}
+            onPress={this.handleMealAdd.bind(this)}>
+            <Text style={[styles.centerText, styles.button]}>ADD IT!</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            underlayColor={'#ffffff'}
+            onPress={this.props.onOverlayClose}>
+            <Text style={[styles.centerText, styles.button]}>CANCEL</Text>
+          </TouchableHighlight>
+          <ActivityIndicatorIOS
+            animating={this.state.isLoading}
+            style={styles.loadingIcon}
+            size="large"
           />
-          <TouchableHighlight
-            onPress={this.handleMealAdd.bind(this)}
-            style={styles.addBtn}>
-            <Text>ADD IT!</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            onPress={this.props.onOverlayClose}
-            style={styles.cancelBtn}>
-            <Text>CANCEL</Text>
-          </TouchableHighlight>
         </View>
       </Modal>
     );
@@ -58,19 +82,52 @@ class AddMealOverlay extends React.Component {
 }
 
 let styles = StyleSheet.create({
+  searchIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
   addMealOverlay: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: window.width,
+    paddingRight: 20,
+    paddingLeft: 20,
+    marginBottom: 50,
   },
   textInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1
+    flex: 3,
+    height: 50,
+    paddingTop: 15,
+    paddingRight: 5,
+    paddingBottom: 15,
+    paddingLeft: 5,
+    borderColor: globals.lightText,
+    fontFamily: 'SanFranciscoText-Regular',
+    borderWidth: 1,
   },
-  addBtn: {
+  centerText: {
+    textAlign: 'center',
   },
-  cancelBtn: {
-  }
+  button: {
+    marginBottom: 20,
+    fontSize: 20,
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: globals.primary,
+  },
+  loadingIcon: {
+    position: 'absolute',
+    top: 100,
+    left: (window.width/2 - 18),
+    backgroundColor: "transparent",
+  },
 });
 
 module.exports = AddMealOverlay;
