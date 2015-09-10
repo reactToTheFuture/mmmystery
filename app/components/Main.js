@@ -14,6 +14,7 @@ var Login = require('./Login');
 var Colors = require('../../globalVariables');
 var SettingsDashboard = require('./Settings-Dashboard');
 var { Icon, } = require('react-native-icons');
+
 var {
   View,
   StyleSheet,
@@ -197,7 +198,7 @@ class Main extends React.Component {
       )
     } else {
       return (
-        <View style={styles.mainContainer}>
+        <View style={styles.container}>
           <PlatesDashBoard
 
             plates={this.state.plates}
@@ -216,7 +217,7 @@ let styles = StyleSheet.create({
   map: {
     flex: 1,
   },
-  mainContainer: {
+  container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',

@@ -133,7 +133,6 @@ class MealSelection extends React.Component {
                   <Text style={[styles.centerText, styles.headline, styles.callout]}>Don't see what you're looking for?</Text>
                   <TouchableHighlight
                     underlayColor={'#ffffff'}
-                    style={styles.button}
                     onPress={this.handleOverlayOpen.bind(this)}>
                     <Text style={[styles.centerText, styles.button]}>Add a new meal +</Text>
                   </TouchableHighlight>
@@ -176,7 +175,6 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    position: 'relative',
   },
   innerContainer: {
     flex: 1,

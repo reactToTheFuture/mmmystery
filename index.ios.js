@@ -14,12 +14,6 @@ let {
   Image
 } = React;
 
-var styles = StyleSheet.create({
-  app: {
-    flex: 1
-  }
-});
-
 class MysteryMeal extends React.Component {
 
   constructor(props) {
@@ -90,5 +84,12 @@ class MysteryMeal extends React.Component {
     );
   }
 }
+
+var styles = StyleSheet.create({
+  app: {
+    flex: 1,
+    position: 'relative',
+  }
+});
 
 AppRegistry.registerComponent('MysteryMeal', () => MysteryMeal);

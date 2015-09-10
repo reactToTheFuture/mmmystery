@@ -36,7 +36,7 @@
 		5163F1931B9A93E300538E9A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5163F1901B9A93E300538E9A /* FBSDKCoreKit.framework */; };
 		5163F1941B9A93E300538E9A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5163F1911B9A93E300538E9A /* FBSDKLoginKit.framework */; };
 		5163F1951B9A93E300538E9A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5163F1921B9A93E300538E9A /* FBSDKShareKit.framework */; };
-		6FBBEC561B97B8190095F89E /* libRNOverlay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FBBEC551B97B7E30095F89E /* libRNOverlay.a */; };
+		6F4137CF1BA10394007B7ADE /* libRNOverlay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F4137CE1BA10387007B7ADE /* libRNOverlay.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9F40ACF01B94FF4F00EFDDCA /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F40ACE71B94FF2D00EFDDCA /* libRCTMapboxGL.a */; };
 		9F40ACF61B95000800EFDDCA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F40ACF51B95000800EFDDCA /* CoreTelephony.framework */; };
@@ -135,9 +135,9 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
-		6FBBEC541B97B7E30095F89E /* PBXContainerItemProxy */ = {
+		6F4137CD1BA10387007B7ADE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6FBBEC441B97B7E30095F89E /* RNOverlay.xcodeproj */;
+			containerPortal = 6F4137C91BA10387007B7ADE /* RNOverlay.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNOverlay;
@@ -227,7 +227,7 @@
 		5163F1901B9A93E300538E9A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		5163F1911B9A93E300538E9A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		5163F1921B9A93E300538E9A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
-		6FBBEC441B97B7E30095F89E /* RNOverlay.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNOverlay.xcodeproj; path = "../node_modules/react-native-overlay/RNOverlay.xcodeproj"; sourceTree = "<group>"; };
+		6F4137C91BA10387007B7ADE /* RNOverlay.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNOverlay.xcodeproj; path = "../node_modules/react-native-overlay/RNOverlay.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		9F40ACDD1B94FF2D00EFDDCA /* RCTMapboxGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMapboxGL.xcodeproj; path = "../node_modules/react-native-mapbox-gl/RCTMapboxGL.xcodeproj"; sourceTree = "<group>"; };
@@ -261,9 +261,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F4137CF1BA10394007B7ADE /* libRNOverlay.a in Frameworks */,
 				4A2C021A1B9F9C6E00D1573D /* libReactNativeIcons.a in Frameworks */,
 				4A0CFFF51B9B6EE400619EB1 /* libRCTCamera.a in Frameworks */,
-				6FBBEC561B97B8190095F89E /* libRNOverlay.a in Frameworks */,
 				9F40AD061B95006B00EFDDCA /* libz.dylib in Frameworks */,
 				9F832C841B9A5F18008C4FEC /* libRCTFBSDKCore.a in Frameworks */,
 				9F832C851B9A5F18008C4FEC /* libRCTFBSDKShare.a in Frameworks */,
@@ -419,10 +419,10 @@
 			name = Frameworks;
 			sourceTree = "<unknown>";
 		};
-		6FBBEC451B97B7E30095F89E /* Products */ = {
+		6F4137CA1BA10387007B7ADE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6FBBEC551B97B7E30095F89E /* libRNOverlay.a */,
+				6F4137CE1BA10387007B7ADE /* libRNOverlay.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -438,12 +438,12 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6F4137C91BA10387007B7ADE /* RNOverlay.xcodeproj */,
 				4A2C02031B9F9C5A00D1573D /* ReactNativeIcons.xcodeproj */,
 				4A3071781B9AD23F004F336D /* RCTCamera.xcodeproj */,
 				9F832C701B9A5CB2008C4FEC /* RCTFBSDKCore.xcodeproj */,
 				9F832C6A1B9A5CAA008C4FEC /* RCTFBSDKShare.xcodeproj */,
 				9F832C5E1B9A5C8D008C4FEC /* RCTFBSDKLogin.xcodeproj */,
-				6FBBEC441B97B7E30095F89E /* RNOverlay.xcodeproj */,
 				9F40ACDD1B94FF2D00EFDDCA /* RCTMapboxGL.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -673,8 +673,8 @@
 					ProjectRef = 4A2C02031B9F9C5A00D1573D /* ReactNativeIcons.xcodeproj */;
 				},
 				{
-					ProductGroup = 6FBBEC451B97B7E30095F89E /* Products */;
-					ProjectRef = 6FBBEC441B97B7E30095F89E /* RNOverlay.xcodeproj */;
+					ProductGroup = 6F4137CA1BA10387007B7ADE /* Products */;
+					ProjectRef = 6F4137C91BA10387007B7ADE /* RNOverlay.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -756,11 +756,11 @@
 			remoteRef = 4A30717D1B9AD23F004F336D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6FBBEC551B97B7E30095F89E /* libRNOverlay.a */ = {
+		6F4137CE1BA10387007B7ADE /* libRNOverlay.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNOverlay.a;
-			remoteRef = 6FBBEC541B97B7E30095F89E /* PBXContainerItemProxy */;
+			remoteRef = 6F4137CD1BA10387007B7ADE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {

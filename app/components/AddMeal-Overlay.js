@@ -1,11 +1,9 @@
 import React from 'react-native';
-var Dimensions = require('Dimensions');
-var window = Dimensions.get('window');
-var Overlay = require('react-native-overlay');
 
 var {
   View,
   Text,
+  Modal,
   TextInput,
   TouchableHighlight,
   StyleSheet
@@ -33,8 +31,8 @@ class AddMealOverlay extends React.Component {
 
   render() {
     return (
-      <Overlay
-        isVisible={this.props.isVisible}>
+      <Modal
+        visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
           <TextInput
             style={styles.textInput}
@@ -54,7 +52,7 @@ class AddMealOverlay extends React.Component {
             <Text>CANCEL</Text>
           </TouchableHighlight>
         </View>
-      </Overlay>
+      </Modal>
     );
   }
 }
@@ -62,11 +60,7 @@ class AddMealOverlay extends React.Component {
 let styles = StyleSheet.create({
   addMealOverlay: {
     flex: 1,
-    flexDirection: 'column',
     justifyContent: 'center',
-    width: window.width,
-    height: window.height,
-    backgroundColor: '#ffffff',
   },
   textInput: {
     height: 40,
