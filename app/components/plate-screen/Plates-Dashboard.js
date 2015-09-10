@@ -2,8 +2,11 @@ var React = require('react-native');
 var clamp = require('clamp');
 var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var mapbox_api = require('../utils/mapbox-api');
+var PlatesDashboardContent = require('./Plates-Dashboard-Content');
 var prevIndex;
+var mapbox_api = require('../../utils/mapbox-api');
+var Colors = require('../../../globalVariables');
+
 
 var {
   StyleSheet,
@@ -26,7 +29,12 @@ class PlatesDashBoard extends React.Component {
       distance: null,
       loadingImage: true,
       plate: null,
+      priceFactor: 1,
       showMinutes: false,
+      searchAddress: null,
+      user: {
+        name: 'Phil Keys'
+      }
     };
   }
 
@@ -169,28 +177,15 @@ class PlatesDashBoard extends React.Component {
 
     return (
       <View style={styles.container}>
-        <ActivityIndicatorIOS
-          animating={this.state.loadingImage}
-          style={[styles.centering, {height: 80}]}
-          size="large"
-        />
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
-          <Image
-            style={styles.img}
-            source={{uri: this.state.plate ? this.state.plate.img_url : null}}
-            onLoad={this._imageLoaded.bind(this)}
-          />
-          <View style={styles.imageFooter}>
-            <View style={styles.textDisplayer}>
-              <Text styles={styles.introTime}> You're just
-                  <Text style={styles.minutes}> {this.state.distance ? this.state.distance : null} minutes </Text>
-                away!</Text>
-              <Text style={styles.plateName}> {this.state.plate ? this.state.plate.name : null} </Text>
-            </View>
             <Image
-              source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Dollar_sign_in_circle.svg/2000px-Dollar_sign_in_circle.svg.png'}}
-              style={styles.priceImage}/>
-          </View>
+              style={styles.img}
+              source={{uri: this.state.plate ? this.state.plate.img_url : null}}
+              onLoad={this._imageLoaded.bind(this)}
+            >
+              <View style={styles.imageCrop}></View>
+            </Image>
+            <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} user={this.state.user}/>
         </Animated.View>
       </View>
     );
@@ -201,43 +196,39 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   card: {
-    marginTop: 100,
-    width: window.width,
-    height: window.height/2
+    //marginTop: 100,
+    width: window.width - 30,
+    height: window.height/1.25,
+    borderTopLeftRadius: 11,
+    borderTopRightRadius: 11,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    shadowColor: Colors.lightText,
+    shadowOpacity: 0.5,
+    shadowRadius: .9,
+    shadowOffset: {
+      height: 1.4,
+      width: 0
+    }
   },
   img: {
-    flex: 1
-  },
-  centering: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  imageFooter: {
-    flexDirection: 'row',
-    marginHorizontal: 15,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 15,
-    borderColor: 'black',
+    flex: 11,
+    borderRadius: 12,
+    borderColor: 'transparent',
     borderWidth: 1,
+    position: 'relative'
   },
-  textDisplayer: {
-    flexDirection: 'column',
+  imageCrop: {
+    width: window.width - 30,
+    height: 10,
+    backgroundColor: 'white',
+    position: 'absolute',
+    bottom: 0,
+    left: -1
   },
-  priceImage: {
-    width: 60,
-    height: 60
-  },
-  plateName: {
-    fontSize: 25
-  },
-  minutes: {
-    color: '#FEBB27',
-    fontWeight: 'bold',
-  }
 });
 
 module.exports = PlatesDashBoard;

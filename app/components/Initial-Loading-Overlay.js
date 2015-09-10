@@ -17,6 +17,9 @@ let styles = StyleSheet.create({
     width: window.width,
     height: window.height,
     backgroundColor: '#ffffff',
+  },
+  text: {
+    textAlign: 'center'
   }
 });
 
@@ -26,7 +29,7 @@ class initialLoadingOverlay extends React.Component {
       <Overlay
         isVisible={this.props.isVisible} >
         <View style={styles.loadingOverlay}>
-          <Text>{this.props.status}</Text>
+          <Text style={styles.text}>{this.props.status}</Text>
         </View>
       </Overlay>
     );

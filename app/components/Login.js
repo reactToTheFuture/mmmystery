@@ -6,14 +6,23 @@ var FBSDKLogin = require('react-native-fbsdklogin');
 
 var Main = require('./Main');
 var NavigationBar = require('react-native-navbar');
+
+// Custom navIcons that make use of react-native-navbar
+var NavigationPrev = require('./navigation/Custom-Prev');
+var NavigationNext = require('./navigation/Custom-Next');
+
 var CameraDashboard = require('./Camera-Dashboard');
 var FBSDKLogin = require('react-native-fbsdklogin');
+// set of global colors to use app wide
+var Colors = require('../../globalVariables');
+
 
 var {
   StyleSheet,
   AlertIOS,
   View,
   TouchableHighlight,
+  TouchableOpacity,
   Text,
   Image
 } = React;
@@ -55,7 +64,6 @@ var {
         } else {
           console.log('FBSDKGraphRequest', result);
           this.setState({userInfo: result});
-          // alert('Welcome ' + result.first_name + "!");
         }
       }, 'me?fields=first_name,last_name,picture');
       fetchProfileRequest.start(0);
@@ -67,17 +75,6 @@ var {
         console.log('No token founded');
       }
     }));
-  }
-
-  cameraBtnPress(navigator, route) {
-    navigator.push({
-      title: 'Camera',
-      component: CameraDashboard,
-      navigationBar: (
-        <NavigationBar
-          title="Picture Time" />
-      )
-    })
   }
 
   responseToken() {
@@ -109,6 +106,18 @@ var {
     });
   };
 
+  cameraBtnPress(navigator, route) {
+    console.log('I am hit!');
+    navigator.push({
+      title: 'Camera',
+      component: CameraDashboard,
+      navigationBar: (
+        <NavigationBar
+          title="Picture Time" />
+      )
+    })
+  }
+
   switchToMain() {
     this.props.navigator.push({
       component: Main,
@@ -120,10 +129,11 @@ var {
       },
       navigationBar: (
         <NavigationBar
+          customPrev={<NavigationPrev iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
           title="Mystery Meal"
-          onNext={this.cameraBtnPress}
-          hidePrev={true}
-          nextTitle={"camera"} />
+          titleColor={Colors.darkText}
+          customNext={<NavigationNext handler={this.cameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
+          style={styles.navigator} />
       )
     });
   }
@@ -190,7 +200,7 @@ var styles = StyleSheet.create({
   loginImage: {
     flex: 1,
     alignSelf: 'auto',
-  }
+  },
 });
 
 module.exports = Login;
