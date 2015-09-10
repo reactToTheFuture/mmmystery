@@ -32,6 +32,7 @@
 		4A82D9791B9F72B300385EA3 /* SanFranciscoText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A82D9721B9F72B300385EA3 /* SanFranciscoText-Regular.otf */; };
 		4A82D97A1B9F72B300385EA3 /* SanFranciscoText-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A82D9731B9F72B300385EA3 /* SanFranciscoText-RegularItalic.otf */; };
 		4A82D97B1B9F72B300385EA3 /* SanFranciscoText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A82D9741B9F72B300385EA3 /* SanFranciscoText-Semibold.otf */; };
+		4AB2AA2B1BA0DAE20065A0C5 /* SanFranciscoDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4AB2AA2A1BA0DAE20065A0C5 /* SanFranciscoDisplay-Bold.otf */; };
 		5163F1931B9A93E300538E9A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5163F1901B9A93E300538E9A /* FBSDKCoreKit.framework */; };
 		5163F1941B9A93E300538E9A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5163F1911B9A93E300538E9A /* FBSDKLoginKit.framework */; };
 		5163F1951B9A93E300538E9A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5163F1921B9A93E300538E9A /* FBSDKShareKit.framework */; };
@@ -222,6 +223,7 @@
 		4A82D9721B9F72B300385EA3 /* SanFranciscoText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SanFranciscoText-Regular.otf"; path = "fonts/SanFranciscoText-Regular.otf"; sourceTree = "<group>"; };
 		4A82D9731B9F72B300385EA3 /* SanFranciscoText-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SanFranciscoText-RegularItalic.otf"; path = "fonts/SanFranciscoText-RegularItalic.otf"; sourceTree = "<group>"; };
 		4A82D9741B9F72B300385EA3 /* SanFranciscoText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SanFranciscoText-Semibold.otf"; path = "fonts/SanFranciscoText-Semibold.otf"; sourceTree = "<group>"; };
+		4AB2AA2A1BA0DAE20065A0C5 /* SanFranciscoDisplay-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SanFranciscoDisplay-Bold.otf"; path = "fonts/SanFranciscoDisplay-Bold.otf"; sourceTree = "<group>"; };
 		5163F1901B9A93E300538E9A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		5163F1911B9A93E300538E9A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		5163F1921B9A93E300538E9A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4AB2AA2A1BA0DAE20065A0C5 /* SanFranciscoDisplay-Bold.otf */,
 				4A2C021B1B9F9CDC00D1573D /* ionicons.ttf */,
 				4A82D96E1B9F72B300385EA3 /* SanFranciscoDisplay-Light.otf */,
 				4A82D96F1B9F72B300385EA3 /* SanFranciscoDisplay-Regular.otf */,
@@ -832,6 +835,7 @@
 				4A82D9781B9F72B300385EA3 /* SanFranciscoText-Medium.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				4AB2AA2B1BA0DAE20065A0C5 /* SanFranciscoDisplay-Bold.otf in Resources */,
 				4A82D9761B9F72B300385EA3 /* SanFranciscoDisplay-Regular.otf in Resources */,
 				4A82D9771B9F72B300385EA3 /* SanFranciscoDisplay-Semibold.otf in Resources */,
 				4A82D97B1B9F72B300385EA3 /* SanFranciscoText-Semibold.otf in Resources */,
