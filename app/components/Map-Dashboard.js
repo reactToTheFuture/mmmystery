@@ -3,8 +3,7 @@ var Directions = require('./Directions.io.js');
 
 var mapbox_api = require('../utils/mapbox-api');
 
-var RouteLoadingOverlay = require('./Route-Loading-Overlay');
-var RouteConfirmationOverlay = require('./Route-Confirmation-Overlay');
+var RouteOverlay = require('./Route-Overlay');
 var ArrivalOverlay = require('./Arrival-Overlay');
 var Main = require('./Main');
 var Map = require('./Map.io.js');
@@ -13,17 +12,6 @@ var {
   View,
   StyleSheet
 } = React;
-
-let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 30,
-    marginTop: 65,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff'
-  }
-});
 
 class MapDashBoard extends React.Component {
   constructor(props) {
@@ -138,21 +126,21 @@ class MapDashBoard extends React.Component {
 
   render() {
     return (
-      <View
-        style={styles.container}>
-        <Directions
-          stepDirections={this.state.stepDirections}
-          stepProgress={this.state.stepProgress}
-          onStepIncrement={this.handleStepIncrement.bind(this)}
-          onArrived={this.handleArrived.bind(this)} />
-        <Map
-          stepAnnotations={this.state.stepAnnotations}
-          userPosition={this.props.route.props.userPosition} />
-        <RouteConfirmationOverlay
-          isVisible={!this.state.isLoading && !this.state.isConfirmed}
+      <View style={styles.container}>
+        <View style={styles.mapContainer}>
+          <Directions
+            stepDirections={this.state.stepDirections}
+            stepProgress={this.state.stepProgress}
+            onStepIncrement={this.handleStepIncrement.bind(this)}
+            onArrived={this.handleArrived.bind(this)} />
+          <Map
+            stepAnnotations={this.state.stepAnnotations}
+            userPosition={this.props.route.props.userPosition} />
+        </View>
+        <RouteOverlay
+          isLoading={this.state.isLoading}
+          isVisible={this.state.isLoading || !this.state.isConfirmed}
           onConfirmation={this.handleRouteConfirmation.bind(this)} />
-        <RouteLoadingOverlay
-          isVisible={this.state.isLoading} />
         <ArrivalOverlay
           imageInfo={this.props.route.props.image}
           isVisible={!this.state.hasLeft && this.state.hasArrived}
@@ -161,5 +149,19 @@ class MapDashBoard extends React.Component {
     );
   }
 }
+
+let styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  mapContainer: {
+    flex: 1,
+    marginTop: 65,
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    paddingRight: 20,
+    paddingLeft: 20 
+  }
+});
 
 module.exports = MapDashBoard;

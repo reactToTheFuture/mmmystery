@@ -43,8 +43,13 @@ class CameraLive extends React.Component {
       props,
       navigationBar: (
         <NavigationBar
-          title="What Restaurant?" />
+          title="Where are you at?" />
       )
+    });
+
+    this.setState({
+      loading: false,
+      stage: 'capture'
     });
   }
 
@@ -54,10 +59,6 @@ class CameraLive extends React.Component {
     });
 
     NativeModules.ReadImageData.readImage(this.state.image.uri, (base64) => {
-      this.setState({
-        loading: false
-      });
-
       var props = {
         image: {
           base64,
@@ -125,11 +126,6 @@ class CameraLive extends React.Component {
           {this.state.stage === 'capture' ? <Button text="Cancel" testingStyles={styles.cameraTopCancel} onPress={this.previousScreen.bind(this)}/> : undefined }
           {this.state.stage === 'capture' ? <Button testingStyles={styles.cameraTopFlip} text="Flip Camera" onPress={this.switchCamera.bind(this)}/> : undefined}
         </View>
-        <ActivityIndicatorIOS
-          animating={this.state.loading}
-          style={[styles.centering, {height: 80}]}
-          size="large"
-        />
         {main}
         <View style={styles.cameraBottom}>
           {this.state.stage === 'capture' ?
@@ -138,6 +134,7 @@ class CameraLive extends React.Component {
             </View> :
             <View style={styles.cameraBottomPreviewContainer}>
               <Button testingStyles={styles.cameraBottomReset} text="Retake" onPress={this.setStage.bind(this, 'capture')} />
+              <ActivityIndicatorIOS animating={this.state.loading} size="large" />
               <Button testingStyles={styles.cameraBottomUsePhoto} text="Use Photo" onPress={this.usePhoto.bind(this, 'capture')} />
             </View>
           }
@@ -206,10 +203,6 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: fullWidth,
-  },
-  centering: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   welcome: {
     fontSize: 20,

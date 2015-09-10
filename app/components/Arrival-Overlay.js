@@ -1,39 +1,21 @@
 var React = require('react-native');
 var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var Overlay = require('react-native-overlay');
 
 var {
   View,
   Text,
+  Modal,
   Image,
   TouchableHighlight,
   StyleSheet
 } = React;
 
-let styles = StyleSheet.create({
-  arrivalOverlay: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: window.width,
-    height: window.height,
-    backgroundColor: '#ffffff',
-  },
-  button: {
-  },
-  arrivalImg: {
-    flex: 1,
-    width: window.width,
-    height: window.height/4
-  }
-});
-
 class ArrivalOverlay extends React.Component {
   render() {
     return (
-      <Overlay
-        isVisible={this.props.isVisible}>
+      <Modal
+        visible={this.props.isVisible}>
         <View style={styles.arrivalOverlay}>
           <Text>Congrats, you've arrrived at...</Text>
           <Text>{this.props.imageInfo.restaurant}</Text>
@@ -49,9 +31,24 @@ class ArrivalOverlay extends React.Component {
             <Text>SOUNDS GOOD</Text>
           </TouchableHighlight>
         </View>
-      </Overlay>
+      </Modal>
     );
   }
 }
+
+let styles = StyleSheet.create({
+  arrivalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+  },
+  button: {
+  },
+  arrivalImg: {
+    flex: 1,
+    width: window.width,
+    height: window.height/4
+  }
+});
 
 module.exports = ArrivalOverlay;

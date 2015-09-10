@@ -13,6 +13,10 @@ var {
   NativeModules
 } = React;
 
+var Dimensions = require('Dimensions');
+var window = Dimensions.get('window');
+var globals = require('../../globalVariables');
+
 class CameraRollView extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +59,7 @@ class CameraRollView extends React.Component {
       props,
       navigationBar: (
         <NavigationBar
-          title="What Restaurant?" />
+          title="Where are you at?" />
       )
     });
   }
@@ -84,11 +88,6 @@ class CameraRollView extends React.Component {
   render () {
     return (
       <ScrollView style={styles.container}>
-        <ActivityIndicatorIOS
-          animating={this.state.loading}
-          style={[styles.centering, {height: 80}]}
-          size="large"
-        />
         <View style={styles.imageGrid}>
           { this.state.images.map((image, i) => {
             return (
@@ -104,6 +103,11 @@ class CameraRollView extends React.Component {
             );
           })}
         </View>
+        <ActivityIndicatorIOS
+          animating={this.state.loading}
+          style={styles.loadingIcon}
+          size="large"
+        />
       </ScrollView>
     );
   }
@@ -112,22 +116,27 @@ class CameraRollView extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: globals.secondary,
+    position: 'relative',
   },
   imageGrid: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center'
+    justifyContent: 'space-between'
+  },
+  loadingIcon: {
+    position: 'absolute',
+    top: (window.height/2 - 36),
+    left: (window.width/2 - 36),
+    backgroundColor: "transparent",
   },
   button: {
     width: 110,
     height: 110,
     margin: 5
-  },
-  centering: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   image: {
     width: 110,
