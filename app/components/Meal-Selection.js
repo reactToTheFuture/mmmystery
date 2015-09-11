@@ -115,7 +115,7 @@ class MealSelection extends React.Component {
         firebase_api.updatePlate(restaurantID, plateID, key, imageUrl);
         this.setState({
           isLoading: false,
-          isDdingMeal: false,
+          isAddingMeal: false,
           isMealSubmitted: true
         });
       });
