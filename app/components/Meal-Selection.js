@@ -119,8 +119,7 @@ class MealSelection extends React.Component {
           isMealSubmitted: true
         });
       });
-
-    // });
+    });
   }
 
   render() {
