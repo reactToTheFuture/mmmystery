@@ -37,7 +37,6 @@ class Main extends React.Component {
       watchID: null,
       currPlateIndex: -1,
       plates: [],
-      searchLatLng: null,
       goSettings: false,
       categoryFilter: [],
       filterActivated: false,
@@ -46,53 +45,72 @@ class Main extends React.Component {
 
     if(props.initialPosition) {
       this.state.status = 'Finding nearby restaurants...';
+
       var {latitude, longitude} = props.initialPosition.coords;
+      
       this.buildPlatesArray({latitude, longitude}, 60);
+      this._getAddress(latitude, longitude);
     }
   }
 
   buildPlatesArray(userLocation,radius) {
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
-
       this.setState({
         status: 'Fetching yummy dishes...'
       });
+
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
-        if( !plates.length ) {
-          return;
+        if(!plates.length) {
+          throw new Error(`no plates for ${restaurantId}`);
         }
+        return plates;
+      })
+      .then((plates) => {
         firebase_api.getRestaurantById(restaurantId)
-        .then((restauranteInfo)=> {
+        .then((restaurantInfo)=> {
+          var restaurant = helpers.formatIdString(restaurantId);
           var location = {
             lat: locationTuple[0],
             lng: locationTuple[1]
           };
-          var restaurant = helpers.formatIdString(restaurantId);
-          var morePlates = plates.map((plate) => {
 
-            var firebaseKeys;
+          var morePlates = plates.map((plate) => {
+            var imageKeys;
 
             if( plate['images-lo'] ) {
-              firebaseKeys = Object.keys(plate['images-lo']);
+              imageKeys = Object.keys(plate['images-lo']);
             } else {
-              firebaseKeys = Object.keys(plate['images']);
+              imageKeys = Object.keys(plate['images']);
             }
-            var numOfImgs = firebaseKeys.length;
-            var randomI = Math.floor(Math.random() * numOfImgs);
-            var randomKey = firebaseKeys[randomI];
-            var img_url = plate.images[randomKey];
-            var name = helpers.formatIdString(plate.key);
-            var category = helpers.formatCategory(restauranteInfo.categories);
 
-            return {
+
+            var numOfImgs = imageKeys.length;
+            var randomImageIndex = Math.floor(Math.random() * numOfImgs);
+            var randomImageKey = imageKeys[randomImageIndex];
+            var img_url = plate.images[randomImageKey];
+            var name = helpers.formatIdString(plate.key);
+            var category = helpers.formatCategory(restaurantInfo.categories);
+
+            var platesObj = {
               name,
+              category,
               restaurant,
               location,
-              category,
               img_url
             };
+
+            firebase_api.getUserByImageId(randomImageKey)
+            .then(function(user) {
+              platesObj.user = user;
+            })
+            .catch(function(err) {
+              console.warn(err);
+            });
+
+            return platesObj;
           });
+
           var shuffleIndexIncrement = 2;
           var currPlateIndex = this.state.currPlateIndex;
 
@@ -108,32 +126,37 @@ class Main extends React.Component {
             plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
           });
         });
-      });
+      })
+      .fail((err) => {
+        // console.warn(err);
+      })
     });
   }
 
   _getAddress(lat, lng) {
     fetch(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true`)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.state.searchAddress = responseData.results[0].formatted_address.slice(0, 30) + '...';
-      })
-      .done();
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.setState({
+        searchAddress: responseData.results[0].formatted_address.slice(0, 30) + '...'
+      });
+    });
   }
 
   componentWillReceiveProps(newProps) {
-    if( !this.props.initialPosition && newProps.initialPosition ) {
-      this.setState({
-        status: 'Finding nearby restaurants...'
-      });
-      var {latitude, longitude} = newProps.initialPosition.coords;
-      // do the magic here....
-      this.setState({
-        searchLatLng: {latitude, longitude}
-      })
-      this._getAddress(latitude, longitude);
-      this.buildPlatesArray({latitude, longitude}, 60);
+
+    if(this.props.initialPosition || !newProps.initialPosition) {
+      return;
     }
+
+    this.setState({
+      status: 'Finding nearby restaurants...'
+    });
+
+    var {latitude, longitude} = newProps.initialPosition.coords;
+    
+    this.buildPlatesArray({latitude, longitude}, 60);
+    this._getAddress(latitude, longitude);
   }
 
   handleSelection(image) {
@@ -206,7 +229,6 @@ class Main extends React.Component {
       return (
         <View style={styles.container}>
           <PlatesDashBoard
-            user={this.props.route.props.userInfo}
             plates={this.state.filterActivated ? this.state.filteredPlates : this.state.plates}
             lastPosition={this.props.lastPosition}
             currPlateIndex={this.state.currPlateIndex}

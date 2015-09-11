@@ -16,7 +16,7 @@ class PlatesUser extends React.Component {
       <View style={styles.container}>
         <Image
           style={styles.picture}
-          source={{uri: this.props.user.picture.data.url}}/>
+          source={{uri: this.props.user.profile_image}}/>
         <Text style={styles.name}>{this.props.user.first_name}</Text>
       </View>
     );

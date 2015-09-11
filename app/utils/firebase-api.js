@@ -6,9 +6,57 @@ var ENDPOINT_URI = require('./config').firebase.ENDPOINT_URI;
 var base = Rebase.createClass(ENDPOINT_URI);
 var platesRef = new Firebase(ENDPOINT_URI + '/plates');
 var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
+var imageDataRef = new Firebase(ENDPOINT_URI + '/image-data');
+var usersRef = new Firebase(ENDPOINT_URI + '/users');
+
 var geoFire = new GeoFire(geoFireRef);
 
+var helpers = require('./helpers');
+
 var firebase_api = {
+  _updateImageData() {
+    var feelings = ['Satisfied', 'Seconds?', 'Sleepy', 'Sick', 'Happy', 'Gimme More!', 'Energetic', 'Stuffed', 'Comforted', 'Bloated'];
+    var userIds = ['10204677161988934', '427362984114044', '10100870666170545'];
+
+    var getImgKeys = function(restaurants) {
+      return restaurants.reduce((result, restaurant) => {
+        for(let plate in restaurant) {
+          if( !restaurant.hasOwnProperty(plate) || plate === 'key' ) {
+            continue;
+          }
+
+          var images = restaurant[plate].images;
+          var imagesLo = restaurant[plate]['images-lo'];
+          var imgKeys = imagesLo ? Object.keys(imagesLo) : Object.keys(images);
+          result = result.concat(imgKeys);
+        }
+        return result;
+      }, []);
+    };
+
+    var uploadImageData = function(imgKeys) {
+      imgKeys.forEach((imgKey) => {
+        var user_id = userIds[Math.floor(Math.random() * userIds.length)];
+        var date = helpers.getRandomDate(new Date(2015, 7, 1), new Date()).toString();
+        var feeling = feelings[Math.floor(Math.random() * feelings.length)];
+
+        base.post(`image-data/${imgKey}`, {
+          data: {user_id, date, feeling},
+          then() {
+            console.log('image data updated');
+          }
+        });
+      });
+    };
+
+    base.fetch('plates', {
+      context: this,
+      asArray: true,
+      then(restaurants) {
+        uploadImageData(getImgKeys(restaurants));
+      }
+    });
+  },
   getReBase() {
     return base;
   },
@@ -22,6 +70,26 @@ var firebase_api = {
         console.log(`User ${first_name} ${last_name} Updated`);
       }
     });
+  },
+  getUserByImageId(imageId) {
+    var deferred = Q.defer();
+
+    base.fetch(`image-data/${imageId}`, {
+      context: this,
+      then(imageData) {
+        if(!imageData) {
+          return;
+        }
+        base.fetch(`users/${imageData.user_id}`, {
+          context: this,
+          then(user) {
+            deferred.resolve(user);
+          }
+        })
+      }
+    });
+
+    return deferred.promise;
   },
   getRestaurantById(id) {
     var deferred = Q.defer();

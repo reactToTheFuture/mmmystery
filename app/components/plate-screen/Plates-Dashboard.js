@@ -174,14 +174,14 @@ class PlatesDashBoard extends React.Component {
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
-            <Image
-              style={styles.img}
-              source={{uri: this.state.plate ? this.state.plate.img_url : null}}
-              onLoad={this._imageLoaded.bind(this)}
-            >
-              <View style={styles.imageCrop}></View>
-            </Image>
-            <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} user={this.props.user}/>
+          <Image
+            style={styles.img}
+            source={{uri: this.state.plate ? this.state.plate.img_url : null}}
+            onLoad={this._imageLoaded.bind(this)}
+          >
+          <View style={styles.imageCrop}></View>
+          </Image>
+          <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} />
         </Animated.View>
       </View>
     );

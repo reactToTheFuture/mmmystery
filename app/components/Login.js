@@ -50,14 +50,14 @@ var {
     };
   }
 
-  async getAccesToken() {
+  async getAccesToken(updateUserInfo) {
     let _this = this;
     var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
       let errorLogin = false;
 
       if(!token) {
         this.setState({responseToken: true});
-        console.log('No token founded');
+        console.warn('No token founded');
         return;
       }
 
@@ -77,8 +77,11 @@ var {
           return;
         }
 
+        if(updateUserInfo) {
+          firebase_api.addUser(userInfo);
+        }
+
         this.switchToMain(userInfo);
-        firebase_api.addUser(userInfo);
       }, 'me?fields=first_name,last_name,picture');
 
       fetchProfileRequest.start(0);
@@ -91,7 +94,7 @@ var {
   }
 
   componentDidMount(){
-    this.getAccesToken();
+    this.getAccesToken(false);
   }
 
   _onPressButton(){
@@ -106,9 +109,8 @@ var {
         if (result.isCanceled) {
           alert('Login cancelled.');
         } else {
-          console.log(result);
           this.setState({result});
-          this.getAccesToken();
+          this.getAccesToken(true);
         }
       }
     });
@@ -127,7 +129,6 @@ var {
   }
 
   switchToMain(userInfo) {
-    console.log('switchToMain userInfo', userInfo)
     this.props.navigator.push({
       component: Main,
       props: {
