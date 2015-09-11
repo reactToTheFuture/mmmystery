@@ -12,6 +12,17 @@ var firebase_api = {
   getReBase() {
     return base;
   },
+  addUser(user) {
+    var {id, first_name, last_name } = user;
+    var profile_image = user.picture.data.url;
+
+    base.post(`users/${id}`, {
+      data: {first_name, last_name, profile_image},
+      then() {
+        console.log(`User ${first_name} ${last_name} Updated`);
+      }
+    });
+  },
   getRestaurantById(id) {
     var deferred = Q.defer();
 

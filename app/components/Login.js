@@ -13,9 +13,11 @@ var NavigationNext = require('./navigation/Custom-Next');
 
 var CameraDashboard = require('./Camera-Dashboard');
 var FBSDKLogin = require('react-native-fbsdklogin');
+
 // set of global colors to use app wide
 var Colors = require('../../globalVariables');
 
+var firebase_api = require('../utils/firebase-api');
 
 var {
   StyleSheet,
@@ -52,9 +54,14 @@ var {
     let _this = this;
     var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
       let errorLogin = false;
-      if (token) {
-      // GraphQL query for user information
-      console.log(this.state.token);
+
+      if(!token) {
+        this.setState({responseToken: true});
+        console.log('No token founded');
+        return;
+      }
+
+      // GraphQL query for user information      
       let fetchProfileRequest = new FBSDKGraphRequest((error, userInfo) => {
         errorLogin = !!error;
 
@@ -67,19 +74,14 @@ var {
             ]
           );
           this.setState({responseToken: true});
-        } else {
-          console.log('Welcome ' + userInfo.first_name + "!");
-          this.switchToMain(userInfo);
+          return;
         }
+
+        this.switchToMain(userInfo);
+        firebase_api.addUser(userInfo);
       }, 'me?fields=first_name,last_name,picture');
 
       fetchProfileRequest.start(0);
-      // If error when making graphQL query, login again.
-      // errorLogin ? null : this.switchToMain();
-      } else {
-        this.setState({responseToken: true});
-        console.log('No token founded');
-      }
     }));
   }
 
