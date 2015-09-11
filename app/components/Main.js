@@ -53,17 +53,20 @@ class Main extends React.Component {
 
   buildPlatesArray(userLocation,radius) {
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
-
       this.setState({
         status: 'Fetching yummy dishes...'
       });
+
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
-        if( !plates.length ) {
-          return;
+        if(!plates.length) {
+          throw new Error(`no plates for ${restaurantId}`);
         }
+        return plates;
+      })
+      .then((plates) => {
         firebase_api.getRestaurantById(restaurantId)
-        .then((restauranteInfo)=> {
+        .then((restaurantInfo)=> {
           var restaurant = helpers.formatIdString(restaurantId);
           var location = {
             lat: locationTuple[0],
@@ -71,21 +74,21 @@ class Main extends React.Component {
           };
 
           var morePlates = plates.map((plate) => {
-
-            var firebaseKeys;
+            var imageKeys;
 
             if( plate['images-lo'] ) {
-              firebaseKeys = Object.keys(plate['images-lo']);
+              imageKeys = Object.keys(plate['images-lo']);
             } else {
-              firebaseKeys = Object.keys(plate['images']);
+              imageKeys = Object.keys(plate['images']);
             }
+
 
             var numOfImgs = imageKeys.length;
             var randomImageIndex = Math.floor(Math.random() * numOfImgs);
             var randomImageKey = imageKeys[randomImageIndex];
             var img_url = plate.images[randomImageKey];
             var name = helpers.formatIdString(plate.key);
-            var category = helpers.formatCategory(restauranteInfo.categories);
+            var category = helpers.formatCategory(restaurantInfo.categories);
 
             var platesObj = {
               name,
@@ -121,7 +124,10 @@ class Main extends React.Component {
             plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
           });
         });
-      });
+      })
+      .fail((err) => {
+        // console.warn(err);
+      })
     });
   }
 
