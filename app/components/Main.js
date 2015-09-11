@@ -64,11 +64,12 @@ class Main extends React.Component {
         }
         firebase_api.getRestaurantById(restaurantId)
         .then((restauranteInfo)=> {
+          var restaurant = helpers.formatIdString(restaurantId);
           var location = {
             lat: locationTuple[0],
             lng: locationTuple[1]
           };
-          var restaurant = helpers.formatIdString(restaurantId);
+
           var morePlates = plates.map((plate) => {
 
             var firebaseKeys;
@@ -78,21 +79,33 @@ class Main extends React.Component {
             } else {
               firebaseKeys = Object.keys(plate['images']);
             }
-            var numOfImgs = firebaseKeys.length;
-            var randomI = Math.floor(Math.random() * numOfImgs);
-            var randomKey = firebaseKeys[randomI];
-            var img_url = plate.images[randomKey];
+
+            var numOfImgs = imageKeys.length;
+            var randomImageIndex = Math.floor(Math.random() * numOfImgs);
+            var randomImageKey = imageKeys[randomImageIndex];
+            var img_url = plate.images[randomImageKey];
             var name = helpers.formatIdString(plate.key);
             var category = helpers.formatCategory(restauranteInfo.categories);
 
-            return {
+            var platesObj = {
               name,
+              category,
               restaurant,
               location,
-              category,
               img_url
             };
+
+            firebase_api.getUserByImageId(randomImageKey)
+            .then(function(user) {
+              platesObj.user = user;
+            })
+            .catch(function(err) {
+              console.warn(err);
+            });
+
+            return platesObj;
           });
+
           var shuffleIndexIncrement = 2;
           var currPlateIndex = this.state.currPlateIndex;
 
@@ -206,7 +219,6 @@ class Main extends React.Component {
       return (
         <View style={styles.container}>
           <PlatesDashBoard
-            user={this.props.route.props.userInfo}
             plates={this.state.filterActivated ? this.state.filteredPlates : this.state.plates}
             lastPosition={this.props.lastPosition}
             currPlateIndex={this.state.currPlateIndex}

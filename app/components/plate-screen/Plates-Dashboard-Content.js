@@ -31,7 +31,9 @@ class PlatesDashboardContent extends React.Component {
             <Text style={styles.minutes}> {this.props.distance ? this.props.distance : null} minutes </Text> away!
           </Text>
           <Text style={plateStyling}>{this.props.plate ? this.props.plate.name : null} </Text>
-          <PlatesUser user={this.props.user} />
+          { this.props.plate && this.props.plate.user &&
+            <PlatesUser user={this.props.plate.user} />
+          }
         </View>
         <PlatesPriceFactor priceFactor={this.props.priceFactor} />
       </View>

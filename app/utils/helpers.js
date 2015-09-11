@@ -11,6 +11,9 @@ var helpers = {
 
     return array;
   },
+  getRandomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  },
   formatNameString(string) {
     return string.replace(/\s+/g,'-').toLowerCase();
   },
