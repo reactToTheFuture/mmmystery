@@ -23,8 +23,29 @@ var helpers = {
     return (meters * 0.00062137).toFixed(2);
   },
 
-  getFilteredPlates(plates, filterArr){
+  // filters plates based on category
+  getFilteredPlates(plates, categoryfilter) {
+    let res = [];
+    plates.forEach((plate) => {
+      categoryfilter.forEach((filter)=>{
+        if (filter in plate.category) {
+          res.push(plate)
+          return;
+        };
+      })
+    });
+    return res;
+  },
 
+  // input: array of array of categories
+  // output: {'category1': true, 'category2': true, ...}
+  formatCategory(categories) {
+    return !!categories.length ? categories.reduce((prev,next) => {
+      return prev.concat(next)
+    }).reduce((obj, category) => {
+        obj[category] = true;
+        return obj;
+      }, {})  : null;
   },
 
   // Helpers functions used in Settings

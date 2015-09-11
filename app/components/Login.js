@@ -61,7 +61,7 @@ var {
         return;
       }
 
-      // GraphQL query for user information      
+      // GraphQL query for user information
       let fetchProfileRequest = new FBSDKGraphRequest((error, userInfo) => {
         errorLogin = !!error;
 
@@ -145,6 +145,7 @@ var {
   }
 
   render() {
+
     // this page appears after login process and main screen
     // will be replaced by a loading screen
     if (!this.state.responseToken){

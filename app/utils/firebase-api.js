@@ -84,5 +84,5 @@ var firebase_api = {
     });
   }
 };
- 
+
 module.exports = firebase_api;
