@@ -1,12 +1,12 @@
-var React = require('react-native');
-var Directions = require('./Directions.io.js');
+import React from 'react-native';
+import Directions from './Directions.io.js';
 
-var mapbox_api = require('../utils/mapbox-api');
+import mapbox_api from '../utils/mapbox-api';
 
-var RouteOverlay = require('./Route-Overlay');
-var ArrivalOverlay = require('./Arrival-Overlay');
-var Main = require('./Main');
-var Map = require('./Map.io.js');
+import RouteOverlay from './Route-Overlay';
+import ArrivalOverlay from './Arrival-Overlay';
+import Main from './Main';
+import Map from './Map.io.js';
 
 var {
   View,
@@ -28,7 +28,7 @@ class MapDashBoard extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     var userCoords = this.props.route.props.userPosition.coords;
 
     var userPosition = {
@@ -38,6 +38,7 @@ class MapDashBoard extends React.Component {
 
     this.getAsyncDirections(userPosition, this.props.route.props.image.location)
     .then((res) => {
+      console.log(res);
       this.setState({
         steps: res.steps,
         stepDirections: res.stepDirections,
@@ -45,14 +46,13 @@ class MapDashBoard extends React.Component {
       })
       this.handleDirectionsLoaded();
     })
-    .catch((err) => { console.log('Something went wrong: ' + err); });
+    .catch((err) => { console.log(`Problem getting directions: ${err}`); });
   }
 
   async getAsyncDirections(origin, destination) {
     var responseDirections = await (mapbox_api.getDirections(origin, destination)
       .then((data) => {
         var steps = data.routes[0].steps;
-        console.log('data', data);
         var annotationImage = {
           url: 'http://img1.wikia.nocookie.net/__cb20130425161142/scribblenauts/images/a/a4/Hamburger.png',
           height: 25,
@@ -125,6 +125,7 @@ class MapDashBoard extends React.Component {
   }
 
   render() {
+    console.log('rendered');
     return (
       <View style={styles.container}>
         <View style={styles.mapContainer}>

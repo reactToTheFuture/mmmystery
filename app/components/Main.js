@@ -224,7 +224,7 @@ class Main extends React.Component {
         <InitialLoadingOverlay
           isVisible={this.state.goSettings ? false : !this.state.plates.length}
           status={this.state.status} />
-      )
+      );
     } else {
       return (
         <View style={styles.container}>

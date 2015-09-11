@@ -22,10 +22,12 @@ var helpers = {
       return m.toUpperCase();
     });
   },
-  metersToMiles(meters) {
-    return (meters * 0.00062137).toFixed(2);
+  getRadians(num) {
+    return num * Math.PI / 180;
   },
-
+  metersToMiles(m) {
+    return (m * 0.00062137);
+  },
   // filters plates based on category
   getFilteredPlates(plates, categoryfilter) {
     let res = [];
@@ -39,7 +41,6 @@ var helpers = {
     });
     return res;
   },
-
   // input: array of array of categories
   // output: {'category1': true, 'category2': true, ...}
   formatCategory(categories) {
@@ -50,7 +51,6 @@ var helpers = {
         return obj;
       }, {})  : null;
   },
-
   // Helpers functions used in Settings
   // Matrix 3x3 for pics, category names and selected pics.
   makeArrayOfNineArray(data, bool) {
@@ -65,8 +65,7 @@ var helpers = {
      }
      return res;
   },
-
-// Returns and array with filtered categories
+  // Returns and array with filtered categories
   createSettingsFilter(setsOfSelected, setsOfNineNames) {
     var res = [];
     for (var i=0; i<setsOfSelected.length; i++) {

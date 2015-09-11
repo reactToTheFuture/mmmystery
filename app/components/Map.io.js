@@ -1,7 +1,9 @@
-var React = require('react-native');
-var MapboxGLMap = require('react-native-mapbox-gl');
-var mapRef = 'mapRef';
-var mapbox_keys = require('../utils/config').mapbox;
+import React from 'react-native';
+import MapboxGLMap from 'react-native-mapbox-gl';
+import {mapbox as mapbox_keys} from '../utils/config';
+import { getRadians, metersToMiles } from '../utils/helpers';
+
+var mapRef = 'directions';
 
 var {
   StyleSheet,
@@ -9,19 +11,10 @@ var {
   View,
 } = React;
 
-var styles = StyleSheet.create({
-  map: {
-    flex: 5,
-  },
-  container: {
-    flexDirection: 'column',
-    flex: 2
-  }
-});
-
 var Map = React.createClass({
   mixins: [MapboxGLMap.Mixin],
-  getInitialState: function() {
+
+  getInitialState() {
     var userCoords = this.props.userPosition.coords;
     var lat = userCoords.latitude;
     var lng = userCoords.longitude;
@@ -29,49 +22,92 @@ var Map = React.createClass({
     return {
       meters: [],
       loaded: false,
-      userPosition: {
+      initialPosition: {
         latitude: lat,
         longitude: lng,
       },
-      annotations: [{
-         latitude: lat,
-         longitude: lng,
-         title: 'MakerSquare',
-         subtitle: '',
-         annotationImage: {
-           url: 'http://img1.wikia.nocookie.net/__cb20130425161142/scribblenauts/images/a/a4/Hamburger.png',
-           height: 25,
-           width: 25
-         },
-         id: 'MKS'
-       }],
+      currentAnnotationIndex: -1,
+      currentAnnotation: [],
       zoom: 15,
     };
   },
 
+  getDistanceToNextAnnotation(userCoords, annotationCoords) {
+    var userLat = userCoords.latitude;
+    var userLng = userCoords.longitude;
+
+    var annotationLat = annotationCoords.latitude;
+    var annotationLng = annotationCoords.longitude;
+
+    // http://www.movable-type.co.uk/scripts/latlong.html
+    var R = 6371000; //meters
+    var userLatRads = getRadians(userLat);
+    var annotationLatRads = getRadians(annotationLat);
+    var latDifference = getRadians(annotationLat - userLat);
+    var lngDirrerence = getRadians(annotationLng - userLng);
+
+    var a = Math.sin(latDifference/2) * Math.sin(latDifference/2) +
+      Math.cos(userLatRads) * Math.cos(annotationLatRads) *
+      Math.sin(lngDirrerence/2) * Math.sin(lngDirrerence/2);
+
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    var d = R * c;
+
+    return metersToMiles(d);
+  },
+
+  onUpdateUserLocation(location) {
+    console.log('myLocation', location);
+    console.log('nextAnnotation', this.props.stepAnnotations[0]);
+
+    console.log(this.getDistanceToNextAnnotation(location, this.props.stepAnnotations[0]));
+  },
+
+  addNextAnnotation(annotations) {
+    var currentAnnotationIndex = ++this.state.currentAnnotationIndex;
+
+    this.addAnnotations(mapRef, [annotations[currentAnnotationIndex]]);
+
+    this.setState({
+      currentAnnotationIndex 
+    });
+  },
+
   componentWillReceiveProps(newProps) {
-    this.addAnnotations(mapRef,newProps.stepAnnotations);
+    if(!this.state.currentAnnotation.length) {
+      this.addNextAnnotation(newProps.stepAnnotations);
+    }
   },
 
   render() {
     return (
       <View style={styles.container}>
         <MapboxGLMap
-          style={styles.map}
+          ref={mapRef}
+          onUpdateUserLocation={this.onUpdateUserLocation}
           direction={0}
-          rotateEnabled={false}
+          rotateEnabled={true}
           scrollEnabled={true}
           zoomEnabled={true}
           showsUserLocation={true}
-          ref={mapRef}
-          annotations={this.state.annotations}
           accessToken={mapbox_keys.token}
-          styleURL={'asset://styles/mapbox-streets-v7.json'}
-          centerCoordinate={this.state.userPosition}
-          zoomLevel={this.state.zoom} />
+          centerCoordinate={this.state.initialPosition}
+          zoomLevel={this.state.zoom}
+          style={styles.map}
+          styleURL={'asset://styles/emerald-v7.json'} />
       </View>
     );
   },
+});
+
+var styles = StyleSheet.create({
+  map: {
+    flex: 1,
+  },
+  container: {
+    flex: 1
+  }
 });
 
 module.exports = Map;
