@@ -72,9 +72,7 @@ var helpers = {
   createSettingsFilter(setsOfSelected, setsOfNineNames) {
     var res = [];
     for (var i=0; i<setsOfSelected.length; i++) {
-      for (var j=0; j<setsOfSelected[i].length; j++) {
-        if (setsOfSelected[i][j]) res.push(setsOfNineNames[i][j]);
-      }
+        if (setsOfSelected[i]) res.push(setsOfNineNames[i]);
     }
     return res;
   },

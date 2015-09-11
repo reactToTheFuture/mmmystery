@@ -199,6 +199,11 @@ class Main extends React.Component {
    this.props.navigator.popToTop();
   }
 
+  handleSettingsConfig(categoryFilter) {
+    console.log('handleSettingsConfig category', categoryFilter);
+    this.setState({categoryFilter: categoryFilter});
+  }
+
   doneButtonSettingsPressed() {
     this.props.navigator.pop();
     this.setState({filterActivated: !!this.state.categoryFilter.length});
@@ -206,10 +211,6 @@ class Main extends React.Component {
     this.setState({filteredPlates: filteredPlates});
   }
 
-  handleSettingsConfig(categoryFilter) {
-    console.log('handleSettingsConfig category', categoryFilter);
-    this.setState({categoryFilter: categoryFilter});
-  }
 
   componentWillMount() {
   }
@@ -244,7 +245,7 @@ class Main extends React.Component {
           <PlatesDashBoard
             plates={this.state.filterActivated ? this.state.filteredPlates : this.state.plates}
             lastPosition={this.props.lastPosition}
-            currPlateIndex={this.state.currPlateIndex}
+            currPlateIndex={this.state.filterActivated ? this.state.currPlateIndex + 1 : this.state.currPlateIndex}
             onSelection={this.handleSelection.bind(this)}
             onRejection={this.handleRejection.bind(this)} />
           <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)}/>
