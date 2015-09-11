@@ -71,6 +71,15 @@ var firebase_api = {
   addPlate(restaurantID, plateID, imageURL) {
     platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
   },
+  addPlatePromise(restaurantID, plateID, imageURL) {
+    var deferred = Q.defer();
+    var ImgRef = platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
+    deferred.resolve(ImgRef.key());
+    return deferred.promise;
+  },
+  updatePlate(restaurantID, plateID, key, imageURL) {
+    platesRef.child(restaurantID).child(plateID).child('images-lo').child(key).set(imageURL);
+  },
   addGeoFireLocation(restaurant) {
     var id = restaurant.id;
     var coords = restaurant.location.coordinate;
