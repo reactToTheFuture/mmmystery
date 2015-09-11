@@ -37,7 +37,6 @@ class Main extends React.Component {
       watchID: null,
       currPlateIndex: -1,
       plates: [],
-      searchLatLng: null,
       goSettings: false,
       categoryFilter: [],
       filterActivated: false,
@@ -46,8 +45,11 @@ class Main extends React.Component {
 
     if(props.initialPosition) {
       this.state.status = 'Finding nearby restaurants...';
+
       var {latitude, longitude} = props.initialPosition.coords;
+      
       this.buildPlatesArray({latitude, longitude}, 60);
+      this._getAddress(latitude, longitude);
     }
   }
 
@@ -133,26 +135,28 @@ class Main extends React.Component {
 
   _getAddress(lat, lng) {
     fetch(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true`)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.state.searchAddress = responseData.results[0].formatted_address.slice(0, 30) + '...';
-      })
-      .done();
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.setState({
+        searchAddress: responseData.results[0].formatted_address.slice(0, 30) + '...'
+      });
+    });
   }
 
   componentWillReceiveProps(newProps) {
-    if( !this.props.initialPosition && newProps.initialPosition ) {
-      this.setState({
-        status: 'Finding nearby restaurants...'
-      });
-      var {latitude, longitude} = newProps.initialPosition.coords;
-      // do the magic here....
-      this.setState({
-        searchLatLng: {latitude, longitude}
-      })
-      this._getAddress(latitude, longitude);
-      this.buildPlatesArray({latitude, longitude}, 60);
+
+    if(this.props.initialPosition || !newProps.initialPosition) {
+      return;
     }
+
+    this.setState({
+      status: 'Finding nearby restaurants...'
+    });
+
+    var {latitude, longitude} = newProps.initialPosition.coords;
+    
+    this.buildPlatesArray({latitude, longitude}, 60);
+    this._getAddress(latitude, longitude);
   }
 
   handleSelection(image) {
