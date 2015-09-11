@@ -104,17 +104,22 @@ class MealSelection extends React.Component {
     var plateID = helpers.formatNameString(meal);
     var image = props.image;
 
-    // aws_api.uploadToSW3(image)
-    // .then((imageUrl) => {
-    //   firebase_api.addPlate(restaurantID, plateID, imageUrl);
-
-      this.setState({
-        isLoading: false,
-        isAddingMeal: false,
-        isMealSubmitted: true
+    firebase_api.addPlatePromise(restaurantID, plateID, '')
+    .then((key) => {
+      console.log(key);
+      aws_api.uploadToS3(image, key)
+      .then((res) => {
+        //TODO: if(res === undefined)
+        var imageUrl = res._bodyText;
+        console.log('imageUrl: ', imageUrl);
+        firebase_api.updatePlate(restaurantID, plateID, key, imageUrl);
+        this.setState({
+          isLoading: false,
+          isDdingMeal: false,
+          isMealSubmitted: true
+        });
       });
-
-    // });
+    });
   }
 
   render() {
