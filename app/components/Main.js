@@ -38,7 +38,6 @@ class Main extends React.Component {
       currPlateIndex: -1,
       plates: [],
       searchLatLng: null,
-      filteredPlates: [],
       goSettings: false,
       categoryFilter: [],
       filterActivated: false,
@@ -58,57 +57,56 @@ class Main extends React.Component {
       this.setState({
         status: 'Fetching yummy dishes...'
       });
-
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
-
         if( !plates.length ) {
           return;
         }
+        firebase_api.getRestaurantById(restaurantId)
+        .then((restauranteInfo)=> {
+          var location = {
+            lat: locationTuple[0],
+            lng: locationTuple[1]
+          };
+          var restaurant = helpers.formatIdString(restaurantId);
+          var morePlates = plates.map((plate) => {
 
-        var location = {
-          lat: locationTuple[0],
-          lng: locationTuple[1]
-        };
+            var firebaseKeys;
 
-        var restaurant = helpers.formatIdString(restaurantId);
-        var morePlates = plates.map((plate) => {
-          var firebaseKeys;
+            if( plate['images-lo'] ) {
+              firebaseKeys = Object.keys(plate['images-lo']);
+            } else {
+              firebaseKeys = Object.keys(plate['images']);
+            }
+            var numOfImgs = firebaseKeys.length;
+            var randomI = Math.floor(Math.random() * numOfImgs);
+            var randomKey = firebaseKeys[randomI];
+            var img_url = plate.images[randomKey];
+            var name = helpers.formatIdString(plate.key);
+            var category = helpers.formatCategory(restauranteInfo.categories);
 
-          if( plate['images-lo'] ) {
-            firebaseKeys = Object.keys(plate['images-lo']);
-          } else {
-            firebaseKeys = Object.keys(plate['images']);
+            return {
+              name,
+              restaurant,
+              location,
+              category,
+              img_url
+            };
+          });
+          var shuffleIndexIncrement = 2;
+          var currPlateIndex = this.state.currPlateIndex;
+
+          // initally, shuffle entire array of images
+          // otherwise, start shuffling 2 indexes up from current plate index
+          if( currPlateIndex === -1 ) {
+            shuffleIndexIncrement = 1;
+            currPlateIndex = 0;
           }
 
-          var numOfImgs = firebaseKeys.length;
-          var randomI = Math.floor(Math.random() * numOfImgs);
-          var randomKey = firebaseKeys[randomI];
-          var img_url = plate.images[randomKey];
-          var name = helpers.formatIdString(plate.key);
-          // Add here category
-
-          return {
-            name,
-            restaurant,
-            location,
-            img_url
-          };
-        });
-
-        var shuffleIndexIncrement = 2;
-        var currPlateIndex = this.state.currPlateIndex;
-
-        // initally, shuffle entire array of images
-        // otherwise, start shuffling 2 indexes up from current plate index
-        if( currPlateIndex === -1 ) {
-          shuffleIndexIncrement = 1;
-          currPlateIndex = 0;
-        }
-
-        this.setState({
-          currPlateIndex,
-          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
+          this.setState({
+            currPlateIndex,
+            plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
+          });
         });
       });
     });
@@ -166,10 +164,9 @@ class Main extends React.Component {
 
   doneButtonSettingsPressed() {
     this.props.navigator.pop();
-    // Applu category filter after Done is pressed.
     this.setState({filterActivated: !!this.state.categoryFilter.length});
-    this.setState({filteredPlates: helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter)});
-
+    var filteredPlates = helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter);
+    this.setState({filteredPlates: filteredPlates});
   }
 
   handleSettingsConfig(categoryFilter) {
@@ -181,6 +178,7 @@ class Main extends React.Component {
   }
 
   _onPressSettings() {
+    this.setState({filterActivated: false});
     this.props.navigator.push({
       component: SettingsDashboard,
       props: {
@@ -197,6 +195,7 @@ class Main extends React.Component {
   }
 
   render() {
+    // console.log('filteredPlates', this.state.filteredPlates);
     if (this.state.plates.length <= 0) {
       return (
         <InitialLoadingOverlay
@@ -208,7 +207,7 @@ class Main extends React.Component {
         <View style={styles.container}>
           <PlatesDashBoard
             user={this.props.route.props.userInfo}
-            plates={this.state.plates}
+            plates={this.state.filterActivated ? this.state.filteredPlates : this.state.plates}
             lastPosition={this.props.lastPosition}
             currPlateIndex={this.state.currPlateIndex}
             onSelection={this.handleSelection.bind(this)}

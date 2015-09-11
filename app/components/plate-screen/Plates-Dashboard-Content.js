@@ -24,14 +24,12 @@ class PlatesDashboardContent extends React.Component {
         plateStyling = styles.plateName;
       }
     }
-    // console.log('PlatesDashboardContent', this.props.user);
     return (
       <View style={styles.imageFooter}>
         <View style={styles.footerText}>
           <Text style={styles.introTime}>You're just
             <Text style={styles.minutes}> {this.props.distance ? this.props.distance : null} minutes </Text> away!
           </Text>
-
           <Text style={plateStyling}>{this.props.plate ? this.props.plate.name : null} </Text>
           <PlatesUser user={this.props.user} />
         </View>
