@@ -1,14 +1,15 @@
 import React from 'react-native';
+import NavigationBar from 'react-native-navbar';
+
 import Directions from './Directions';
-
-import mapbox_api from '../utils/mapbox-api';
-
 import RouteOverlay from './Route-Overlay';
 import ArrivalOverlay from './Arrival-Overlay';
-import CameraDashboard from './Camera-Dashboard';
-import NavigationBar from 'react-native-navbar';
-import Main from './Main';
 import Map from './Map';
+
+import mapbox_api from '../../utils/mapbox-api';
+
+import CameraDashboard from '../Camera-Dashboard';
+import Main from '../Main';
 
 var {
   View,

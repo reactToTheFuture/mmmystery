@@ -3,7 +3,7 @@ import React from 'react-native';
 import Dimensions from 'Dimensions';
 var window = Dimensions.get('window');
 
-import globals from '../../globalVariables';
+import globals from '../../../globalVariables';
 
 let {
   StyleSheet,

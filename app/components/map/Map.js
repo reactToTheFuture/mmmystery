@@ -1,7 +1,8 @@
 import React from 'react-native';
 import MapboxGLMap from 'react-native-mapbox-gl';
-import {mapbox as mapbox_keys} from '../utils/config';
-import { getRadians, metersToMiles, getDegrees } from '../utils/helpers';
+
+import {mapbox as mapbox_keys} from '../../utils/config';
+import { getRadians, metersToMiles, getDegrees } from '../../utils/helpers';
 
 var mapRef = 'directions';
 
