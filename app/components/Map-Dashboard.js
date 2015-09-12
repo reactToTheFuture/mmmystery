@@ -1,12 +1,12 @@
-var React = require('react-native');
-var Directions = require('./Directions.io.js');
+import React from 'react-native';
+import Directions from './Directions';
 
-var mapbox_api = require('../utils/mapbox-api');
+import mapbox_api from '../utils/mapbox-api';
 
-var RouteOverlay = require('./Route-Overlay');
-var ArrivalOverlay = require('./Arrival-Overlay');
-var Main = require('./Main');
-var Map = require('./Map.io.js');
+import RouteOverlay from './Route-Overlay';
+import ArrivalOverlay from './Arrival-Overlay';
+import Main from './Main';
+import Map from './Map';
 
 var {
   View,
@@ -20,15 +20,14 @@ class MapDashBoard extends React.Component {
       steps: [],
       stepAnnotations: [],
       stepDirections: [],
-      stepProgress: 0,
+      stepIndex: -1,
       isLoading: true,
       isConfirmed: false,
-      hasArrived: false,
-      hasLeft: false
+      hasArrived: false
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     var userCoords = this.props.route.props.userPosition.coords;
 
     var userPosition = {
@@ -41,18 +40,17 @@ class MapDashBoard extends React.Component {
       this.setState({
         steps: res.steps,
         stepDirections: res.stepDirections,
-        stepAnnotations: res.stepAnnotations
+        stepAnnotations: res.stepAnnotations,
+        isLoading: false
       })
-      this.handleDirectionsLoaded();
     })
-    .catch((err) => { console.log('Something went wrong: ' + err); });
+    .catch((err) => { console.log(`Problem getting directions: ${err}`); });
   }
 
   async getAsyncDirections(origin, destination) {
     var responseDirections = await (mapbox_api.getDirections(origin, destination)
       .then((data) => {
         var steps = data.routes[0].steps;
-        console.log('data', data);
         var annotationImage = {
           url: 'http://img1.wikia.nocookie.net/__cb20130425161142/scribblenauts/images/a/a4/Hamburger.png',
           height: 25,
@@ -93,12 +91,6 @@ class MapDashBoard extends React.Component {
     return responseDirections;
   }
 
-  handleDirectionsLoaded() {
-    this.setState({
-      isLoading: false
-    });
-  }
-
   handleRouteConfirmation() {
     this.setState({
       isConfirmed: true
@@ -106,22 +98,28 @@ class MapDashBoard extends React.Component {
   }
 
   handleStepIncrement() {
-    this.setState({
-      stepProgress: this.state.stepProgress + 1
-    });
-  }
+    var stepIndex = this.state.stepIndex + 1;
 
-  handleArrived() {
     this.setState({
-      hasArrived: true
+      stepIndex
     });
+
+    if( stepIndex === this.state.stepDirections.length-1 ) {
+      this.setState({
+        hasArrived: true
+      });
+    }
   }
 
   handleArrivalConfirmation() {
-    this.setState({
-      hasLeft: true
+    this.props.navigator.push({
+      title: 'Camera',
+      component: CameraDashboard,
+      navigationBar: (
+        <NavigationBar
+          title="Picture Time" />
+      )
     });
-    this.props.navigator.pop();
   }
 
   render() {
@@ -130,12 +128,12 @@ class MapDashBoard extends React.Component {
         <View style={styles.mapContainer}>
           <Directions
             stepDirections={this.state.stepDirections}
-            stepProgress={this.state.stepProgress}
-            onStepIncrement={this.handleStepIncrement.bind(this)}
-            onArrived={this.handleArrived.bind(this)} />
+            stepIndex={this.state.stepIndex} />
           <Map
+            userPosition={this.props.route.props.userPosition}
             stepAnnotations={this.state.stepAnnotations}
-            userPosition={this.props.route.props.userPosition} />
+            onStepIncrement={this.handleStepIncrement.bind(this)}
+            stepIndex={this.state.stepIndex} />
         </View>
         <RouteOverlay
           isLoading={this.state.isLoading}
@@ -143,7 +141,7 @@ class MapDashBoard extends React.Component {
           onConfirmation={this.handleRouteConfirmation.bind(this)} />
         <ArrivalOverlay
           imageInfo={this.props.route.props.image}
-          isVisible={!this.state.hasLeft && this.state.hasArrived}
+          isVisible={this.state.hasArrived}
           onConfirmation={this.handleArrivalConfirmation.bind(this)} />
       </View>
     );

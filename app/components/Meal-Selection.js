@@ -54,6 +54,9 @@ class MealSelection extends React.Component {
         isLoading: false,
         meals: this.state.meals.cloneWithRows(plates)
       })
+    })
+    .catch((err) => {
+      console.warn(err);
     });
   }
 
@@ -104,20 +107,31 @@ class MealSelection extends React.Component {
     var plateID = helpers.formatNameString(meal);
     var image = props.image;
 
-    firebase_api.addPlatePromise(restaurantID, plateID, '')
-    .then((key) => {
-      console.log(key);
-      aws_api.uploadToS3(image, key)
+    firebase_api.addPlate(restaurantID, plateID, '')
+    .then((imageId) => {
+      aws_api.uploadToS3(image, imageId)
       .then((res) => {
-        //TODO: if(res === undefined)
+        if(!res) {
+          throw new Error('upload to s3 failed');
+        }
         var imageUrl = res._bodyText;
-        console.log('imageUrl: ', imageUrl);
-        firebase_api.updatePlate(restaurantID, plateID, key, imageUrl);
-        this.setState({
-          isLoading: false,
-          isAddingMeal: false,
-          isMealSubmitted: true
+
+        firebase_api.updatePlate(restaurantID, plateID, imageId, imageUrl)
+        .then(() => {
+          return firebase_api.addImageData(imageId, this.props.user.id);
+        })
+        .then(() => {
+          console.log('here too');
+          this.setState({
+            isLoading: false,
+            isAddingMeal: false,
+            isMealSubmitted: true
+          });
         });
+
+      })
+      .catch((err) => {
+        console.warn(err);
       });
     });
   }

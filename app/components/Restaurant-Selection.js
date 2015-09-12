@@ -88,7 +88,7 @@ class RestaurantSelection extends React.Component {
       .then((data) => {
 
         var restaurants = data.businesses.map(function(restaurant) {
-          restaurant.distance = helpers.metersToMiles(restaurant.distance);
+          restaurant.distance = helpers.metersToMiles(restaurant.distance).toFixed(2);
           return restaurant;
         });
 
@@ -125,6 +125,9 @@ class RestaurantSelection extends React.Component {
         return;
       }
       firebase_api.addRestaurant(restaurant);
+    })
+    .catch(function(err) {
+      console.warn(err);
     });
 
     var props = {

@@ -6,7 +6,6 @@ var ENDPOINT_URI = require('./config').firebase.ENDPOINT_URI;
 var base = Rebase.createClass(ENDPOINT_URI);
 var platesRef = new Firebase(ENDPOINT_URI + '/plates');
 var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
-var imageDataRef = new Firebase(ENDPOINT_URI + '/image-data');
 var usersRef = new Firebase(ENDPOINT_URI + '/users');
 
 var geoFire = new GeoFire(geoFireRef);
@@ -71,6 +70,20 @@ var firebase_api = {
       }
     });
   },
+  addImageData(imageId, user_id) {
+    var deferred = Q.defer();
+    var date = new Date().toString();
+    var feeling = 'meh';
+
+    base.post(`image-data/${imageId}`, {
+      data: {user_id, date, feeling},
+      then() {
+        deferred.resolve('image data updated');
+      }
+    });
+
+    return deferred.promise;
+  },
   getUserByImageId(imageId) {
     var deferred = Q.defer();
 
@@ -78,7 +91,7 @@ var firebase_api = {
       context: this,
       then(imageData) {
         if(!imageData) {
-          return;
+          return deferred.reject(new Error(`no image data for ${imageId}`));
         }
         base.fetch(`users/${imageData.user_id}`, {
           context: this,
@@ -96,8 +109,11 @@ var firebase_api = {
 
     base.fetch(`restaurants/${id}`, {
       context: this,
-      then(data) {
-        deferred.resolve(data);
+      then(restaurant) {
+        if(!restaurant) {
+          return deferred.reject(new Error(`can not find restaurant ${id}`));
+        }
+        deferred.resolve(restaurant);
       }
     });
 
@@ -109,8 +125,11 @@ var firebase_api = {
     base.fetch(`plates/${id}`, {
       context: this,
       asArray: true,
-      then(data) {
-        deferred.resolve(data);
+      then(plates) {
+        if(!plates) {
+          return deferred.reject(new Error(`can not find plates for ${id}`));
+        }
+        deferred.resolve(plates);
       }
     });
 
@@ -123,7 +142,7 @@ var firebase_api = {
     });
 
     // cb gets key, location and distance as params
-    geoQuery.on("key_entered", cb);
+    geoQuery.on('key_entered', cb);
   },
   addRestaurant(restaurant) {
     var {id, categories, location, phone, name, url} = restaurant;
@@ -137,16 +156,15 @@ var firebase_api = {
     });
   },
   addPlate(restaurantID, plateID, imageURL) {
-    platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
-  },
-  addPlatePromise(restaurantID, plateID, imageURL) {
     var deferred = Q.defer();
     var ImgRef = platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
     deferred.resolve(ImgRef.key());
     return deferred.promise;
   },
   updatePlate(restaurantID, plateID, key, imageURL) {
-    platesRef.child(restaurantID).child(plateID).child('images-lo').child(key).set(imageURL);
+    var deferred = Q.defer();
+    platesRef.child(restaurantID).child(plateID).child('images-lo').child(key).set(imageURL, () => { deferred.resolve(`updated plate ${key}`) });
+    return deferred.promise;
   },
   addGeoFireLocation(restaurant) {
     var id = restaurant.id;
@@ -154,10 +172,11 @@ var firebase_api = {
     var lat = coords.latitude;
     var lng = coords.longitude;
 
-    geoFire.set(id, [lat, lng]).then(() => {
+    geoFire.set(id, [lat, lng])
+    .then(() => {
       console.log(`Added ${name} to GeoFire`);
     }, (error) => {
-      console.log("Geofire Error: " + error);
+      console.warn("Geofire Error: " + error);
     });
   }
 };

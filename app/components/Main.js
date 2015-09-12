@@ -39,8 +39,7 @@ class Main extends React.Component {
       plates: [],
       goSettings: false,
       categoryFilter: [],
-      filterActivated: false,
-      userInfo: 'not null',
+      filterActivated: false
     };
 
     if(props.initialPosition) {
@@ -67,69 +66,69 @@ class Main extends React.Component {
         return plates;
       })
       .then((plates) => {
-        firebase_api.getRestaurantById(restaurantId)
-        .then((restaurantInfo)=> {
-          var restaurant = helpers.formatIdString(restaurantId);
-          var location = {
-            lat: locationTuple[0],
-            lng: locationTuple[1]
-          };
+        return [plates, firebase_api.getRestaurantById(restaurantId)];
+      })
+      .spread((plates, restaurantInfo) => {
+        var restaurant = helpers.formatIdString(restaurantId);
+        var location = {
+          lat: locationTuple[0],
+          lng: locationTuple[1]
+        };
 
-          var morePlates = plates.map((plate) => {
-            var imageKeys;
+        var morePlates = plates.map((plate) => {
+          var imageKeys;
 
-            if( plate['images-lo'] ) {
-              imageKeys = Object.keys(plate['images-lo']);
-            } else {
-              imageKeys = Object.keys(plate['images']);
-            }
-
-
-            var numOfImgs = imageKeys.length;
-            var randomImageIndex = Math.floor(Math.random() * numOfImgs);
-            var randomImageKey = imageKeys[randomImageIndex];
-            var img_url = plate.images[randomImageKey];
-            var name = helpers.formatIdString(plate.key);
-            var category = helpers.formatCategory(restaurantInfo.categories);
-
-            var platesObj = {
-              name,
-              category,
-              restaurant,
-              location,
-              img_url
-            };
-
-            firebase_api.getUserByImageId(randomImageKey)
-            .then(function(user) {
-              platesObj.user = user;
-            })
-            .catch(function(err) {
-              console.warn(err);
-            });
-
-            return platesObj;
-          });
-
-          var shuffleIndexIncrement = 2;
-          var currPlateIndex = this.state.currPlateIndex;
-
-          // initally, shuffle entire array of images
-          // otherwise, start shuffling 2 indexes up from current plate index
-          if( currPlateIndex === -1 ) {
-            shuffleIndexIncrement = 1;
-            currPlateIndex = 0;
+          if( plate['images-lo'] ) {
+            imageKeys = Object.keys(plate['images-lo']);
+          } else {
+            imageKeys = Object.keys(plate['images']);
           }
 
-          this.setState({
-            currPlateIndex,
-            plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
+
+          var numOfImgs = imageKeys.length;
+          var randomImageIndex = Math.floor(Math.random() * numOfImgs);
+          var randomImageKey = imageKeys[randomImageIndex];
+          var img_url = plate.images[randomImageKey];
+          var name = helpers.formatIdString(plate.key);
+          var category = helpers.formatCategory(restaurantInfo.categories);
+
+          var platesObj = {
+            name,
+            category,
+            restaurant,
+            location,
+            img_url
+          };
+
+          firebase_api.getUserByImageId(randomImageKey)
+          .then(function(user) {
+            platesObj.user = user;
+          })
+          .catch(function(err) {
+            console.warn(err);
           });
+
+          return platesObj;
+        });
+
+        var shuffleIndexIncrement = 2;
+        var currPlateIndex = this.state.currPlateIndex;
+
+        // initally, shuffle entire array of images
+        // otherwise, start shuffling 2 indexes up from current plate index
+        if( currPlateIndex === -1 ) {
+          shuffleIndexIncrement = 1;
+          currPlateIndex = 0;
+        }
+
+        this.setState({
+          currPlateIndex,
+          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
         });
       })
-      .fail((err) => {
+      .catch((err) => {
         // console.warn(err);
-      })
+      });
     });
   }
 
@@ -218,13 +217,12 @@ class Main extends React.Component {
   }
 
   render() {
-    // console.log('filteredPlates', this.state.filteredPlates);
     if (this.state.plates.length <= 0) {
       return (
         <InitialLoadingOverlay
           isVisible={this.state.goSettings ? false : !this.state.plates.length}
           status={this.state.status} />
-      )
+      );
     } else {
       return (
         <View style={styles.container}>
