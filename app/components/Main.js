@@ -40,9 +40,10 @@ class Main extends React.Component {
       goSettings: false,
       categoryFilter: [],
       radius: null,
+      prevRadius: null,
       dollar: null,
       filterActivated: false,
-      defaultRadius: 15,
+      defaultRadius: 2.5,
       userInfo: 'not null',
     };
 
@@ -56,12 +57,12 @@ class Main extends React.Component {
   }
 
   buildPlatesArray(userLocation,radius) {
+    console.log('new serch on radius:', radius);
     this.setState({
       status: 'Fetching yummy dishes...'
     });
 
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
-
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if(!plates.length) {
@@ -210,10 +211,6 @@ class Main extends React.Component {
         this.setState({categoryFilter: filter});
         break;
 
-      case 'radius':
-        this.setState({radius: filter});
-        break;
-
       case 'dollar':
         this.setState({dollar: filter});
         break;
@@ -223,7 +220,7 @@ class Main extends React.Component {
       default:
         break;
     }
-    console.log('handleSettingsConfig', key, filter);
+    console.log('handleSettings', key, filter);
   }
 
   doneButtonSettingsPressed() {
@@ -231,13 +228,14 @@ class Main extends React.Component {
     this.props.navigator.pop();
 
       // radius filter
-     if (this.state.radius !== 60) {
+     if (this.state.defaultRadius &&
+         this.state.defaultRadius !== this.state.prevRadius) {
       var {latitude, longitude} = this.props.lastPosition.coords;
-      this.buildPlatesArray({latitude, longitude}, this.state.radius);
+      this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
      }
 
      // dollar filter
-     if (!!this.state.dollar) {
+     if (this.state.dollar !== -1) {
       this.setState({filterActivated: true});
       dollarFilter=true;
       var filteredPlates = helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter, dollarFilter);
@@ -258,6 +256,7 @@ class Main extends React.Component {
   }
 
   _onPressSettings() {
+    this.setState({prevRadius: this.state.defaultRadius});
     this.setState({filterActivated: false});
     this.props.navigator.push({
       component: SettingsDashboard,

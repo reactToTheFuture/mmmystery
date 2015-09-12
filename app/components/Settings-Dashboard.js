@@ -1,6 +1,6 @@
-var React = require('react-native');
-var Swiper = require('react-native-swiper');
-var helpers = require('../utils/helpers');
+import React from 'react-native';
+import helpers from '../utils/helpers';
+import Slider from 'react-native-slider';
 
 var {
   StyleSheet,
@@ -40,7 +40,7 @@ class SettingsDashboard extends React.Component {
       setsOfNineNames: imagesName,
       selected: false,
       minimumValue: 0,
-      maximumValue: 80,
+      maximumValue: 15,
       selected: false,
       value: null,
       dollarImages: dollarImages,
@@ -63,7 +63,6 @@ class SettingsDashboard extends React.Component {
   }
 
   onSlidingComplete() {
-    console.log('onSlidingComplete', this.state.value);
     this.props.route.props.handleSettingsConfig('keepRadius', this.state.value);
     this.props.route.props.handleSettingsConfig('radius', this.state.value);
   }
@@ -97,9 +96,7 @@ class SettingsDashboard extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props.route.props.radiusDefault);
     this.setState({value: Math.round(this.props.route.props.radiusDefault)});
-
   }
 
   componentDidMount() {
@@ -241,6 +238,23 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
+});
+
+var sliderStyle = StyleSheet.create({
+  track: {
+    height: 2,
+    borderRadius: 1,
+  },
+  thumb: {
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 2,
+    shadowOpacity: 0.35,
+  }
 });
 
 module.exports = SettingsDashboard;
