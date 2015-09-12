@@ -101,13 +101,15 @@ class Main extends React.Component {
 
           var name = helpers.formatIdString(plate.key);
           var category = helpers.formatCategory(restaurantInfo.categories);
+          var priceFactor = !restaurantInfo.price ? '$' : restaurantInfo.price;
 
           var platesObj = {
             name,
             category,
             restaurant,
             location,
-            img_url
+            img_url,
+            priceFactor
           };
 
           firebase_api.getUserByImageId(randomImageKey)

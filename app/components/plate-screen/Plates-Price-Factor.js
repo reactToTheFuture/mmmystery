@@ -13,13 +13,16 @@ class PlatesPriceFactor extends React.Component {
     var dollarSigns;
     var dollarSignsBold;
     switch (this.props.priceFactor) {
-      case '1':
+      case '$':
         dollarSigns = '$$'; dollarSignsBold = '$';
         break;
-      case '2':
+      case '$$':
         dollarSigns = '$'; dollarSignsBold = '$$';
         break;
-      case '3':
+      case '$$$':
+        dollarSignsBold = '$$$';
+        break;
+      case '$$$$':
         dollarSignsBold = '$$$';
         break;
       default:

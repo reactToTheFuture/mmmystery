@@ -29,7 +29,7 @@ class PlatesDashBoard extends React.Component {
       enter: new Animated.Value(0.5),
       distance: null,
       loadingImage: true,
-      priceFactor: 1,
+      priceFactor: props.plates[0].priceFactor,
       showMinutes: false,
       searchAddress: null,
       plate: props.plates[0]
@@ -51,7 +51,8 @@ class PlatesDashBoard extends React.Component {
 
     this.setState({
       loadingImage: true,
-      plate: this.props.plates[newPlateIndex]
+      plate: this.props.plates[newPlateIndex],
+      priceFactor: this.props.plates[newPlateIndex].priceFactor,
     });
   }
 
