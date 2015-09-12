@@ -1,5 +1,7 @@
 var React = require('react-native');
 var NavigationBar = require('react-native-navbar');
+var Dimensions = require('Dimensions');
+var window = Dimensions.get('window');
 
 var {
   View,
@@ -58,14 +60,14 @@ class CameraDashboard extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-        <View>
+        <View style={styles.headlineContainer}>
           <Text style={styles.headline}>Upload a photo of your meal!</Text>
-          <Text style={styles.subheadline}>Share your eats to make others hungry!</Text>
         </View>
 
-        <Image style={styles.img} source={this.state.img} />
-
-        <Text style={styles.tip}>{this.state.tip}</Text>
+        <View style={styles.imageTipContainer}>
+          <Image style={styles.img} source={this.state.img} />
+          <Text style={styles.tip}>{this.state.tip}</Text>
+        </View>
 
         <View style={styles.btnContainer}>
           <TouchableHighlight
@@ -86,7 +88,7 @@ class CameraDashboard extends React.Component {
           <TouchableHighlight
             onPress={this.goToCameraRollScreen.bind(this)}
             underlayColor='#ffffff'>
-            <Text style={styles.secondaryBtn}>Chose from my camera roll</Text>
+            <Text style={styles.secondaryBtn}>Choose from my camera roll</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -100,9 +102,13 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 50,
-    paddingLeft: 50,
     backgroundColor: '#FFFFFF',
+  },
+  imageTipContainer: {
+    flex: 5,
+    justifyContent: 'center',
+    paddingLeft: 50,
+    paddingRight: 50,
   },
   innerBtn: {
     flexDirection: 'row',
@@ -110,17 +116,17 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    marginBottom: 10,
     fontSize: 36,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Regular',
+    fontFamily: 'SanFranciscoDisplay-Light',
     color: globals.darkText,
   },
-  subheadline: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontFamily: 'SanFranciscoDisplay-Light',
-    color: globals.mediumText,
+  headlineContainer: {
+    flex: 2,
+    paddingTop: 15,
+    paddingLeft: 50,
+    paddingRight: 50,
+    justifyContent: 'center',
   },
   cameraIcon: {
     width: 30,
@@ -128,9 +134,11 @@ let styles = StyleSheet.create({
     marginRight: 10,
   },
   img: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    alignSelf: 'center',
+    marginBottom: 15,
+    width: 150,
+    height: 150,
+    borderRadius: 150/2,
   },
   tip: {
     color: globals.mediumText,
@@ -139,27 +147,29 @@ let styles = StyleSheet.create({
     fontFamily: 'SanFranciscoText-Regular',
   },
   btnContainer: {
-    paddingBottom: 50,
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mainBtn: {
-    width: 300,
-    marginBottom: 25,
-    paddingTop: 20,
-    paddingBottom: 20,
+    width: window.width - 30,
+    marginBottom: 20,
+    paddingTop: 17,
+    paddingBottom: 17,
     borderRadius: 5,
-    backgroundColor: globals.primaryDeep,
+    backgroundColor: globals.primaryDark,
   },
   btnText: {
     fontSize: 20,
     textAlign: 'center',
     color: '#ffffff',
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: 'SanFranciscoText-Semibold',
   },
   secondaryBtn: {
-    width: 300,
-    fontSize: 20,
+    width: window.width - 30,
+    fontSize: 18,
     textAlign: 'center',
-    color: globals.primaryDeep,
+    color: globals.primaryDark,
     fontFamily: 'SanFranciscoText-Regular',
   }
 });
