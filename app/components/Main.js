@@ -39,21 +39,23 @@ class Main extends React.Component {
       plates: [],
       goSettings: false,
       categoryFilter: [],
-      filterActivated: false
+      radius: null,
+      dollar: null,
+      filterActivated: false,
+      defaultRadius: 15,
+      userInfo: 'not null',
     };
 
     if(props.initialPosition) {
       this.state.status = 'Finding nearby restaurants...';
 
       var {latitude, longitude} = props.initialPosition.coords;
-      
-      this.buildPlatesArray({latitude, longitude}, 15);
+      this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
       this._getAddress(latitude, longitude);
     }
   }
 
   buildPlatesArray(userLocation,radius) {
-
     this.setState({
       status: 'Fetching yummy dishes...'
     });
@@ -168,8 +170,7 @@ class Main extends React.Component {
     });
 
     var {latitude, longitude} = newProps.initialPosition.coords;
-    
-    this.buildPlatesArray({latitude, longitude}, 15);
+    this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
     this._getAddress(latitude, longitude);
   }
 
@@ -199,18 +200,59 @@ class Main extends React.Component {
    this.props.navigator.popToTop();
   }
 
-  handleSettingsConfig(categoryFilter) {
-    console.log('handleSettingsConfig category', categoryFilter);
-    this.setState({categoryFilter: categoryFilter});
+  handleSettingsConfig(key, filter) {
+    // Get the queries to make on radius, dollar and/or category
+    // 'categories' --> ['Burger', 'French', ...]
+    // 'radius'     --> 24 miles
+    // 'dollar'     --> 0/1/2   0=$, 1=$$, 2=$$$
+    switch(key) {
+      case 'categories':
+        this.setState({categoryFilter: filter});
+        break;
+
+      case 'radius':
+        this.setState({radius: filter});
+        break;
+
+      case 'dollar':
+        this.setState({dollar: filter});
+        break;
+
+      case 'keepRadius':
+        this.setState({defaultRadius: filter});
+      default:
+        break;
+    }
+    console.log('handleSettingsConfig', key, filter);
   }
 
   doneButtonSettingsPressed() {
+    var dollarFilter=false;
     this.props.navigator.pop();
-    this.setState({filterActivated: !!this.state.categoryFilter.length});
-    var filteredPlates = helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter);
-    this.setState({filteredPlates: filteredPlates});
-  }
 
+      // radius filter
+     if (this.state.radius !== 60) {
+      var {latitude, longitude} = this.props.lastPosition.coords;
+      this.buildPlatesArray({latitude, longitude}, this.state.radius);
+     }
+
+     // dollar filter
+     if (!!this.state.dollar) {
+      this.setState({filterActivated: true});
+      dollarFilter=true;
+      var filteredPlates = helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter, dollarFilter);
+      this.setState({filteredPlates: filteredPlates});
+     }
+
+    // categories filter
+    if (!!this.state.categoryFilter.length) {
+      this.setState({filterActivated: true});
+      var filteredPlates = helpers.getFilteredPlates(dollarFilter ? this.state.filteredPlates : this.state.plates,
+                                                    this.state.categoryFilter, dollarFilter);
+      this.setState({filteredPlates: filteredPlates});
+    }
+
+  }
 
   componentWillMount() {
   }
@@ -221,6 +263,7 @@ class Main extends React.Component {
       component: SettingsDashboard,
       props: {
         handleSettingsConfig: this.handleSettingsConfig.bind(this),
+        radiusDefault: this.state.defaultRadius,
       },
       navigationBar: (
         <NavigationBar

@@ -24,8 +24,13 @@ var foodImages = ['http://www.thetimes.co.uk/tto/multimedia/archive/00378/709116
                   'http://npic.orst.edu/images/foodsafebnr.jpg',
                   'http://media.independent.com/img/photos/2008/03/05/garden04.jpg',
                   'https://media.licdn.com/mpr/mpr/p/1/005/098/14b/3100678.jpg'];
-var imagesName = ['Burgers', 'French', 'Thai', 'Indian','Fish', 'Italian', 'Sushi', 'Pizza', 'Hotpot'];
+var imagesName = ['Burgers', 'French', 'Pizza', 'Indian','Fish', 'Italian', 'Sushi', 'Pizza', 'Hotpot'];
 var setsOfSelected = [false,false,false,false,false,false,false,false,false];
+
+              // = [$, $$, $$$];
+var dollarImages = [['http://www.cedarpostnj.com/icon-dollar.png', false],
+                    ['http://www.cedarpostnj.com/icon-dollar.png', false],
+                    ['http://www.cedarpostnj.com/icon-dollar.png', false]];
 
 class SettingsDashboard extends React.Component {
   constructor(props) {
@@ -34,6 +39,12 @@ class SettingsDashboard extends React.Component {
       setsOfNinePics: foodImages,
       setsOfNineNames: imagesName,
       selected: false,
+      minimumValue: 0,
+      maximumValue: 80,
+      selected: false,
+      value: null,
+      dollarImages: dollarImages,
+      radius: null,
     };
   }
 
@@ -43,11 +54,57 @@ class SettingsDashboard extends React.Component {
   onPressImage(i){
     this.setState({selected: !this.state.selected});
     setsOfSelected[i] = !setsOfSelected[i];
-    this.props.route.props.handleSettingsConfig(helpers.createSettingsFilter(setsOfSelected, this.state.setsOfNineNames));
+    var filterCategories = helpers.createSettingsFilter(setsOfSelected, this.state.setsOfNineNames)
+    this.props.route.props.handleSettingsConfig('categories', filterCategories);
   }
 
   pictureSelected(i) {
     return setsOfSelected[i];
+  }
+
+  onSlidingComplete() {
+    console.log('onSlidingComplete', this.state.value);
+    this.props.route.props.handleSettingsConfig('keepRadius', this.state.value);
+    this.props.route.props.handleSettingsConfig('radius', this.state.value);
+  }
+
+  dollarOnPress(i) {
+    this.setState({selected: !this.state.selected});
+
+    // Unselect same button
+    if (dollarImages[i][1]) {
+      dollarImages[i][1] = !dollarImages[i][1];
+      return;
+    };
+
+    var counter=0;
+    dollarImages.map((image) => {image[1] ? null : counter++;});
+
+    // first time
+    if (counter===3) {
+      dollarImages[i][1] = !dollarImages[i][1];
+      return;
+    };
+
+    // second time, different button
+    if (counter===2) {
+        dollarImages.map((image, i) => {
+          if (image[1]) dollarImages[i][1] = !dollarImages[i][1];
+        });
+        dollarImages[i][1] = !dollarImages[i][1];
+        return;
+    };
+  }
+
+  componentWillMount() {
+    console.log(this.props.route.props.radiusDefault);
+    this.setState({value: Math.round(this.props.route.props.radiusDefault)});
+
+  }
+
+  componentDidMount() {
+    // gets the index of $ sign
+    this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
   }
 
   render () {
@@ -72,11 +129,30 @@ class SettingsDashboard extends React.Component {
             );
           })}
         </View>
-        <View>
-          <TouchableHighlight
-            style={styles.moreSettings}>
-            <Text style={styles.textSet}> Filter by <Text style={styles.textBold}>Distance / Price / Relevance     ></Text></Text>
-          </TouchableHighlight>
+        <View style={styles.containerSlider}>
+          <Text>{this.state.value} Miles</Text>
+          <Slider
+            trackStyle={sliderStyle.track}
+            thumbStyle={sliderStyle.thumb}
+            value={this.state.value}
+            minimumValue={this.state.minimumValue}
+            maximumValue={this.state.maximumValue}
+            onSlidingComplete={this.onSlidingComplete.bind(this)}
+            onValueChange={(value) => {this.setState({value: Math.round(value)});}} />
+        </View>
+        <View style={styles.priceContainer}>
+          {this.state.dollarImages.map((image, i) => {
+            return (
+              <TouchableHighlight
+                key={i}
+                onPress={this.dollarOnPress.bind(this, i)}
+                style={dollarImages[i][1] ? styles.pressDollarSelected : styles.pressDollar}>
+                <Image
+                  style={styles.imageDollar}
+                  source={{uri: image[0]}}/>
+              </TouchableHighlight>
+            );
+          })}
         </View>
       </View>
     );
@@ -84,6 +160,39 @@ class SettingsDashboard extends React.Component {
 }
 
 var styles = StyleSheet.create({
+  pressDollar: {
+    width: 70,
+    height: 50,
+    marginHorizontal: 10,
+  },
+  pressDollarSelected: {
+    width: 70,
+    height: 50,
+    marginHorizontal: 10,
+    borderWidth: 2.5,
+    borderColor: 'green'
+  },
+  imageDollar: {
+    flex: 1,
+    backgroundColor: '#FFCE00'
+  },
+  priceContainer: {
+    paddingBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    justifyContent: 'space-between',
+  },
+  containerSlider: {
+    paddingBottom: 30,
+    height: 40,
+    marginLeft: 10,
+    marginRight: 10,
+    marginHorizontal: 100,
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',

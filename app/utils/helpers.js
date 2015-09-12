@@ -32,14 +32,21 @@ var helpers = {
     return (m * 0.00062137);
   },
   // filters plates based on category
-  getFilteredPlates(plates, categoryfilter) {
+  getFilteredPlates(plates, categoryfilter, dollarFilter) {
     let res = [];
     plates.forEach((plate) => {
       categoryfilter.forEach((filter)=>{
-        if (filter in plate.category) {
-          res.push(plate)
-          return;
-        };
+        if (dollarFilter){
+          if (filter === plate.priceRange){
+            res.push(plate)
+            return;
+          }
+        } else{
+          if (filter in plate.category) {
+            res.push(plate)
+            return;
+          };
+        }
       })
     });
     return res;
