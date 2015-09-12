@@ -125,7 +125,6 @@ class MapDashBoard extends React.Component {
   }
 
   render() {
-    console.log('rendered');
     return (
       <View style={styles.container}>
         <View style={styles.mapContainer}>

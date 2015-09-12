@@ -125,6 +125,9 @@ class RestaurantSelection extends React.Component {
         return;
       }
       firebase_api.addRestaurant(restaurant);
+    })
+    .catch(function(err) {
+      console.warn(err);
     });
 
     var props = {

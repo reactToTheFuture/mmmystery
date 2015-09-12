@@ -78,7 +78,7 @@ var firebase_api = {
       context: this,
       then(imageData) {
         if(!imageData) {
-          return;
+          return deferred.reject(new Error(`no image data for ${imageId}`));
         }
         base.fetch(`users/${imageData.user_id}`, {
           context: this,
@@ -96,8 +96,11 @@ var firebase_api = {
 
     base.fetch(`restaurants/${id}`, {
       context: this,
-      then(data) {
-        deferred.resolve(data);
+      then(restaurant) {
+        if(!restaurant) {
+          return deferred.reject(new Error(`can not find restaurant ${id}`));
+        }
+        deferred.resolve(restaurant);
       }
     });
 
@@ -109,8 +112,11 @@ var firebase_api = {
     base.fetch(`plates/${id}`, {
       context: this,
       asArray: true,
-      then(data) {
-        deferred.resolve(data);
+      then(plates) {
+        if(!plates) {
+          return deferred.reject(new Error(`can not find plates for ${id}`));
+        }
+        deferred.resolve(plates);
       }
     });
 
@@ -123,7 +129,7 @@ var firebase_api = {
     });
 
     // cb gets key, location and distance as params
-    geoQuery.on("key_entered", cb);
+    geoQuery.on('key_entered', cb);
   },
   addRestaurant(restaurant) {
     var {id, categories, location, phone, name, url} = restaurant;
@@ -154,10 +160,11 @@ var firebase_api = {
     var lat = coords.latitude;
     var lng = coords.longitude;
 
-    geoFire.set(id, [lat, lng]).then(() => {
+    geoFire.set(id, [lat, lng])
+    .then(() => {
       console.log(`Added ${name} to GeoFire`);
     }, (error) => {
-      console.log("Geofire Error: " + error);
+      console.warn("Geofire Error: " + error);
     });
   }
 };

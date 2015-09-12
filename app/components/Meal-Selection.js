@@ -54,6 +54,9 @@ class MealSelection extends React.Component {
         isLoading: false,
         meals: this.state.meals.cloneWithRows(plates)
       })
+    })
+    .catch((err) => {
+      console.warn(err);
     });
   }
 
