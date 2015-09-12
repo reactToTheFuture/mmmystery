@@ -73,7 +73,7 @@ class CameraDashboard extends React.Component {
           <TouchableHighlight
             style={styles.mainBtn}
             onPress={this.goToCameraLiveScreen.bind(this)}
-            underlayColor='#fdc969'>
+            underlayColor={globals.primaryLight}>
             <View style={styles.innerBtn}>
               <Icon
                 name='ion|ios-camera-outline'

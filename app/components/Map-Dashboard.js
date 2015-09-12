@@ -5,6 +5,8 @@ import mapbox_api from '../utils/mapbox-api';
 
 import RouteOverlay from './Route-Overlay';
 import ArrivalOverlay from './Arrival-Overlay';
+import CameraDashboard from './Camera-Dashboard';
+import NavigationBar from 'react-native-navbar';
 import Main from './Main';
 import Map from './Map';
 
@@ -61,10 +63,12 @@ class MapDashBoard extends React.Component {
           var coords = step.maneuver.location.coordinates;
           var latitude = coords[1];
           var longitude = coords[0];
-          var title = 'title';
+          var title = '';
 
           if(step.way_name) {
             title = step.way_name.replace(/\s/g, '-');
+          } else {
+            title = 'arrival';
           }
 
           return {
@@ -72,12 +76,16 @@ class MapDashBoard extends React.Component {
             longitude,
             annotationImage,
             title,
-            id: title,
-            subtitle: ''
+            id: title
           }
         });
 
         var stepDirections = steps.map((step) => {
+
+          if( step.maneuver.instruction === 'You have arrived at your destination' ) {
+            return "You're almost there...";
+          }
+
           return step.maneuver.instruction;
         });
 
@@ -100,19 +108,21 @@ class MapDashBoard extends React.Component {
   handleStepIncrement() {
     var stepIndex = this.state.stepIndex + 1;
 
-    this.setState({
-      stepIndex
-    });
-
-    if( stepIndex === this.state.stepDirections.length-1 ) {
+    if( stepIndex === this.state.stepDirections.length ) {
       this.setState({
         hasArrived: true
       });
+      return;
     }
+
+    this.setState({
+      stepIndex
+    });
   }
 
   handleArrivalConfirmation() {
-    this.props.navigator.push({
+
+    this.props.navigator.replace({
       title: 'Camera',
       component: CameraDashboard,
       navigationBar: (
@@ -125,16 +135,14 @@ class MapDashBoard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.mapContainer}>
-          <Directions
-            stepDirections={this.state.stepDirections}
-            stepIndex={this.state.stepIndex} />
-          <Map
-            userPosition={this.props.route.props.userPosition}
-            stepAnnotations={this.state.stepAnnotations}
-            onStepIncrement={this.handleStepIncrement.bind(this)}
-            stepIndex={this.state.stepIndex} />
-        </View>
+        <Map
+          userPosition={this.props.route.props.userPosition}
+          stepAnnotations={this.state.stepAnnotations}
+          onStepIncrement={this.handleStepIncrement.bind(this)}
+          stepIndex={this.state.stepIndex} />
+        <Directions
+          stepDirections={this.state.stepDirections}
+          stepIndex={this.state.stepIndex} />
         <RouteOverlay
           isLoading={this.state.isLoading}
           isVisible={this.state.isLoading || !this.state.isConfirmed}
@@ -151,14 +159,7 @@ class MapDashBoard extends React.Component {
 let styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  mapContainer: {
-    flex: 1,
-    marginTop: 65,
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-    paddingRight: 20,
-    paddingLeft: 20 
+    position: 'relative',
   }
 });
 

@@ -97,7 +97,11 @@ var Map = React.createClass({
       currentAnnotation: [nextAnnotation]
     });
 
-    this.props.onStepIncrement();
+
+    setInterval(() => {
+      this.props.onStepIncrement();
+    },500);
+
   },
 
   getZoomLevel(distance) {
@@ -127,21 +131,19 @@ var Map = React.createClass({
 
   render() {
     return (
-      <View style={styles.container}>
-        <MapboxGLMap
-          ref={mapRef}
-          onUpdateUserLocation={this.onUpdateUserLocation}
-          direction={0}
-          rotateEnabled={true}
-          scrollEnabled={true}
-          zoomEnabled={true}
-          showsUserLocation={true}
-          zoomLevel={15}
-          accessToken={mapbox_keys.token}
-          centerCoordinate={this.state.initialPosition}
-          style={styles.map}
-          styleURL={'asset://styles/emerald-v7.json'} />
-      </View>
+      <MapboxGLMap
+        ref={mapRef}
+        onUpdateUserLocation={this.onUpdateUserLocation}
+        direction={0}
+        rotateEnabled={true}
+        scrollEnabled={true}
+        zoomEnabled={true}
+        showsUserLocation={true}
+        zoomLevel={15}
+        accessToken={mapbox_keys.token}
+        centerCoordinate={this.state.initialPosition}
+        style={styles.map}
+        styleURL={'asset://styles/emerald-v7.json'} />
     );
   },
 });
@@ -149,9 +151,6 @@ var Map = React.createClass({
 var styles = StyleSheet.create({
   map: {
     flex: 1,
-  },
-  container: {
-    flex: 1
   }
 });
 
