@@ -26,6 +26,11 @@ var firebase_api = {
 
           var images = restaurant[plate].images;
           var imagesLo = restaurant[plate]['images-lo'];
+
+          if(!images || !imagesLo) {
+            continue;
+          }
+
           var imgKeys = imagesLo ? Object.keys(imagesLo) : Object.keys(images);
           result = result.concat(imgKeys);
         }
