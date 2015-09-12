@@ -1,6 +1,9 @@
 import React from 'react-native';
 import RestaurantSelection from './Restaurant-Selection';
 import NavigationBar from 'react-native-navbar';
+import CameraCrop from './Camera-Crop';
+import Dimensions from 'Dimensions';
+
 
 var {
   StyleSheet,
@@ -10,12 +13,12 @@ var {
   Image,
   CameraRoll,
   TouchableHighlight,
-  NativeModules
+  NativeModules,
 } = React;
 
-var Dimensions = require('Dimensions');
-var window = Dimensions.get('window');
-var globals = require('../../globalVariables');
+var deviceScreen = Dimensions.get('window');
+var fullWidth = deviceScreen.width;
+var fullHeight = deviceScreen.height;var globals = require('../../globalVariables');
 
 class CameraRollView extends React.Component {
   constructor(props) {
@@ -23,8 +26,11 @@ class CameraRollView extends React.Component {
     this.state = {
       images: [],
       loading: false,
+      selectedImage: null,
       selectedImageUri: '',
-      selectedImageBase64: null
+      selectedImageBase64: null,
+      isCroppingPhoto: false,
+      imageFrom: 'Camera-Roll',
     };
   }
 
@@ -62,26 +68,24 @@ class CameraRollView extends React.Component {
           title="Where are you at?" />
       )
     });
+    this.handleOverlayClose();
   }
 
-  selectImage (image) {
+  handleOverlayClose() {
     this.setState({
-      loading: true
+      isCroppingPhoto: false
     });
+  }
 
-    NativeModules.ReadImageData.readImage(image.uri, (base64) => {
-      this.setState({
-        loading: false
-      });
-
-      var props = {
-        image: {
-          base64,
-          uri: image.uri
-        }
-      };
-
-      this.goToRestaurantSelection(props);
+  handleOverlayOpen(image) {
+    this.setState({
+      isCroppingPhoto: true,
+      image: {
+        uri: image.uri,
+        type: 'file',
+        width: fullWidth,
+        height: fullWidth + 55
+      }
     });
   }
 
@@ -95,7 +99,7 @@ class CameraRollView extends React.Component {
                 key={i}
                 underlayColor={'orange'}
                 style={styles.button}
-                onPress={this.selectImage.bind(this, image)}>
+                onPress={this.handleOverlayOpen.bind(this, image)}>
                 <Image
                   style={[styles.image, this.state.selected === image.uri && styles.selectedImage]}
                   source={{ uri: image.uri}} />
@@ -108,6 +112,12 @@ class CameraRollView extends React.Component {
           style={styles.loadingIcon}
           size="large"
         />
+        <CameraCrop
+          isVisible={this.state.isCroppingPhoto}
+          image={this.state.image}
+          imageFrom={this.state.imageFrom}
+          onPhotoAccept={this.goToRestaurantSelection.bind(this)}
+          onOverlayClose={this.handleOverlayClose.bind(this)} />
       </ScrollView>
     );
   }
@@ -116,8 +126,8 @@ class CameraRollView extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 5,
+    paddingRight: 5,
     backgroundColor: globals.secondary,
     position: 'relative',
   },
@@ -129,8 +139,8 @@ var styles = StyleSheet.create({
   },
   loadingIcon: {
     position: 'absolute',
-    top: (window.height/2 - 36),
-    left: (window.width/2 - 36),
+    top: (deviceScreen.height/2 - 36),
+    left: (deviceScreen.width/2 - 36),
     backgroundColor: "transparent",
   },
   button: {
