@@ -46,7 +46,7 @@ class ArrivalOverlay extends React.Component {
                   color='#ffffff'
                   style={styles.icon}
                 />
-                <Text style={styles.text}>Let's take a photo</Text>
+                <Text style={styles.text}>Upload Photo</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -59,7 +59,7 @@ class ArrivalOverlay extends React.Component {
 let styles = StyleSheet.create({
   topText: {
     flex: 1,
-    paddingTop: 100,
+    paddingTop: 25,
   },
   imageContainer: {
     flex: 2,
@@ -76,6 +76,8 @@ let styles = StyleSheet.create({
   },
   arrivalOverlay: {
     flex: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
     backgroundColor: globals.primaryDark,
     alignItems: 'center',
   },
@@ -93,7 +95,7 @@ let styles = StyleSheet.create({
     fontSize: 26,
   },
   arrivalImage: {
-    width: window.width - 30,
+    width: window.width - 40,
     height: window.height/4,
     borderRadius: 5,
     borderColor: '#ffffff',
@@ -106,7 +108,7 @@ let styles = StyleSheet.create({
     marginRight: 10,
   },
   button: {
-    width: window.width - 30,
+    width: window.width - 40,
     padding: 10,
     borderWidth: 2,
     borderColor: '#ffffff',

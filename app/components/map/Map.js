@@ -88,8 +88,16 @@ var Map = React.createClass({
   },
 
   addNextAnnotation(userLocation, annotations) {
+    var nextAnnotation;
     var nextAnnotationIndex = this.props.stepIndex + 1;
-    var nextAnnotation = annotations[nextAnnotationIndex];
+
+    this.props.onStepIncrement();
+    
+    if( nextAnnotationIndex >= this.props.endStepIndex ) {
+      return;
+    }
+
+    nextAnnotation = annotations[nextAnnotationIndex];
 
     this.addAnnotations(mapRef, [nextAnnotation]);
     this.adjustMapPosition(userLocation, nextAnnotation);
@@ -97,8 +105,6 @@ var Map = React.createClass({
     this.setState({
       currentAnnotation: [nextAnnotation]
     });
-
-    this.props.onStepIncrement();
   },
 
   getZoomLevel(distance) {
@@ -123,6 +129,7 @@ var Map = React.createClass({
     // add first annotation
     if(!this.state.currentAnnotation.length) {
       this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
+      console.log(newProps.stepAnnotations);
     }
   },
 

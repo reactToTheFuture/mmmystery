@@ -24,6 +24,7 @@ class MapDashBoard extends React.Component {
       stepAnnotations: [],
       stepDirections: [],
       stepIndex: -1,
+      lastStepIndex: null,
       isLoading: true,
       isConfirmed: false,
       hasArrived: false
@@ -43,6 +44,7 @@ class MapDashBoard extends React.Component {
       this.setState({
         steps: res.steps,
         stepDirections: res.stepDirections,
+        endStepIndex: res.stepDirections.length-1,
         stepAnnotations: res.stepAnnotations,
         isLoading: false
       })
@@ -108,7 +110,7 @@ class MapDashBoard extends React.Component {
   handleStepIncrement() {
     var stepIndex = this.state.stepIndex + 1;
 
-    if( stepIndex === this.state.stepDirections.length ) {
+    if( stepIndex >= this.state.endStepIndex ) {
       this.setState({
         hasArrived: true
       });
@@ -138,10 +140,12 @@ class MapDashBoard extends React.Component {
           userPosition={this.props.route.props.userPosition}
           stepAnnotations={this.state.stepAnnotations}
           onStepIncrement={this.handleStepIncrement.bind(this)}
-          stepIndex={this.state.stepIndex} />
+          stepIndex={this.state.stepIndex}
+          endStepIndex={this.state.endStepIndex} />
         <Directions
           stepDirections={this.state.stepDirections}
-          stepIndex={this.state.stepIndex} />
+          stepIndex={this.state.stepIndex}
+          endStepIndex={this.state.endStepIndex} />
         <RouteOverlay
           isLoading={this.state.isLoading}
           isVisible={this.state.isLoading || !this.state.isConfirmed}
