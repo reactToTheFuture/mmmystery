@@ -6,7 +6,6 @@ var ENDPOINT_URI = require('./config').firebase.ENDPOINT_URI;
 var base = Rebase.createClass(ENDPOINT_URI);
 var platesRef = new Firebase(ENDPOINT_URI + '/plates');
 var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
-var imageDataRef = new Firebase(ENDPOINT_URI + '/image-data');
 var usersRef = new Firebase(ENDPOINT_URI + '/users');
 
 var geoFire = new GeoFire(geoFireRef);
@@ -70,6 +69,20 @@ var firebase_api = {
         console.log(`User ${first_name} ${last_name} Updated`);
       }
     });
+  },
+  addImageData(imageId, user_id) {
+    var deferred = Q.defer();
+    var date = new Date().toString();
+    var feeling = 'meh';
+
+    base.post(`image-data/${imageId}`, {
+      data: {user_id, date, feeling},
+      then() {
+        deferred.resolve('image data updated');
+      }
+    });
+
+    return deferred.promise;
   },
   getUserByImageId(imageId) {
     var deferred = Q.defer();
@@ -143,16 +156,15 @@ var firebase_api = {
     });
   },
   addPlate(restaurantID, plateID, imageURL) {
-    platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
-  },
-  addPlatePromise(restaurantID, plateID, imageURL) {
     var deferred = Q.defer();
     var ImgRef = platesRef.child(restaurantID).child(plateID).child('images-lo').push(imageURL);
     deferred.resolve(ImgRef.key());
     return deferred.promise;
   },
   updatePlate(restaurantID, plateID, key, imageURL) {
-    platesRef.child(restaurantID).child(plateID).child('images-lo').child(key).set(imageURL);
+    var deferred = Q.defer();
+    platesRef.child(restaurantID).child(plateID).child('images-lo').child(key).set(imageURL, () => { deferred.resolve(`updated plate ${key}`) });
+    return deferred.promise;
   },
   addGeoFireLocation(restaurant) {
     var id = restaurant.id;

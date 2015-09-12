@@ -20,7 +20,8 @@ class MysteryMeal extends React.Component {
     super(props);
     this.state = {
       initialPosition: null,
-      lastPosition: null
+      lastPosition: null,
+      user: null
     };
   }
 
@@ -37,7 +38,7 @@ class MysteryMeal extends React.Component {
     return (
       <View style={styles.app}>
         {navBar}
-        <Component navigator={navigator} route={route} initialPosition={this.state.initialPosition} lastPosition={this.state.lastPosition} />
+        <Component user={this.state.user} navigator={navigator} route={route} initialPosition={this.state.initialPosition} lastPosition={this.state.lastPosition} />
       </View>
     );
   }
@@ -65,6 +66,12 @@ class MysteryMeal extends React.Component {
     });
   }
 
+  handleLogin(user) {
+    this.setState({
+      user
+    });
+  }
+
   componentDidMount() {
     this.getUserLocation();
   }
@@ -78,7 +85,10 @@ class MysteryMeal extends React.Component {
       <Navigator
         renderScene={this.renderScene.bind(this)}
         initialRoute={{
-          component: Login
+          component: Login,
+          props: {
+            onLogin: this.handleLogin.bind(this)
+          }
         }}
       />
     );

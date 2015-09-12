@@ -39,8 +39,7 @@ class Main extends React.Component {
       plates: [],
       goSettings: false,
       categoryFilter: [],
-      filterActivated: false,
-      userInfo: 'not null',
+      filterActivated: false
     };
 
     if(props.initialPosition) {
@@ -218,7 +217,6 @@ class Main extends React.Component {
   }
 
   render() {
-    // console.log('filteredPlates', this.state.filteredPlates);
     if (this.state.plates.length <= 0) {
       return (
         <InitialLoadingOverlay

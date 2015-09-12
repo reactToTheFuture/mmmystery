@@ -81,7 +81,9 @@ var {
           firebase_api.addUser(userInfo);
         }
 
-        this.switchToMain(userInfo);
+        this.props.route.props.onLogin(userInfo);
+        this.switchToMain();
+
       }, 'me?fields=first_name,last_name,picture');
 
       fetchProfileRequest.start(0);
@@ -117,7 +119,6 @@ var {
   };
 
   cameraBtnPress(navigator, route) {
-    console.log('I am hit!');
     navigator.push({
       title: 'Camera',
       component: CameraDashboard,
@@ -131,9 +132,6 @@ var {
   switchToMain(userInfo) {
     this.props.navigator.push({
       component: Main,
-      props: {
-        userInfo: userInfo,
-      },
       navigationBar: (
         <NavigationBar
           customPrev={<NavigationPrev iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
@@ -149,7 +147,7 @@ var {
 
     // this page appears after login process and main screen
     // will be replaced by a loading screen
-    if (!this.state.responseToken){
+    if (!this.state.responseToken) {
       return (
         <Text>Loading screen after login process</Text>
       );

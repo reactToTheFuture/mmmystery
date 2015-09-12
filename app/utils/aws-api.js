@@ -2,8 +2,6 @@ var aws = require('./config').aws;
 
 var aws_api = {
   uploadToS3(image, key) {
-    console.log('image: ', image);
-    console.log('key: ', key);
     var base64 = 'data:image/jpeg;base64,' + image.base64;
     var header = new Headers();
     header.append('Content-Type', 'application/json')
