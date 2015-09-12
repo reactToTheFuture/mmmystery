@@ -81,7 +81,6 @@ class MapDashBoard extends React.Component {
         });
 
         var stepDirections = steps.map((step) => {
-
           if( step.maneuver.instruction === 'You have arrived at your destination' ) {
             return "You're almost there...";
           }
@@ -121,7 +120,6 @@ class MapDashBoard extends React.Component {
   }
 
   handleArrivalConfirmation() {
-
     this.props.navigator.replace({
       title: 'Camera',
       component: CameraDashboard,

@@ -79,7 +79,7 @@ class CameraDashboard extends React.Component {
                 name='ion|ios-camera-outline'
                 size={30}
                 color='#ffffff'
-                style={styles.cameraIcon}
+                style={styles.icon}
               />
               <Text style={styles.btnText}>Let's take a photo</Text>
             </View>
@@ -128,7 +128,7 @@ let styles = StyleSheet.create({
     paddingRight: 50,
     justifyContent: 'center',
   },
-  cameraIcon: {
+  icon: {
     width: 30,
     height: 30,
     marginRight: 10,

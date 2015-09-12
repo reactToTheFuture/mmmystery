@@ -62,7 +62,7 @@ class Main extends React.Component {
       status: 'Fetching yummy dishes...'
     });
 
-    firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
+    firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, distance) => {
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if(!plates.length) {
@@ -112,7 +112,8 @@ class Main extends React.Component {
             restaurant,
             location,
             img_url,
-            priceFactor
+            priceFactor,
+            distance
           };
 
           firebase_api.getUserByImageId(randomImageKey)

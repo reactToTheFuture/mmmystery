@@ -97,11 +97,7 @@ var Map = React.createClass({
       currentAnnotation: [nextAnnotation]
     });
 
-
-    setInterval(() => {
-      this.props.onStepIncrement();
-    },500);
-
+    this.props.onStepIncrement();
   },
 
   getZoomLevel(distance) {

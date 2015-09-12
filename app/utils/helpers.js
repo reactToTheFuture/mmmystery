@@ -31,6 +31,10 @@ var helpers = {
   metersToMiles(m) {
     return (m * 0.00062137);
   },
+  milesToMins(m) {
+    // 1 mile ~ 15 mins
+    return Math.round(m * 15);
+  },
   // filters plates based on category
   getFilteredPlates(plates, categoryfilter, dollarFilter) {
     let res = [];

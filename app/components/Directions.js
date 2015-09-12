@@ -40,8 +40,8 @@ let styles = StyleSheet.create({
   direction: {
     textAlign: 'center',
     color: '#ffffff',
-    fontSize: 18,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontSize: 25,
+    fontFamily: 'SanFranciscoDisplay-Light',
   }
 });
 
