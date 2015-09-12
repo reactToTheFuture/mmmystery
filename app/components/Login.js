@@ -126,7 +126,7 @@ var {
         <NavigationBar
           title="Picture Time" />
       )
-    })
+    });
   }
 
   switchToMain(userInfo) {

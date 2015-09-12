@@ -26,7 +26,6 @@ var Map = React.createClass({
         latitude: lat,
         longitude: lng,
       },
-      currentAnnotationIndex: -1,
       currentAnnotation: [],
       zoom: 15,
     };
@@ -58,20 +57,24 @@ var Map = React.createClass({
   },
 
   onUpdateUserLocation(location) {
-    console.log('myLocation', location);
-    console.log('nextAnnotation', this.props.stepAnnotations[0]);
+    var annotationCoords = this.state.currentAnnotation[0];
+    var distanceToAnnotation = this.getDistanceToNextAnnotation(location, annotationCoords);
 
-    console.log(this.getDistanceToNextAnnotation(location, this.props.stepAnnotations[0]));
+    if( distanceToAnnotation <= 0.05 ) {
+      this.addNextAnnotation(this.props.stepAnnotations);
+    }
   },
 
   addNextAnnotation(annotations) {
-    var currentAnnotationIndex = ++this.state.currentAnnotationIndex;
+    var currentAnnotationIndex = this.props.stepIndex + 1;
 
     this.addAnnotations(mapRef, [annotations[currentAnnotationIndex]]);
 
     this.setState({
-      currentAnnotationIndex 
+      currentAnnotation: [annotations[currentAnnotationIndex]]
     });
+
+    this.props.onStepIncrement();
   },
 
   componentWillReceiveProps(newProps) {

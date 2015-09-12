@@ -1,5 +1,5 @@
-var React = require('react-native');
-var Dimensions = require('Dimensions');
+import React from 'react-native';
+import Dimensions from 'Dimensions';
 var window = Dimensions.get('window');
 
 var {
