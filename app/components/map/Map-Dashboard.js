@@ -26,6 +26,7 @@ class MapDashBoard extends React.Component {
       stepIndex: -1,
       lastStepIndex: null,
       isLoading: true,
+      timetoAnnotation: null,
       isConfirmed: false,
       hasArrived: false
     };
@@ -122,6 +123,12 @@ class MapDashBoard extends React.Component {
     });
   }
 
+  updateTimeToAnnotation(time) {
+    this.setState({
+      timeToAnnotation: time
+    });
+  }
+
   handleArrivalConfirmation() {
     this.props.navigator.replace({
       title: 'Camera',
@@ -140,12 +147,14 @@ class MapDashBoard extends React.Component {
           userPosition={this.props.route.props.userPosition}
           stepAnnotations={this.state.stepAnnotations}
           onStepIncrement={this.handleStepIncrement.bind(this)}
+          onLocationChange={this.updateTimeToAnnotation.bind(this)}
           stepIndex={this.state.stepIndex}
           endStepIndex={this.state.endStepIndex} />
         <Directions
           stepDirections={this.state.stepDirections}
           stepIndex={this.state.stepIndex}
-          endStepIndex={this.state.endStepIndex} />
+          endStepIndex={this.state.endStepIndex}
+          timeToAnnotation={this.state.timeToAnnotation} />
         <RouteOverlay
           isLoading={this.state.isLoading}
           isVisible={this.state.isLoading || !this.state.isConfirmed}

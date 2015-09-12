@@ -2,7 +2,7 @@ import React from 'react-native';
 import MapboxGLMap from 'react-native-mapbox-gl';
 
 import {mapbox as mapbox_keys} from '../../utils/config';
-import { getRadians, metersToMiles, getDegrees } from '../../utils/helpers';
+import { getRadians, metersToMiles, milesToMins, getDegrees } from '../../utils/helpers';
 
 var mapRef = 'directions';
 
@@ -81,6 +81,8 @@ var Map = React.createClass({
   onUpdateUserLocation(location) {
     var annotationCoords = this.state.currentAnnotation[0];
     var distanceToAnnotation = this.getDistanceToAnnotation(location, annotationCoords);
+
+    this.props.onLocationChange(milesToMins(distanceToAnnotation));
 
     if( distanceToAnnotation <= 0.05 ) {
       this.addNextAnnotation(location, this.props.stepAnnotations);
