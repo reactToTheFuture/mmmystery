@@ -47,22 +47,25 @@ class Main extends React.Component {
 
       var {latitude, longitude} = props.initialPosition.coords;
       
-      this.buildPlatesArray({latitude, longitude}, 60);
+      this.buildPlatesArray({latitude, longitude}, 15);
       this._getAddress(latitude, longitude);
     }
   }
 
   buildPlatesArray(userLocation,radius) {
+
+    this.setState({
+      status: 'Fetching yummy dishes...'
+    });
+
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
-      this.setState({
-        status: 'Fetching yummy dishes...'
-      });
 
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if(!plates.length) {
           throw new Error(`no plates for ${restaurantId}`);
         }
+
         return plates;
       })
       .then((plates) => {
@@ -75,20 +78,27 @@ class Main extends React.Component {
           lng: locationTuple[1]
         };
 
-        var morePlates = plates.map((plate) => {
-          var imageKeys;
+        var morePlates = plates.reduce((plates, plate) => {
+          var imageKeys = [];
+          var prop = '';
+
+          if( !plate['images-lo'] || !plate['images'] ) {
+            return plates;
+          }
 
           if( plate['images-lo'] ) {
             imageKeys = Object.keys(plate['images-lo']);
+            prop = 'images-lo';
           } else {
             imageKeys = Object.keys(plate['images']);
+            prop = 'images';
           }
-
 
           var numOfImgs = imageKeys.length;
           var randomImageIndex = Math.floor(Math.random() * numOfImgs);
           var randomImageKey = imageKeys[randomImageIndex];
-          var img_url = plate.images[randomImageKey];
+          var img_url = plate[prop][randomImageKey];
+
           var name = helpers.formatIdString(plate.key);
           var category = helpers.formatCategory(restaurantInfo.categories);
 
@@ -105,11 +115,17 @@ class Main extends React.Component {
             platesObj.user = user;
           })
           .catch(function(err) {
-            console.warn(err);
+            // console.warn(err);
           });
 
-          return platesObj;
-        });
+          plates.push(platesObj);
+
+          return plates;
+        }, []);
+
+        if(!morePlates.length) {
+          return;
+        }
 
         var shuffleIndexIncrement = 2;
         var currPlateIndex = this.state.currPlateIndex;
@@ -143,7 +159,6 @@ class Main extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-
     if(this.props.initialPosition || !newProps.initialPosition) {
       return;
     }
@@ -154,7 +169,7 @@ class Main extends React.Component {
 
     var {latitude, longitude} = newProps.initialPosition.coords;
     
-    this.buildPlatesArray({latitude, longitude}, 60);
+    this.buildPlatesArray({latitude, longitude}, 15);
     this._getAddress(latitude, longitude);
   }
 

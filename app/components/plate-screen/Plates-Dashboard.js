@@ -22,16 +22,17 @@ var {
 class PlatesDashBoard extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
       distance: null,
       loadingImage: true,
-      plate: null,
       priceFactor: 1,
       showMinutes: false,
       searchAddress: null,
+      plate: props.plates[0]
     };
   }
 
@@ -73,12 +74,9 @@ class PlatesDashBoard extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    if( !this.state.plate && nextProps.plates.length ) {
-      this.setState({
-        plate: nextProps.plates[0]
-      });
+    if ( !!this.state.plate && !!this.props.lastPosition ) {
+      this.getDistance(this.props.lastPosition, this.state.plate.location);
     }
-    (!!this.state.plate && !!this.props.lastPosition) ? this.getDistance(this.props.lastPosition, this.state.plate.location) : null;
   }
 
   componentWillMount() {
