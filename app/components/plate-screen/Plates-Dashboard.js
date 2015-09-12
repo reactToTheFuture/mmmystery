@@ -151,7 +151,6 @@ class PlatesDashBoard extends React.Component {
   }
 
   render() {
-
     let { pan, enter, } = this.state;
 
     let [translateX, translateY] = [pan.x, pan.y];
@@ -175,8 +174,7 @@ class PlatesDashBoard extends React.Component {
           <Image
             style={styles.img}
             source={{uri: this.state.plate ? this.state.plate.img_url : null}}
-            onLoad={this._imageLoaded.bind(this)}
-          >
+            onLoad={this._imageLoaded.bind(this)}>
           <View style={styles.imageCrop}></View>
           </Image>
           <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} />

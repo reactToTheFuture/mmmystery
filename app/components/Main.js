@@ -39,27 +39,30 @@ class Main extends React.Component {
       plates: [],
       goSettings: false,
       categoryFilter: [],
-      filterActivated: false
+      radius: null,
+      prevRadius: null,
+      dollar: null,
+      filterActivated: false,
+      defaultRadius: 2.5,
+      userInfo: 'not null',
     };
 
     if(props.initialPosition) {
       this.state.status = 'Finding nearby restaurants...';
 
       var {latitude, longitude} = props.initialPosition.coords;
-      
-      this.buildPlatesArray({latitude, longitude}, 15);
+      this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
       this._getAddress(latitude, longitude);
     }
   }
 
   buildPlatesArray(userLocation,radius) {
-
+    console.log('new serch on radius:', radius);
     this.setState({
       status: 'Fetching yummy dishes...'
     });
 
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
-
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if(!plates.length) {
@@ -168,8 +171,7 @@ class Main extends React.Component {
     });
 
     var {latitude, longitude} = newProps.initialPosition.coords;
-    
-    this.buildPlatesArray({latitude, longitude}, 15);
+    this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
     this._getAddress(latitude, longitude);
   }
 
@@ -199,27 +201,68 @@ class Main extends React.Component {
    this.props.navigator.popToTop();
   }
 
-  doneButtonSettingsPressed() {
-    this.props.navigator.pop();
-    this.setState({filterActivated: !!this.state.categoryFilter.length});
-    var filteredPlates = helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter);
-    this.setState({filteredPlates: filteredPlates});
+  handleSettingsConfig(key, filter) {
+    // Get the queries to make on radius, dollar and/or category
+    // 'categories' --> ['Burger', 'French', ...]
+    // 'radius'     --> 24 miles
+    // 'dollar'     --> 0/1/2   0=$, 1=$$, 2=$$$
+    switch(key) {
+      case 'categories':
+        this.setState({categoryFilter: filter});
+        break;
+
+      case 'dollar':
+        this.setState({dollar: filter});
+        break;
+
+      case 'keepRadius':
+        this.setState({defaultRadius: filter});
+      default:
+        break;
+    }
+    console.log('handleSettings', key, filter);
   }
 
-  handleSettingsConfig(categoryFilter) {
-    console.log('handleSettingsConfig category', categoryFilter);
-    this.setState({categoryFilter: categoryFilter});
+  doneButtonSettingsPressed() {
+    var dollarFilter=false;
+    this.props.navigator.pop();
+
+      // radius filter
+     if (this.state.defaultRadius &&
+         this.state.defaultRadius !== this.state.prevRadius) {
+      var {latitude, longitude} = this.props.lastPosition.coords;
+      this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
+     }
+
+     // dollar filter
+     if (this.state.dollar !== -1) {
+      this.setState({filterActivated: true});
+      dollarFilter=true;
+      var filteredPlates = helpers.getFilteredPlates(this.state.plates, this.state.categoryFilter, dollarFilter);
+      this.setState({filteredPlates: filteredPlates});
+     }
+
+    // categories filter
+    if (!!this.state.categoryFilter.length) {
+      this.setState({filterActivated: true});
+      var filteredPlates = helpers.getFilteredPlates(dollarFilter ? this.state.filteredPlates : this.state.plates,
+                                                    this.state.categoryFilter, dollarFilter);
+      this.setState({filteredPlates: filteredPlates});
+    }
+
   }
 
   componentWillMount() {
   }
 
   _onPressSettings() {
+    this.setState({prevRadius: this.state.defaultRadius});
     this.setState({filterActivated: false});
     this.props.navigator.push({
       component: SettingsDashboard,
       props: {
         handleSettingsConfig: this.handleSettingsConfig.bind(this),
+        radiusDefault: this.state.defaultRadius,
       },
       navigationBar: (
         <NavigationBar
@@ -244,7 +287,7 @@ class Main extends React.Component {
           <PlatesDashBoard
             plates={this.state.filterActivated ? this.state.filteredPlates : this.state.plates}
             lastPosition={this.props.lastPosition}
-            currPlateIndex={this.state.currPlateIndex}
+            currPlateIndex={this.state.filterActivated ? this.state.currPlateIndex + 1 : this.state.currPlateIndex}
             onSelection={this.handleSelection.bind(this)}
             onRejection={this.handleRejection.bind(this)} />
           <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)}/>

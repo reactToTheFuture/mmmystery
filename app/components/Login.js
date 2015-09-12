@@ -145,7 +145,7 @@ var {
 
   render() {
 
-    // this page appears after login process and main screen
+    // this page appears after login process and before main screen
     // will be replaced by a loading screen
     if (!this.state.responseToken) {
       return (
