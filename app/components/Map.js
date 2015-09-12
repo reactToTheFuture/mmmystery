@@ -1,7 +1,7 @@
 import React from 'react-native';
 import MapboxGLMap from 'react-native-mapbox-gl';
 import {mapbox as mapbox_keys} from '../utils/config';
-import { getRadians, metersToMiles } from '../utils/helpers';
+import { getRadians, metersToMiles, getDegrees } from '../utils/helpers';
 
 var mapRef = 'directions';
 
@@ -16,29 +16,26 @@ var Map = React.createClass({
 
   getInitialState() {
     var userCoords = this.props.userPosition.coords;
-    var lat = userCoords.latitude;
-    var lng = userCoords.longitude;
+    var latitude = userCoords.latitude;
+    var longitude = userCoords.longitude;
 
     return {
-      meters: [],
-      loaded: false,
       initialPosition: {
-        latitude: lat,
-        longitude: lng,
+        latitude,
+        longitude,
       },
       currentAnnotation: [],
-      zoom: 15,
     };
   },
 
-  getDistanceToNextAnnotation(userCoords, annotationCoords) {
+  getDistanceToAnnotation(userCoords, annotationCoords) {
+    // http://www.movable-type.co.uk/scripts/latlong.html
     var userLat = userCoords.latitude;
     var userLng = userCoords.longitude;
 
     var annotationLat = annotationCoords.latitude;
     var annotationLng = annotationCoords.longitude;
 
-    // http://www.movable-type.co.uk/scripts/latlong.html
     var R = 6371000; //meters
     var userLatRads = getRadians(userLat);
     var annotationLatRads = getRadians(annotationLat);
@@ -56,30 +53,75 @@ var Map = React.createClass({
     return metersToMiles(d);
   },
 
+  getMidPoint(userCoords, annotationCoords) {
+    // http://www.movable-type.co.uk/scripts/latlong.html
+    var userLat = getRadians(userCoords.latitude);
+    var userLng = getRadians(userCoords.longitude);
+
+    var annotationLat = getRadians(annotationCoords.latitude);
+    var annotationLng = getRadians(annotationCoords.longitude);
+
+    var lngDirrerence = getRadians(annotationCoords.longitude - userCoords.longitude);
+
+    var Bx = Math.cos(annotationLat) * Math.cos(lngDirrerence);
+    var By = Math.cos(annotationLat) * Math.sin(lngDirrerence);
+
+    var lat = Math.atan2( Math.sin(userLat)+Math.sin(annotationLat),
+             Math.sqrt( (Math.cos(userLat)+Bx)*(Math.cos(userLat)+Bx) + By*By) );
+    var lng = userLng + Math.atan2(By, Math.cos(userLat) + Bx);
+    lng = (lng+3*Math.PI) % (2*Math.PI) - Math.PI;
+
+    return {
+      latitude: getDegrees(lat),
+      longitude: getDegrees(lng)
+    };
+  },
+
   onUpdateUserLocation(location) {
     var annotationCoords = this.state.currentAnnotation[0];
-    var distanceToAnnotation = this.getDistanceToNextAnnotation(location, annotationCoords);
+    var distanceToAnnotation = this.getDistanceToAnnotation(location, annotationCoords);
 
     if( distanceToAnnotation <= 0.05 ) {
-      this.addNextAnnotation(this.props.stepAnnotations);
+      this.addNextAnnotation(location, this.props.stepAnnotations);
     }
   },
 
-  addNextAnnotation(annotations) {
-    var currentAnnotationIndex = this.props.stepIndex + 1;
+  addNextAnnotation(userLocation, annotations) {
+    var nextAnnotationIndex = this.props.stepIndex + 1;
+    var nextAnnotation = annotations[nextAnnotationIndex];
 
-    this.addAnnotations(mapRef, [annotations[currentAnnotationIndex]]);
+    this.addAnnotations(mapRef, [nextAnnotation]);
+    this.adjustMapPosition(userLocation, nextAnnotation);
 
     this.setState({
-      currentAnnotation: [annotations[currentAnnotationIndex]]
+      currentAnnotation: [nextAnnotation]
     });
 
     this.props.onStepIncrement();
   },
 
+  getZoomLevel(distance) {
+    if (distance >= 11) return 9;
+    if (distance < 11 && distance >= 5) return 10;
+    if (distance < 5 && distance >= 4) return 11;
+    if (distance < 4 && distance >= 2.5) return 12;
+    if (distance < 2 && distance >= 1.5) return 13;
+    if (distance < 1.5 && distance >= 1) return 14;
+    if (distance < 1) return 15;
+  },
+
+  adjustMapPosition(userLocation, nextAnnotation) {
+    var midpoint = this.getMidPoint(userLocation, nextAnnotation);
+    var distance = this.getDistanceToAnnotation(userLocation, nextAnnotation);
+    var zoomLevel = this.getZoomLevel(distance);
+
+    this.setCenterCoordinateZoomLevelAnimated(mapRef, midpoint.latitude, midpoint.longitude, zoomLevel);
+  },
+
   componentWillReceiveProps(newProps) {
+    // add first annotation
     if(!this.state.currentAnnotation.length) {
-      this.addNextAnnotation(newProps.stepAnnotations);
+      this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
     }
   },
 
@@ -94,9 +136,9 @@ var Map = React.createClass({
           scrollEnabled={true}
           zoomEnabled={true}
           showsUserLocation={true}
+          zoomLevel={15}
           accessToken={mapbox_keys.token}
           centerCoordinate={this.state.initialPosition}
-          zoomLevel={this.state.zoom}
           style={styles.map}
           styleURL={'asset://styles/emerald-v7.json'} />
       </View>

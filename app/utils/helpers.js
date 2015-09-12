@@ -22,8 +22,11 @@ var helpers = {
       return m.toUpperCase();
     });
   },
-  getRadians(num) {
-    return num * Math.PI / 180;
+  getRadians(deg) {
+    return deg * Math.PI / 180;
+  },
+  getDegrees(rad) {
+    return rad * 180 / Math.PI;
   },
   metersToMiles(m) {
     return (m * 0.00062137);

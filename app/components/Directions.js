@@ -10,7 +10,6 @@ let {
 
 class Directions extends React.Component{
   render () {
-    console.log(this.props.stepIndex);
     return (
       <View style={styles.directions}>
       {this.props.stepIndex >= 0 && 
