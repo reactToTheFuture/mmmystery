@@ -32,10 +32,10 @@ let styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   picture: {
-    width:35,
-    height: 35,
+    width:32,
+    height: 32,
     backgroundColor: Colors.yellowWhite,
-    borderRadius: 25/2,
+    borderRadius: 32/2,
     marginRight: 5,
   },
   name: {
