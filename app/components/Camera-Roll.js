@@ -1,9 +1,11 @@
 import React from 'react-native';
 import RestaurantSelection from './Restaurant-Selection';
+import MealSelection from './Meal-Selection';
 import NavigationBar from 'react-native-navbar';
 import CameraCrop from './Camera-Crop';
 import Dimensions from 'Dimensions';
 
+import globals from '../../globalVariables';
 
 var {
   StyleSheet,
@@ -18,7 +20,7 @@ var {
 
 var deviceScreen = Dimensions.get('window');
 var fullWidth = deviceScreen.width;
-var fullHeight = deviceScreen.height;var globals = require('../../globalVariables');
+var fullHeight = deviceScreen.height;
 
 class CameraRollView extends React.Component {
   constructor(props) {
@@ -59,6 +61,30 @@ class CameraRollView extends React.Component {
     console.log(error);
   }
 
+  goToNextSelection(props) {
+    var restaurant = this.props.route.props.restaurant;
+
+    if(restaurant) {
+      props.restaurant = restaurant;
+      this.goToMealSelection(props);
+    } else {
+      this.goToRestaurantSelection(props);
+    }
+
+    this.handleOverlayClose();
+  }
+
+  goToMealSelection(props) {
+    this.props.navigator.push({
+      component: MealSelection,
+      props,
+      navigationBar: (
+        <NavigationBar
+          title="Find your meal" />
+      )
+    });
+  }
+
   goToRestaurantSelection(props) {
     this.props.navigator.push({
       component: RestaurantSelection,
@@ -68,7 +94,6 @@ class CameraRollView extends React.Component {
           title="Where are you at?" />
       )
     });
-    this.handleOverlayClose();
   }
 
   handleOverlayClose() {
@@ -116,7 +141,7 @@ class CameraRollView extends React.Component {
           isVisible={this.state.isCroppingPhoto}
           image={this.state.image}
           imageFrom={this.state.imageFrom}
-          onPhotoAccept={this.goToRestaurantSelection.bind(this)}
+          onPhotoAccept={this.goToNextSelection.bind(this)}
           onOverlayClose={this.handleOverlayClose.bind(this)} />
       </ScrollView>
     );

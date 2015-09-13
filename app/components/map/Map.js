@@ -111,7 +111,6 @@ var Map = React.createClass({
       this.props.onStepIncrement();
     }, 500);
 
-    
     if( nextAnnotationIndex >= this.props.endStepIndex ) {
       return;
     }
@@ -166,6 +165,7 @@ var Map = React.createClass({
     // add first annotation
     if(!this.state.currentAnnotation.length) {
       this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
+      console.log(newProps.stepAnnotations);
     }
   },
 

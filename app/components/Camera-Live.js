@@ -3,6 +3,7 @@ import Camera from 'react-native-camera';
 import Button from './Button';
 import NavigationBar from 'react-native-navbar';
 import RestaurantSelection from './Restaurant-Selection';
+import MealSelection from './Meal-Selection';
 import CameraLiveButton from './Button-Camera';
 import CameraCrop from './Camera-Crop';
 import { Icon } from 'react-native-icons';
@@ -29,7 +30,6 @@ class CameraLive extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       cameraType: Camera.constants.Type.back,
       measuredSize: {
         width: fullWidth,
@@ -41,6 +41,30 @@ class CameraLive extends React.Component {
     };
   }
 
+  goToNextSelection(props) {
+    var restaurant = this.props.route.props.restaurant;
+
+    if(restaurant) {
+      props.restaurant = restaurant;
+      this.goToMealSelection(props);
+    } else {
+      this.goToRestaurantSelection(props);
+    }
+
+    this.handleOverlayClose();
+  }
+
+  goToMealSelection(props) {
+    this.props.navigator.push({
+      component: MealSelection,
+      props,
+      navigationBar: (
+        <NavigationBar
+          title="Find your meal" />
+      )
+    });
+  }
+
   goToRestaurantSelection(props) {
     this.props.navigator.push({
       component: RestaurantSelection,
@@ -50,10 +74,6 @@ class CameraLive extends React.Component {
           title="Where are you at?" />
       )
     });
-    this.setState({
-      loading: false,
-    });
-    this.handleOverlayClose();
   }
 
   handleOverlayClose() {
@@ -94,7 +114,6 @@ class CameraLive extends React.Component {
   }
 
   render() {
-
     return (
       <View style={styles.container}>
         <CameraCrop
@@ -102,7 +121,7 @@ class CameraLive extends React.Component {
           image={this.state.image}
           imageFrom={this.state.imageFrom}
           //measuredSize={this.state.measuredSize}
-          onPhotoAccept={this.goToRestaurantSelection.bind(this)}
+          onPhotoAccept={this.goToNextSelection.bind(this)}
           onOverlayClose={this.handleOverlayClose.bind(this)} />
 
 

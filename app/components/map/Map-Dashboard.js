@@ -11,6 +11,8 @@ import mapbox_api from '../../utils/mapbox-api';
 import CameraDashboard from '../Camera-Dashboard';
 import Main from '../Main';
 
+import { formatNameString } from '../../utils/helpers';
+
 var {
   View,
   StyleSheet
@@ -130,9 +132,18 @@ class MapDashBoard extends React.Component {
   }
 
   handleArrivalConfirmation() {
+
+    var restaurantName = this.props.route.props.image.restaurant;
+
     this.props.navigator.replace({
       title: 'Camera',
       component: CameraDashboard,
+      props: {
+        restaurant: {
+          name: restaurantName,
+          id: formatNameString(restaurantName)
+        }
+      },
       navigationBar: (
         <NavigationBar
           title="Picture Time" />

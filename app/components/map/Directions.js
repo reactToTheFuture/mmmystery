@@ -32,7 +32,7 @@ class Directions extends React.Component {
     return (
       <View style={styles.directions}>
         <Text style={[styles.text, styles.direction]}>{this.props.stepDirections[this.props.stepIndex]}</Text>
-        <Text style={[styles.text, styles.timeAway]}>{this.props.timeToAnnotation} mins away from next step...</Text>
+        <Text style={[styles.text, styles.timeAway]}>{this.props.timeToAnnotation} {this.props.timeToAnnotation === '<1' ? 'min' : 'mins'} away from next step...</Text>
         <View style={[{width: this.getProgressBarWidth()}, styles.progressBar]}></View>
       </View>
     );

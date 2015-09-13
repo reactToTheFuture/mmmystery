@@ -18,7 +18,7 @@ var helpers = {
     return string.replace(/\s+/g,'-').toLowerCase();
   },
   formatIdString(string) {
-    return string.replace(/-/g,' ').toLowerCase().replace( /\b\w/g, function (m) {
+    return string.replace(/-/g,' ').toLowerCase().replace(/\b\w/g, function (m) {
       return m.toUpperCase();
     });
   },
@@ -33,7 +33,13 @@ var helpers = {
   },
   milesToMins(m) {
     // 1 mile ~ 15 mins
-    return Math.round(m * 15);
+    var mins = Math.round(m * 15);
+
+    if( mins === 0 ) {
+      return '<1';
+    }
+
+    return mins;
   },
   filterByDistance(plates, radius) {
     var res = [];
