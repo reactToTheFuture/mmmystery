@@ -42,7 +42,7 @@ class SettingsDashboard extends React.Component {
       setsOfNineNames: imagesName,
       selected: false,
       minimumValue: 0,
-      maximumValue: 15,
+      maximumValue: 10,
       selected: false,
       value: null,
       dollarImages: dollarImages,
@@ -234,8 +234,8 @@ var styles = StyleSheet.create({
   selectedImage: {
     width: 110,
     height: 110,
-    borderWidth: 2,
-    borderColor: 'red'
+    borderWidth: 4,
+    borderColor: 'blue'
   },
   moreSettings: {
     flex: 1,

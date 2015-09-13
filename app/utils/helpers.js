@@ -37,7 +37,6 @@ var helpers = {
   },
   filterByDistance(plates, radius) {
     var res = [];
-    console.log(typeof plates, plates.length);
     plates.forEach((plate)=> {
       if (plate.distance <= radius) res.push(plate);
     });

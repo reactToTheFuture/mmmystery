@@ -15,6 +15,7 @@ import SettingsDashboard from './Settings-Dashboard';
 import { Icon, } from 'react-native-icons';
 import SideMenu from 'react-native-side-menu';
 import Menu from './side-menu/Menu';
+var emptySettings=false;
 
 let {
   View,
@@ -23,6 +24,7 @@ let {
   TouchableHighlight,
   TouchableOpacity,
   Image,
+  AlertIOS,
 } = React;
 
 let {
@@ -45,6 +47,7 @@ class Main extends React.Component {
       dollar: null,
       filterActivated: false,
       defaultRadius: 5,
+      maxRadius: 10,
       userInfo: 'not null',
       prevCategory: null,
     };
@@ -53,7 +56,7 @@ class Main extends React.Component {
       this.state.status = 'Finding nearby restaurants...';
 
       var {latitude, longitude} = props.initialPosition.coords;
-      this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
+      this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
       this._getAddress(latitude, longitude);
     }
   }
@@ -177,7 +180,7 @@ class Main extends React.Component {
     });
 
     var {latitude, longitude} = newProps.initialPosition.coords;
-    this.buildPlatesArray({latitude, longitude}, this.state.defaultRadius);
+    this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
     this._getAddress(latitude, longitude);
   }
 
@@ -233,44 +236,48 @@ class Main extends React.Component {
   }
 
   doneButtonSettingsPressed() {
-    console.log('donde pressed');
+    console.log('emptySettings',emptySettings);
     var filterActivated;
+    emptySettings= emptySettings || false;
 
     // reptresent no changes
-    if (this.state.defaultRadius === 10 &&
+    if (this.state.defaultRadius === this.state.maxRadius &&
         this.state.dollar === -1 &&
-        this.state.categoryFilter.length === 0) {
-
+        this.state.categoryFilter.length === 0 && !emptySettings) {
       filterActivated=false;
-      console.log('Default Settings');
     } else if (this.state.defaultRadius === this.state.prevRadius &&
                this.state.dollar === this.state.prevDollar &&
-               this.state.categoryFilter === this.state.prevCategory) {
-      console.log('Same state as before');
+               this.state.categoryFilter === this.state.prevCategory && !emptySettings) {
       filterActivated=true;
     } else {
       filterActivated=true;
       var filteredPlates = this.state.plates.slice();
-      filteredPlates = helpers.filterByDistance(filteredPlates, this.state.defaultRadius);
-      console.log('New dis: filtered plates', filteredPlates.length);
+      if (this.state.defaultRadius>0){
+        filteredPlates = helpers.filterByDistance(filteredPlates, this.state.defaultRadius);
+      }
 
       if (this.state.dollar !== null && this.state.dollar >= 0) {
-        console.log('this.state.dollar', this.state.dollar);
         filteredPlates = helpers.filterByPrice(filteredPlates, this.state.dollar);
       }
-      console.log('New price: filtered plates', filteredPlates.length);
 
       // Filtering by categories
-      // console.log('New burguer: filtered plates', filteredPlates);
 
       if (this.state.categoryFilter.length > 0) {
         filteredPlates = helpers.filterBycategory(filteredPlates, this.state.categoryFilter );
       }
       this.setState({indexFilter: 0});
-      this.setState({filteredPlates: filteredPlates});
-      // console.log('New cat: filtered plates', filteredPlates);
+      console.log('after settings', filteredPlates.length);
+      if (filteredPlates.length === 0) {
+        AlertIOS.alert('No plates found. Please, try different settings.');
+        emptySettings=true;
+        filterActivated=false;
+      } else {
+        emptySettings=false;
+      }
+
+      !emptySettings && this.setState({filteredPlates: filteredPlates});
     }
-    this.props.navigator.pop();
+    !emptySettings && this.props.navigator.pop();
     this.setState({filterActivated});
   }
 
@@ -308,10 +315,6 @@ class Main extends React.Component {
         touchToClose: false,
       });
     }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    console.log('nextState Main', nextState.currPlateIndex);
   }
 
   render() {

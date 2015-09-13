@@ -1,11 +1,10 @@
-var React = require('react-native');
-var clamp = require('clamp');
-var Dimensions = require('Dimensions');
+import React from 'react-native';
+import clamp from 'clamp';
+import Dimensions from 'Dimensions';
+import PlatesDashboardContent from './Plates-Dashboard-Content';
+import mapbox_api from '../../utils/mapbox-api';
+import Colors from '../../../globalVariables';
 var window = Dimensions.get('window');
-var PlatesDashboardContent = require('./Plates-Dashboard-Content');
-var prevIndex;
-var mapbox_api = require('../../utils/mapbox-api');
-var Colors = require('../../../globalVariables');
 
 
 var {
@@ -118,10 +117,6 @@ class PlatesDashBoard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('will index', nextProps.currPlateIndex);
-    console.log('will filterOn', nextProps.filterOn);
-    console.log('will plates.length', nextProps.plates.length);
-
     // New set of options chosen if 0
     if (nextProps.currPlateIndex === 0) {
       this.setState({
@@ -131,16 +126,12 @@ class PlatesDashBoard extends React.Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    console.log('nextState', nextState.plate);
-  }
-
   render() {
     let { pan, enter, } = this.state;
 
     let [translateX, translateY] = [pan.x, pan.y];
 
-    let rotate = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ["-30deg", "0deg", "30deg"]});
+    let rotate = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ['-30deg', '0deg', '30deg']});
     let opacity = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: [0.5, 1, 0.5]})
     let scale = enter;
 
