@@ -1,7 +1,9 @@
-var React = require('react-native');
-var Colors = require('../../../globalVariables');
-var PlatesPriceFactor = require('./Plates-Price-Factor');
-var PlatesUser = require('./Plates-User');
+import React from 'react-native';
+import Colors from '../../../globalVariables';
+import PlatesPriceFactor from './Plates-Price-Factor';
+import PlatesUser from './Plates-User';
+
+import { milesToMins } from '../../utils/helpers';
 
 var {
   StyleSheet,
@@ -9,7 +11,6 @@ var {
   Text,
   Image,
 } = React;
-
 
 class PlatesDashboardContent extends React.Component {
   render() {
@@ -24,11 +25,12 @@ class PlatesDashboardContent extends React.Component {
         plateStyling = styles.plateName;
       }
     }
+
     return (
       <View style={styles.imageFooter}>
         <View style={styles.footerText}>
           <Text style={styles.introTime}>You're just
-            <Text style={styles.minutes}> {this.props.distance ? this.props.distance : null} minutes </Text> away!
+            <Text style={styles.minutes}> {milesToMins(this.props.plate.distance)} minutes </Text> away!
           </Text>
           <Text style={plateStyling}>{this.props.plate ? this.props.plate.name : null} </Text>
           { this.props.plate && this.props.plate.user &&

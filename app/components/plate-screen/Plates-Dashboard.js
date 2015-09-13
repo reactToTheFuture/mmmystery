@@ -27,7 +27,6 @@ class PlatesDashBoard extends React.Component {
       SWIPE_THRESHOLD: 120,
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
-      distance: null,
       loadingImage: true,
       priceFactor: props.plates[0].priceFactor,
       showMinutes: false,
@@ -54,30 +53,6 @@ class PlatesDashBoard extends React.Component {
       plate: this.props.plates[newPlateIndex],
       priceFactor: this.props.plates[newPlateIndex].priceFactor,
     });
-  }
-
-  getDistance(origin, dest) {
-    var newDish=false;
-    var userPosition = {
-      lat: origin.coords.latitude,
-      lng: origin.coords.longitude
-    };
-    if (this.props.currPlateIndex === 0) prevIndex=this.props.currPlateIndex;
-    if (this.props.currPlateIndex!== prevIndex || this.props.currPlateIndex===0) {
-      prevIndex=this.props.currPlateIndex;
-      newDish=true;
-      this.getAsyncDirections(userPosition, dest)
-      .then((distance) => {
-        newDish ? this.setState({distance: distance}) : null;
-      })
-      .catch((err) => { console.log('Something went wrong: ' + err); });
-    }
-  }
-
-  componentWillUpdate(nextProps) {
-    if ( !!this.state.plate && !!this.props.lastPosition ) {
-      this.getDistance(this.props.lastPosition, this.state.plate.location);
-    }
   }
 
   componentWillMount() {
@@ -142,15 +117,6 @@ class PlatesDashBoard extends React.Component {
     this.state.enter.setValue(0);
   }
 
-  async getAsyncDirections(origin, dest) {
-    var responseDirections = await (mapbox_api.getDirections(origin, dest)
-      .then((data) => {
-        // Human: 5000 meters --> 60 min
-        return Math.round(data.routes[0].distance/5000*60);
-      }));
-   return responseDirections;
-  }
-
   render() {
     let { pan, enter, } = this.state;
 
@@ -178,7 +144,7 @@ class PlatesDashBoard extends React.Component {
             onLoad={this._imageLoaded.bind(this)}>
           <View style={styles.imageCrop}></View>
           </Image>
-          <PlatesDashboardContent distance={this.state.distance} plate={this.state.plate} priceFactor={this.state.priceFactor} />
+          <PlatesDashboardContent plate={this.state.plate} priceFactor={this.state.priceFactor} />
         </Animated.View>
       </View>
     );

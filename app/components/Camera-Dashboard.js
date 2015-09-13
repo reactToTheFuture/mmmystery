@@ -73,13 +73,13 @@ class CameraDashboard extends React.Component {
           <TouchableHighlight
             style={styles.mainBtn}
             onPress={this.goToCameraLiveScreen.bind(this)}
-            underlayColor='#fdc969'>
+            underlayColor={globals.primaryLight}>
             <View style={styles.innerBtn}>
               <Icon
                 name='ion|ios-camera-outline'
                 size={30}
                 color='#ffffff'
-                style={styles.cameraIcon}
+                style={styles.icon}
               />
               <Text style={styles.btnText}>Let's take a photo</Text>
             </View>
@@ -128,7 +128,7 @@ let styles = StyleSheet.create({
     paddingRight: 50,
     justifyContent: 'center',
   },
-  cameraIcon: {
+  icon: {
     width: 30,
     height: 30,
     marginRight: 10,

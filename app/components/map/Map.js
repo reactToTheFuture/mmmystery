@@ -1,7 +1,8 @@
 import React from 'react-native';
 import MapboxGLMap from 'react-native-mapbox-gl';
-import {mapbox as mapbox_keys} from '../utils/config';
-import { getRadians, metersToMiles, getDegrees } from '../utils/helpers';
+
+import {mapbox as mapbox_keys} from '../../utils/config';
+import { getRadians, metersToMiles, milesToMins, getDegrees } from '../../utils/helpers';
 
 var mapRef = 'directions';
 
@@ -81,14 +82,24 @@ var Map = React.createClass({
     var annotationCoords = this.state.currentAnnotation[0];
     var distanceToAnnotation = this.getDistanceToAnnotation(location, annotationCoords);
 
+    this.props.onLocationChange(milesToMins(distanceToAnnotation));
+
     if( distanceToAnnotation <= 0.05 ) {
       this.addNextAnnotation(location, this.props.stepAnnotations);
     }
   },
 
   addNextAnnotation(userLocation, annotations) {
+    var nextAnnotation;
     var nextAnnotationIndex = this.props.stepIndex + 1;
-    var nextAnnotation = annotations[nextAnnotationIndex];
+
+    this.props.onStepIncrement();
+    
+    if( nextAnnotationIndex >= this.props.endStepIndex ) {
+      return;
+    }
+
+    nextAnnotation = annotations[nextAnnotationIndex];
 
     this.addAnnotations(mapRef, [nextAnnotation]);
     this.adjustMapPosition(userLocation, nextAnnotation);
@@ -96,8 +107,6 @@ var Map = React.createClass({
     this.setState({
       currentAnnotation: [nextAnnotation]
     });
-
-    this.props.onStepIncrement();
   },
 
   getZoomLevel(distance) {
@@ -122,26 +131,25 @@ var Map = React.createClass({
     // add first annotation
     if(!this.state.currentAnnotation.length) {
       this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
+      console.log(newProps.stepAnnotations);
     }
   },
 
   render() {
     return (
-      <View style={styles.container}>
-        <MapboxGLMap
-          ref={mapRef}
-          onUpdateUserLocation={this.onUpdateUserLocation}
-          direction={0}
-          rotateEnabled={true}
-          scrollEnabled={true}
-          zoomEnabled={true}
-          showsUserLocation={true}
-          zoomLevel={15}
-          accessToken={mapbox_keys.token}
-          centerCoordinate={this.state.initialPosition}
-          style={styles.map}
-          styleURL={'asset://styles/emerald-v7.json'} />
-      </View>
+      <MapboxGLMap
+        ref={mapRef}
+        onUpdateUserLocation={this.onUpdateUserLocation}
+        direction={0}
+        rotateEnabled={true}
+        scrollEnabled={true}
+        zoomEnabled={true}
+        showsUserLocation={true}
+        zoomLevel={15}
+        accessToken={mapbox_keys.token}
+        centerCoordinate={this.state.initialPosition}
+        style={styles.map}
+        styleURL={'asset://styles/emerald-v7.json'} />
     );
   },
 });
@@ -149,9 +157,6 @@ var Map = React.createClass({
 var styles = StyleSheet.create({
   map: {
     flex: 1,
-  },
-  container: {
-    flex: 1
   }
 });
 

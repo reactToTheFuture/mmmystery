@@ -5,7 +5,7 @@ var React = require('react-native');
 var InitialLoadingOverlay = require('./Initial-Loading-Overlay');
 var PlatesDashBoard = require('./plate-screen/Plates-Dashboard');
 var PlatesFooter = require('./plate-screen/Plates-Footer');
-var MapDashBoard = require('./Map-Dashboard');
+var MapDashBoard = require('./map/Map-Dashboard');
 var NavigationBar = require('react-native-navbar');
 var firebase_api = require('../utils/firebase-api');
 var helpers = require('../utils/helpers');
@@ -62,7 +62,7 @@ class Main extends React.Component {
       status: 'Fetching yummy dishes...'
     });
 
-    firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, dist) => {
+    firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, distance) => {
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if(!plates.length) {
@@ -112,7 +112,8 @@ class Main extends React.Component {
             restaurant,
             location,
             img_url,
-            priceFactor
+            priceFactor,
+            distance
           };
 
           firebase_api.getUserByImageId(randomImageKey)
