@@ -137,40 +137,45 @@ class MealSelection extends React.Component {
   }
 
   render() {
+
+    var addMealButton = (
+      <TouchableHighlight
+        underlayColor={'#ffffff'}
+        onPress={this.handleOverlayOpen.bind(this)}>
+        <Text style={[styles.centerText, styles.button]}>Add a new meal +</Text>
+      </TouchableHighlight>
+    );
+
+    var noPlatesView = (
+      <View style={[styles.textContainer]}>
+        <Text style={[styles.centerText, styles.headline, styles.callout]}>Oh no! There are no meals</Text>
+        <Text style={[styles.centerText, styles.headline, styles.subheadline]}>Add your meal so others can find it too!</Text>
+        {addMealButton}
+      </View>
+    );
+
+    var platesView = (
+      <View style={styles.restaurantsContainer}>
+        <ListView
+          style={styles.restaurantsList}
+          dataSource={this.state.meals}
+          renderRow={this._renderMeal.bind(this)}>
+        </ListView>
+        <View style={styles.outerTextContainer}>
+          <View style={[styles.textContainer]}>
+            <Text style={[styles.centerText, styles.headline, styles.callout]}>Don't see what you're looking for?</Text>
+            {addMealButton}
+          </View>
+        </View>
+      </View>
+    );
+
     return (
       <View style={styles.container}>
         <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
 
         <View style={[styles.innerContainer, this.state.noPlates && styles.noPlates]}>
-          { this.state.noPlates ?
-            <View style={[styles.textContainer]}>
-              <Text style={[styles.centerText, styles.headline, styles.callout]}>Oh no! There are no meals</Text>
-              <Text style={[styles.centerText, styles.headline, styles.subheadline]}>Add your meal so others will know its delicious!</Text>
-              <TouchableHighlight
-                underlayColor={'#ffffff'}
-                onPress={this.handleOverlayOpen.bind(this)}>
-                <Text style={[styles.centerText, styles.button]}>Add a new meal +</Text>
-              </TouchableHighlight>
-            </View>
-            :
-            <View style={styles.restaurantsContainer}>
-              <ListView
-                style={styles.restaurantsList}
-                dataSource={this.state.meals}
-                renderRow={this._renderMeal.bind(this)}>
-              </ListView>
-              <View style={styles.outerTextContainer}>
-                <View style={[styles.textContainer]}>
-                  <Text style={[styles.centerText, styles.headline, styles.callout]}>Don't see what you're looking for?</Text>
-                  <TouchableHighlight
-                    underlayColor={'#ffffff'}
-                    onPress={this.handleOverlayOpen.bind(this)}>
-                    <Text style={[styles.centerText, styles.button]}>Add a new meal +</Text>
-                  </TouchableHighlight>
-                </View>
-              </View>
-            </View>
-          }
+          { this.state.noPlates ? noPlatesView : platesView }
         </View>
 
         <AddMealOverlay
@@ -203,7 +208,7 @@ var styles = StyleSheet.create({
     position: 'absolute',
     top: (window.height/2 - 36),
     left: (window.width/2 - 36),
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   container: {
     flex: 1,
@@ -213,7 +218,7 @@ var styles = StyleSheet.create({
   },
   outerTextContainer: {
     flex: 1,
-    paddingTop: 50,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   textContainer: {
@@ -240,7 +245,7 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   restaurantsList: {
-    flex: 8,
+    flex: 3,
   },
   button: {
     fontSize: 18,
@@ -248,6 +253,7 @@ var styles = StyleSheet.create({
     color: globals.primary,
   },
   callout: {
+    fontSize: 16,
     marginBottom: 10,
   },
   meal: {

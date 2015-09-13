@@ -180,7 +180,7 @@ var {
           <View style={styles.textContainer}>
             <Text style={[styles.text, styles.headline]}>Mmmystery</Text>
             <Text style={[styles.text, styles.subHeadline]}>
-              A fun new way of discovering new restaurants and meals!
+              A fun way of discovering new restaurants and your next favorite meal!
             </Text>
           </View>
           <View style={styles.loginContainer}>
