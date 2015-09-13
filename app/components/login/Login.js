@@ -13,7 +13,9 @@ import NavigationNext from '../navigation/Custom-Next';
 import CameraDashboard from '../Camera-Dashboard';
 import Walkthrough from './Walkthrough';
 
-import Colors from '../../../globalVariables';
+var { Icon } = require('react-native-icons');
+
+import globals from '../../../globalVariables';
 
 import firebase_api from '../../utils/firebase-api';
 
@@ -134,14 +136,6 @@ var {
   onTourStart() {
     this.props.navigator.push({
       component: Walkthrough,
-      navigationBar: (
-        <NavigationBar
-          customPrev={<NavigationPrev iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
-          title="Mystery Meal"
-          titleColor={Colors.darkText}
-          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
-          style={styles.navigator} />
-      )
     });
   }
 
@@ -155,8 +149,8 @@ var {
         <NavigationBar
           customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
           title="Mystery Meal"
-          titleColor={Colors.darkText}
-          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
+          titleColor={globals.darkText}
+          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={globals.lightText} />}
           style={styles.navigator} />
       )
     });
@@ -181,22 +175,35 @@ var {
       <View
         style={styles.container}>
         <Image
-          source={require('image!gut-instinct-back')}
+          source={require('image!food-bg')}
           style={styles.loginImage}>
+          <View style={styles.textContainer}>
+            <Text style={[styles.text, styles.headline]}>Mmmystery</Text>
+            <Text style={[styles.text, styles.subHeadline]}>
+              A fun new way of discovering new restaurants and meals!
+            </Text>
+          </View>
           <View style={styles.loginContainer}>
             <TouchableHighlight
-              underlayColor={Colors.primaryDark}
+              underlayColor={globals.primaryDark}
               style={styles.loginButton}
               onPress={this.onLoginBtnPress.bind(this)}>
-              <Text style={[styles.text, styles.loginText]}>Sign in with
-                <Text style={styles.emphasis}> Facebook</Text>
-              </Text>
+              <View style={styles.innerBtn}>
+                <Icon
+                  name='ion|social-facebook-outline'
+                  size={30}
+                  color='#ffffff'
+                  style={styles.icon}
+                />
+                <Text style={[styles.text]}>Sign in with
+                  <Text style={styles.emphasis}> Facebook</Text>
+                </Text>
+              </View>
             </TouchableHighlight>
-
             <TouchableHighlight
               underlayColor='#FFBF00'
               onPress={this.onTourStart.bind(this)}>
-              <Text style={[styles.text, styles.tourButton]}>Take a Tour</Text>
+              <Text style={[styles.text]}>Take a Tour</Text>
             </TouchableHighlight>
           </View>
         </Image>
@@ -206,37 +213,57 @@ var {
 };
 
 var styles = StyleSheet.create({
-  loginContainer: {
-    paddingTop: 400,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginButton: {
-    width: 295,
-    height: 67,
-    marginBottom: 30,
-    borderRadius: 30,
-    borderColor: '#fee7b3',
-    borderWidth: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontFamily: 'SanFranciscoText-Regular',
-    color: '#ffffff',
-    fontSize: 16
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loginText: {
+  textContainer: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  headline: {
+    marginBottom: 50,
+    fontFamily: 'SanFranciscoDisplay-Semibold',
+    fontSize: 40,
+  },
+  subHeadline: {
+    textAlign: 'center',
+    fontFamily: 'SanFranciscoDisplay-Regular',
+    fontSize: 25,
+  },
+  loginContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 50,
+  },
+  innerBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
+  loginButton: {
+    width: 295,
+    height: 67,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30,
+    borderRadius: 30,
+    borderColor: '#fee7b3',
+    borderWidth: 3,
+  },
+  text: {
+    fontFamily: 'SanFranciscoDisplay-Regular',
     color: '#ffffff',
     fontSize: 20,
-  },
-  tourButton: {
   },
   emphasis: {
     fontWeight: 'bold',
