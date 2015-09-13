@@ -31,7 +31,7 @@ class PlatesDashBoard extends React.Component {
       priceFactor: props.plates[0].priceFactor,
       showMinutes: false,
       searchAddress: null,
-      plate: props.plates[0]
+      plate: props.plates[0],
     };
   }
 
@@ -115,6 +115,24 @@ class PlatesDashBoard extends React.Component {
   _resetState() {
     this.state.pan.setValue({x: 0, y: 0});
     this.state.enter.setValue(0);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('will index', nextProps.currPlateIndex);
+    console.log('will filterOn', nextProps.filterOn);
+    console.log('will plates.length', nextProps.plates.length);
+
+    // New set of options chosen if 0
+    if (nextProps.currPlateIndex === 0) {
+      this.setState({
+        priceFactor: nextProps.plates[0].priceFactor,
+        plate: nextProps.plates[0],
+      })
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('nextState', nextState.plate);
   }
 
   render() {

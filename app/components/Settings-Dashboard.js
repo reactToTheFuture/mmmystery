@@ -24,7 +24,9 @@ var foodImages = ['http://www.thetimes.co.uk/tto/multimedia/archive/00378/709116
                   'http://npic.orst.edu/images/foodsafebnr.jpg',
                   'http://media.independent.com/img/photos/2008/03/05/garden04.jpg',
                   'https://media.licdn.com/mpr/mpr/p/1/005/098/14b/3100678.jpg'];
-var imagesName = ['Burgers', 'French', 'Pizza', 'Indian','Fish', 'Italian', 'Sushi', 'Pizza', 'Hotpot'];
+
+// Category names
+var imagesName = ['Burgers', 'French', 'Pizza', 'japanese','Fish', 'Italian', 'Sushi', 'Pizza', 'Hotpot'];
 var setsOfSelected = [false,false,false,false,false,false,false,false,false];
 
               // = [$, $$, $$$];
@@ -64,15 +66,16 @@ class SettingsDashboard extends React.Component {
 
   onSlidingComplete() {
     this.props.route.props.handleSettingsConfig('keepRadius', this.state.value);
-    this.props.route.props.handleSettingsConfig('radius', this.state.value);
   }
 
   dollarOnPress(i) {
+    console.log('dollar pressed');
     this.setState({selected: !this.state.selected});
 
     // Unselect same button
     if (dollarImages[i][1]) {
       dollarImages[i][1] = !dollarImages[i][1];
+      this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
       return;
     };
 
@@ -82,6 +85,7 @@ class SettingsDashboard extends React.Component {
     // first time
     if (counter===3) {
       dollarImages[i][1] = !dollarImages[i][1];
+      this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
       return;
     };
 
@@ -91,8 +95,10 @@ class SettingsDashboard extends React.Component {
           if (image[1]) dollarImages[i][1] = !dollarImages[i][1];
         });
         dollarImages[i][1] = !dollarImages[i][1];
+        this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
         return;
     };
+    // this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
   }
 
   componentWillMount() {
@@ -101,7 +107,7 @@ class SettingsDashboard extends React.Component {
 
   componentDidMount() {
     // gets the index of $ sign
-    this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
+    // this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
   }
 
   render () {
