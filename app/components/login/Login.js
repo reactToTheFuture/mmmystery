@@ -1,23 +1,21 @@
 'use strict';
 
-var React = require('react-native');
-var FBSDKCore = require('react-native-fbsdkcore');
-var FBSDKLogin = require('react-native-fbsdklogin');
+import React from 'react-native';
+import FBSDKCore from 'react-native-fbsdkcore';
+import FBSDKLogin from 'react-native-fbsdklogin';
 
-var Main = require('./Main');
-var NavigationBar = require('react-native-navbar');
+import Main from '../Main';
+import NavigationBar from 'react-native-navbar';
 
-// Custom navIcons that make use of react-native-navbar
-var NavigationPrev = require('./navigation/Custom-Prev');
-var NavigationNext = require('./navigation/Custom-Next');
+import NavigationPrev from '../navigation/Custom-Prev';
+import NavigationNext from '../navigation/Custom-Next';
 
-var CameraDashboard = require('./Camera-Dashboard');
-var FBSDKLogin = require('react-native-fbsdklogin');
+import CameraDashboard from '../Camera-Dashboard';
+import Walkthrough from './Walkthrough';
 
-// set of global colors to use app wide
-var Colors = require('../../globalVariables');
+import Colors from '../../../globalVariables';
 
-var firebase_api = require('../utils/firebase-api');
+import firebase_api from '../../utils/firebase-api';
 
 var {
   StyleSheet,
@@ -94,11 +92,11 @@ var {
     this.setState({responseToken: true});
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getAccesToken(false);
   }
 
-  _onPressButton(){
+  onLoginBtnPress() {
     // Shows transition between login and Main screen
     this.setState({responseToken: false});
     FBSDKLoginManager.setLoginBehavior('native');
@@ -117,7 +115,7 @@ var {
     });
   };
 
-  cameraBtnPress(navigator, route) {
+  onCameraBtnPress(navigator, route) {
     navigator.push({
       title: 'Camera',
       component: CameraDashboard,
@@ -132,6 +130,21 @@ var {
     console.log('!this.state.isOpen', bool);
     this.setState({isOpen: bool});
   }
+
+  onTourStart() {
+    this.props.navigator.push({
+      component: Walkthrough,
+      navigationBar: (
+        <NavigationBar
+          customPrev={<NavigationPrev iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
+          title="Mystery Meal"
+          titleColor={Colors.darkText}
+          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
+          style={styles.navigator} />
+      )
+    });
+  }
+
   switchToMain(userInfo) {
     this.props.navigator.push({
       component: Main,
@@ -143,11 +156,16 @@ var {
           customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
           title="Mystery Meal"
           titleColor={Colors.darkText}
-          customNext={<NavigationNext handler={this.cameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
+          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
           style={styles.navigator} />
       )
     });
   }
+
+  // Logout:
+  // componentWillMount() {
+  //   FBSDKLoginManager.logOut();
+  // }
 
   render() {
 
@@ -167,11 +185,18 @@ var {
           style={styles.loginImage}>
           <View style={styles.loginContainer}>
             <TouchableHighlight
-            style={styles.loginButton}
-            onPress={this._onPressButton.bind(this)}>
-              <Text style={styles.loginText}>Sign in with
-                <Text style={styles.facebook}> Facebook</Text>
+              underlayColor={Colors.primaryDark}
+              style={styles.loginButton}
+              onPress={this.onLoginBtnPress.bind(this)}>
+              <Text style={[styles.text, styles.loginText]}>Sign in with
+                <Text style={styles.emphasis}> Facebook</Text>
               </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              underlayColor='#FFBF00'
+              onPress={this.onTourStart.bind(this)}>
+              <Text style={[styles.text, styles.tourButton]}>Take a Tour</Text>
             </TouchableHighlight>
           </View>
         </Image>
@@ -183,35 +208,42 @@ var {
 var styles = StyleSheet.create({
   loginContainer: {
     paddingTop: 400,
-    flex: 0.15,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   loginButton: {
     width: 295,
     height: 67,
+    marginBottom: 30,
     borderRadius: 30,
-    borderColor: '#FEE7B3',
+    borderColor: '#fee7b3',
     borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: {
+    fontFamily: 'SanFranciscoText-Regular',
+    color: '#ffffff',
+    fontSize: 16
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: 'transparent'
+    alignItems: 'center',
   },
   loginText: {
-    color: 'white',
+    color: '#ffffff',
     fontSize: 20,
   },
-  facebook: {
+  tourButton: {
+  },
+  emphasis: {
     fontWeight: 'bold',
   },
   loginImage: {
     flex: 1,
-    alignSelf: 'auto',
+    overflow: 'visible'
   },
 });
 
