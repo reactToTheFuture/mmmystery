@@ -4,11 +4,16 @@ import MapboxGLMap from 'react-native-mapbox-gl';
 import {mapbox as mapbox_keys} from '../../utils/config';
 import { getRadians, metersToMiles, milesToMins, getDegrees } from '../../utils/helpers';
 
+import globals from '../../../globalVariables';
+
+import { Icon } from 'react-native-icons';
+
 var mapRef = 'directions';
 
 var {
   StyleSheet,
   Text,
+  TouchableHighlight,
   View,
 } = React;
 
@@ -23,9 +28,14 @@ var Map = React.createClass({
     return {
       initialPosition: {
         latitude,
-        longitude,
+        longitude
+      },
+      currentPosition: {
+        latitude,
+        longitude
       },
       currentAnnotation: [],
+      buttonDown: false,
     };
   },
 
@@ -82,6 +92,10 @@ var Map = React.createClass({
     var annotationCoords = this.state.currentAnnotation[0];
     var distanceToAnnotation = this.getDistanceToAnnotation(location, annotationCoords);
 
+    this.setState({
+      currentPosition: location
+    });
+
     this.props.onLocationChange(milesToMins(distanceToAnnotation));
 
     if( distanceToAnnotation <= 0.05 ) {
@@ -127,37 +141,80 @@ var Map = React.createClass({
     this.setCenterCoordinateZoomLevelAnimated(mapRef, midpoint.latitude, midpoint.longitude, zoomLevel);
   },
 
+  recenterUser() {
+    var userLocation = this.state.currentPosition;
+
+    this.setCenterCoordinateAnimated(mapRef, userLocation.latitude, userLocation.longitude);
+  },
+
+  onButtonPress() {
+    this.setState({
+      buttonDown: true
+    });
+  },
+
+  onButtonRelease() {
+    this.setState({
+      buttonDown: false
+    });
+  },
+
   componentWillReceiveProps(newProps) {
     // add first annotation
     if(!this.state.currentAnnotation.length) {
       this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
-      console.log(newProps.stepAnnotations);
     }
   },
 
   render() {
     return (
-      <MapboxGLMap
-        ref={mapRef}
-        onUpdateUserLocation={this.onUpdateUserLocation}
-        direction={0}
-        rotateEnabled={true}
-        scrollEnabled={true}
-        zoomEnabled={true}
-        showsUserLocation={true}
-        zoomLevel={15}
-        accessToken={mapbox_keys.token}
-        centerCoordinate={this.state.initialPosition}
-        style={styles.map}
-        styleURL={'asset://styles/emerald-v7.json'} />
+      <View style={styles.mapContainer}>
+        <MapboxGLMap
+          ref={mapRef}
+          onUpdateUserLocation={this.onUpdateUserLocation}
+          direction={0}
+          rotateEnabled={true}
+          scrollEnabled={true}
+          zoomEnabled={true}
+          showsUserLocation={true}
+          zoomLevel={15}
+          accessToken={mapbox_keys.token}
+          centerCoordinate={this.state.initialPosition}
+          style={styles.map}
+          styleURL={'asset://styles/emerald-v7.json'} />
+          <TouchableHighlight
+            onPress={this.recenterUser}
+            underlayColor='transparent'
+            onShowUnderlay={this.onButtonPress}
+            onHideUnderlay={this.onButtonRelease}>
+            <Icon
+              name='ion|pinpoint'
+              size={30}
+              color={this.state.buttonDown ? '#ffffff' : globals.primaryDark}
+              style={styles.icon}
+            />
+          </TouchableHighlight>
+      </View>
+
     );
   },
 });
 
 var styles = StyleSheet.create({
+  mapContainer: {
+    flex: 1,
+    position: 'relative',
+  },
   map: {
     flex: 1,
-  }
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+  },
 });
 
 module.exports = Map;
