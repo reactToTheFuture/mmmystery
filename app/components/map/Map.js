@@ -107,7 +107,10 @@ var Map = React.createClass({
     var nextAnnotation;
     var nextAnnotationIndex = this.props.stepIndex + 1;
 
-    this.props.onStepIncrement();
+    setInterval(() => {
+      this.props.onStepIncrement();
+    }, 500);
+
     
     if( nextAnnotationIndex >= this.props.endStepIndex ) {
       return;

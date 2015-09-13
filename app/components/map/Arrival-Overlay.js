@@ -21,7 +21,9 @@ class ArrivalOverlay extends React.Component {
     return (
       <Modal
         visible={this.props.isVisible}>
-        <View style={styles.arrivalOverlay}>
+        <Image
+          source={require('image!celebration-bg')}
+          style={styles.arrivalOverlay}>
           <View style={styles.topText}>
             <Text style={[styles.text, styles.announcement]}>Congrats, you've arrrived at...</Text>
             <Text style={[styles.text, styles.title]}>{this.props.imageInfo.restaurant}</Text>
@@ -50,7 +52,7 @@ class ArrivalOverlay extends React.Component {
               </View>
             </TouchableHighlight>
           </View>
-        </View>
+        </Image>
       </Modal>
     );
   }
@@ -78,7 +80,6 @@ let styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    backgroundColor: globals.primaryDark,
     alignItems: 'center',
   },
   text: {
