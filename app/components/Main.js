@@ -9,7 +9,7 @@ import NavigationBar from 'react-native-navbar';
 import firebase_api from '../utils/firebase-api';
 import helpers from '../utils/helpers';
 import FBSDKLogin from 'react-native-fbsdklogin';
-import Login from './Login';
+import Login from './login/Login';
 import Colors from '../../globalVariables';
 import SettingsDashboard from './Settings-Dashboard';
 import { Icon, } from 'react-native-icons';

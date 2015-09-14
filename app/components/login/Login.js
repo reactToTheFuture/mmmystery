@@ -147,7 +147,7 @@ var {
       },
       navigationBar: (
         <NavigationBar
-          customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
+          customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={globals.primaryLight}/>}
           title="Mystery Meal"
           titleColor={globals.darkText}
           customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={globals.lightText} />}
