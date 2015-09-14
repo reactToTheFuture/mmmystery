@@ -11,6 +11,8 @@ import mapbox_api from '../../utils/mapbox-api';
 import CameraDashboard from '../Camera-Dashboard';
 import Main from '../Main';
 
+import { formatNameString } from '../../utils/helpers';
+
 var {
   View,
   StyleSheet
@@ -27,6 +29,7 @@ class MapDashBoard extends React.Component {
       lastStepIndex: null,
       isLoading: true,
       timetoAnnotation: null,
+      timetoDestination: null,
       isConfirmed: false,
       hasArrived: false
     };
@@ -123,16 +126,31 @@ class MapDashBoard extends React.Component {
     });
   }
 
-  updateTimeToAnnotation(time) {
+  handleLocationChange(timeToAnnotation, timeToDestination) {
     this.setState({
-      timeToAnnotation: time
+      timeToAnnotation,
+      timeToDestination
+    });
+  }
+
+  handleAnnotationChange(timeToAnnotation) {
+    this.setState({
+      timeToAnnotation
     });
   }
 
   handleArrivalConfirmation() {
+    var restaurantName = this.props.route.props.image.restaurant;
+
     this.props.navigator.replace({
       title: 'Camera',
       component: CameraDashboard,
+      props: {
+        restaurant: {
+          name: restaurantName,
+          id: formatNameString(restaurantName)
+        }
+      },
       navigationBar: (
         <NavigationBar
           title="Picture Time" />
@@ -145,16 +163,19 @@ class MapDashBoard extends React.Component {
       <View style={styles.container}>
         <Map
           userPosition={this.props.route.props.userPosition}
+          restaurantLocation={this.props.route.props.image.location}
           stepAnnotations={this.state.stepAnnotations}
           onStepIncrement={this.handleStepIncrement.bind(this)}
-          onLocationChange={this.updateTimeToAnnotation.bind(this)}
+          onLocationChange={this.handleLocationChange.bind(this)}
+          onAnnotationChange={this.handleAnnotationChange.bind(this)}
           stepIndex={this.state.stepIndex}
           endStepIndex={this.state.endStepIndex} />
         <Directions
           stepDirections={this.state.stepDirections}
           stepIndex={this.state.stepIndex}
           endStepIndex={this.state.endStepIndex}
-          timeToAnnotation={this.state.timeToAnnotation} />
+          timeToAnnotation={this.state.timeToAnnotation}
+          timeToDestination={this.state.timeToDestination} />
         <RouteOverlay
           isLoading={this.state.isLoading}
           isVisible={this.state.isLoading || !this.state.isConfirmed}

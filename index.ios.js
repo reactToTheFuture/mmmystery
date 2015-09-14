@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require('react-native');
-var NavigatorBar = require('react-native-navbar');
-var Login = require('./app/components/Login');
+import React from 'react-native';
+import NavigatorBar from 'react-native-navbar';
+import Login from './app/components/login/Login';
 
 let {
   AppRegistry,

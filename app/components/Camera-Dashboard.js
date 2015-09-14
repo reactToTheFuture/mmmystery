@@ -32,10 +32,26 @@ class CameraDashboard extends React.Component {
     };
   }
 
+  getRestaurant() {
+    // sent from Map-Dashboard after arrival at a restaurant
+    var props = this.props.route.props;
+
+    if( !props || !props.restaurant ) {
+      return null;
+    }
+
+    return props.restaurant;
+  }
+
   goToCameraRollScreen() {
+    var restaurant = this.getRestaurant();
+
     this.props.navigator.push({
       title: 'Camera Roll',
       component: CameraRollView,
+      props: {
+        restaurant
+      },
       navigationBar: (
         <NavigationBar
           title="Camera Roll" />
@@ -44,8 +60,13 @@ class CameraDashboard extends React.Component {
   }
 
   goToCameraLiveScreen() {
+    var restaurant = this.getRestaurant();
+
     this.props.navigator.push({
       title: 'Picture Time',
+      props: {
+        restaurant
+      },
       component:  CameraLiveView,
     })
   }

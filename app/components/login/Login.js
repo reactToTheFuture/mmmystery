@@ -1,23 +1,23 @@
 'use strict';
 
-var React = require('react-native');
-var FBSDKCore = require('react-native-fbsdkcore');
-var FBSDKLogin = require('react-native-fbsdklogin');
+import React from 'react-native';
+import FBSDKCore from 'react-native-fbsdkcore';
+import FBSDKLogin from 'react-native-fbsdklogin';
 
-var Main = require('./Main');
-var NavigationBar = require('react-native-navbar');
+import Main from '../Main';
+import NavigationBar from 'react-native-navbar';
 
-// Custom navIcons that make use of react-native-navbar
-var NavigationPrev = require('./navigation/Custom-Prev');
-var NavigationNext = require('./navigation/Custom-Next');
+import NavigationPrev from '../navigation/Custom-Prev';
+import NavigationNext from '../navigation/Custom-Next';
 
-var CameraDashboard = require('./Camera-Dashboard');
-var FBSDKLogin = require('react-native-fbsdklogin');
+import CameraDashboard from '../Camera-Dashboard';
+import Walkthrough from './Walkthrough';
 
-// set of global colors to use app wide
-var Colors = require('../../globalVariables');
+var { Icon } = require('react-native-icons');
 
-var firebase_api = require('../utils/firebase-api');
+import globals from '../../../globalVariables';
+
+import firebase_api from '../../utils/firebase-api';
 
 var {
   StyleSheet,
@@ -94,11 +94,11 @@ var {
     this.setState({responseToken: true});
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getAccesToken(false);
   }
 
-  _onPressButton(){
+  onLoginBtnPress() {
     // Shows transition between login and Main screen
     this.setState({responseToken: false});
     FBSDKLoginManager.setLoginBehavior('native');
@@ -117,7 +117,7 @@ var {
     });
   };
 
-  cameraBtnPress(navigator, route) {
+  onCameraBtnPress(navigator, route) {
     navigator.push({
       title: 'Camera',
       component: CameraDashboard,
@@ -132,6 +132,13 @@ var {
     console.log('!this.state.isOpen', bool);
     this.setState({isOpen: bool});
   }
+
+  onTourStart() {
+    this.props.navigator.push({
+      component: Walkthrough,
+    });
+  }
+
   switchToMain(userInfo) {
     this.props.navigator.push({
       component: Main,
@@ -140,14 +147,19 @@ var {
       },
       navigationBar: (
         <NavigationBar
-          customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
+          customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={globals.primaryLight}/>}
           title="Mystery Meal"
-          titleColor={Colors.darkText}
-          customNext={<NavigationNext handler={this.cameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}
+          titleColor={globals.darkText}
+          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={globals.lightText} />}
           style={styles.navigator} />
       )
     });
   }
+
+  // Logout:
+  // componentWillMount() {
+  //   FBSDKLoginManager.logOut();
+  // }
 
   render() {
 
@@ -163,15 +175,35 @@ var {
       <View
         style={styles.container}>
         <Image
-          source={require('image!gut-instinct-back')}
+          source={require('image!food-bg')}
           style={styles.loginImage}>
+          <View style={styles.textContainer}>
+            <Text style={[styles.text, styles.headline]}>Mmmystery</Text>
+            <Text style={[styles.text, styles.subHeadline]}>
+              A fun way of discovering new restaurants and your next favorite meal!
+            </Text>
+          </View>
           <View style={styles.loginContainer}>
             <TouchableHighlight
-            style={styles.loginButton}
-            onPress={this._onPressButton.bind(this)}>
-              <Text style={styles.loginText}>Sign in with
-                <Text style={styles.facebook}> Facebook</Text>
-              </Text>
+              underlayColor={globals.primaryDark}
+              style={styles.loginButton}
+              onPress={this.onLoginBtnPress.bind(this)}>
+              <View style={styles.innerBtn}>
+                <Icon
+                  name='ion|social-facebook-outline'
+                  size={30}
+                  color='#ffffff'
+                  style={styles.icon}
+                />
+                <Text style={[styles.text]}>Sign in with
+                  <Text style={styles.emphasis}> Facebook</Text>
+                </Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor='#FFBF00'
+              onPress={this.onTourStart.bind(this)}>
+              <Text style={[styles.text]}>Take a Tour</Text>
             </TouchableHighlight>
           </View>
         </Image>
@@ -181,37 +213,64 @@ var {
 };
 
 var styles = StyleSheet.create({
-  loginContainer: {
-    paddingTop: 400,
-    flex: 0.15,
-    alignItems: 'center',
+  container: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textContainer: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  headline: {
+    marginBottom: 50,
+    fontFamily: 'SanFranciscoDisplay-Semibold',
+    fontSize: 40,
+  },
+  subHeadline: {
+    textAlign: 'center',
+    fontFamily: 'SanFranciscoDisplay-Regular',
+    fontSize: 25,
+  },
+  loginContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 50,
+  },
+  innerBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
   },
   loginButton: {
     width: 295,
     height: 67,
-    borderRadius: 30,
-    borderColor: '#FEE7B3',
-    borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 30,
+    borderRadius: 30,
+    borderColor: '#fee7b3',
+    borderWidth: 3,
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: 'transparent'
-  },
-  loginText: {
-    color: 'white',
+  text: {
+    fontFamily: 'SanFranciscoDisplay-Regular',
+    color: '#ffffff',
     fontSize: 20,
   },
-  facebook: {
+  emphasis: {
     fontWeight: 'bold',
   },
   loginImage: {
     flex: 1,
-    alignSelf: 'auto',
+    overflow: 'visible'
   },
 });
 

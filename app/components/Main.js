@@ -9,7 +9,7 @@ import NavigationBar from 'react-native-navbar';
 import firebase_api from '../utils/firebase-api';
 import helpers from '../utils/helpers';
 import FBSDKLogin from 'react-native-fbsdklogin';
-import Login from './Login';
+import Login from './login/Login';
 import Colors from '../../globalVariables';
 import SettingsDashboard from './Settings-Dashboard';
 import { Icon, } from 'react-native-icons';
@@ -61,8 +61,8 @@ class Main extends React.Component {
     }
   }
 
-  buildPlatesArray(userLocation,radius) {
-    console.log('new serch on radius:', radius);
+  buildPlatesArray(userLocation, radius) {
+    console.log('new search on radius:', radius);
     this.setState({
       status: 'Fetching yummy dishes...'
     });
@@ -288,6 +288,7 @@ class Main extends React.Component {
   componentDidMount() {
     console.log('currPlateIndex',this.state.currPlateIndex);
   }
+
   _onPressSettings() {
 
     this.setState({prevRadius: this.state.defaultRadius});
@@ -318,7 +319,7 @@ class Main extends React.Component {
   }
 
   render() {
-    if (this.state.plates.length <= 0) {
+    if ( this.state.plates.length <= 0 ) {
       return (
         <InitialLoadingOverlay
           isVisible={this.state.goSettings ? false : !this.state.plates.length}
