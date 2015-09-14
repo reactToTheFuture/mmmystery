@@ -47,13 +47,13 @@ var {
       responseToken: false,
       result: null,
       userInfo: null,
+      isOpen: false,
     };
   }
 
   async getAccesToken(updateUserInfo) {
     let _this = this;
     var responseToken = await (FBSDKAccessToken.getCurrentAccessToken((token) => {
-      let errorLogin = false;
 
       if(!token) {
         this.setState({responseToken: true});
@@ -63,7 +63,6 @@ var {
 
       // GraphQL query for user information
       let fetchProfileRequest = new FBSDKGraphRequest((error, userInfo) => {
-        errorLogin = !!error;
 
         if (error) {
           console.warn('FBSDKGraphRequest', error);
@@ -129,12 +128,19 @@ var {
     });
   }
 
+  handleSideMenu(bool){
+    console.log('!this.state.isOpen', bool);
+    this.setState({isOpen: bool});
+  }
   switchToMain(userInfo) {
     this.props.navigator.push({
       component: Main,
+      props: {
+        isOpen: this.state.isOpen,
+      },
       navigationBar: (
         <NavigationBar
-          customPrev={<NavigationPrev iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
+          customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={Colors.primaryLight}/>}
           title="Mystery Meal"
           titleColor={Colors.darkText}
           customNext={<NavigationNext handler={this.cameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={Colors.lightText} />}

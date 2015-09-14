@@ -35,25 +35,36 @@ var helpers = {
     // 1 mile ~ 15 mins
     return Math.round(m * 15);
   },
+  filterByDistance(plates, radius) {
+    var res = [];
+    plates.forEach((plate)=> {
+      if (plate.distance <= radius) res.push(plate);
+    });
+    return res = helpers.shuffle(res);;
+  },
   // filters plates based on category
-  getFilteredPlates(plates, categoryfilter, dollarFilter) {
+  filterByPrice(plates, priceFilter) {
+    let res = [];
+    var priceFactor = {0: '$', 1: '$$', 2: '$$$'};
+    plates.forEach((plate) => {
+      if (priceFactor[priceFilter] === plate.priceFactor){
+            res.push(plate)
+          }
+    });
+    return res = helpers.shuffle(res);;
+  },
+
+  filterBycategory(plates, categoryfilter) {
     let res = [];
     plates.forEach((plate) => {
       categoryfilter.forEach((filter)=>{
-        if (dollarFilter){
-          if (filter === plate.priceRange){
-            res.push(plate)
-            return;
-          }
-        } else{
-          if (filter in plate.category) {
-            res.push(plate)
-            return;
-          };
-        }
+        if (filter in plate.category) {
+          res.push(plate)
+          return;
+        };
       })
     });
-    return res;
+    return res = helpers.shuffle(res);;
   },
   // input: array of array of categories
   // output: {'category1': true, 'category2': true, ...}
