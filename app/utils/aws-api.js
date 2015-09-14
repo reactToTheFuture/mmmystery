@@ -1,8 +1,8 @@
 var aws = require('./config').aws;
 
 var aws_api = {
-  uploadToS3(image, key) {
-    var base64 = 'data:image/jpeg;base64,' + image.base64;
+  uploadToS3(base64, key) {
+    var base64 = 'data:image/jpeg;base64,' + base64;
     var header = new Headers();
     header.append('Content-Type', 'application/json')
     return fetch('https://shrouded-temple-1043.herokuapp.com/', {
