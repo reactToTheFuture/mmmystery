@@ -24,6 +24,11 @@ class Directions extends React.Component {
     return Math.max(0, width);
   }
 
+  formatTimeString(time) {
+    var duration = time === '<1' || time === 1 ? 'min' : 'mins';
+    return `${time} ${duration} away`;
+  }
+
   render () {
     if(this.props.stepIndex < 0) {
       return (<View></View>);
@@ -32,7 +37,8 @@ class Directions extends React.Component {
     return (
       <View style={styles.directions}>
         <Text style={[styles.text, styles.direction]}>{this.props.stepDirections[this.props.stepIndex]}</Text>
-        <Text style={[styles.text, styles.timeAway]}>{this.props.timeToAnnotation} {this.props.timeToAnnotation === '<1' ? 'min' : 'mins'} away from next step...</Text>
+        <Text style={[styles.text, styles.timeAway]}>{this.formatTimeString(this.props.timeToAnnotation)} from next step...</Text>
+        <Text style={[styles.text, styles.timeAway]}>{this.formatTimeString(this.props.timeToDestination)} from your meal!</Text>
         <View style={[{width: this.getProgressBarWidth()}, styles.progressBar]}></View>
       </View>
     );
@@ -59,12 +65,13 @@ let styles = StyleSheet.create({
   },
   direction: {
     marginBottom: 5,
-    fontSize: 25,
+    fontSize: 22,
     fontFamily: 'SanFranciscoDisplay-Light',
   },
   timeAway: {
-    fontFamily: 'SanFranciscoText-Regular',
     marginBottom: 5,
+    fontFamily: 'SanFranciscoText-Regular',
+    fontSize: 16,
   }
 });
 
