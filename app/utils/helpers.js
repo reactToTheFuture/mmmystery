@@ -29,7 +29,13 @@ var helpers = {
     return rad * 180 / Math.PI;
   },
   metersToMiles(m) {
-    return (m * 0.00062137);
+    return m * 0.00062137;
+  },
+  kilometersToMiles(km) {
+    return km * 0.621371;
+  },
+  milesToKilometers(m) {
+    return m * 1.60934;
   },
   milesToMins(m) {
     // 1 mile ~ 15 mins

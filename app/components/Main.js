@@ -77,6 +77,7 @@ class Main extends React.Component {
 
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
+
         if(!plates.length) {
           throw new Error(`no plates for ${restaurantId}`);
         }
@@ -99,11 +100,14 @@ class Main extends React.Component {
         return [plates, firebase_api.getRestaurantById(restaurantId)];
       })
       .spread((plates, restaurantInfo) => {
+
         var restaurant = helpers.formatIdString(restaurantId);
         var location = {
           lat: locationTuple[0],
           lng: locationTuple[1]
         };
+
+        distance = helpers.kilometersToMiles(distance);
 
         var morePlates = plates.reduce((plates, plate) => {
           var imageKeys = [];
@@ -179,7 +183,7 @@ class Main extends React.Component {
 
       })
       .catch((err) => {
-        console.warn(err);
+        // console.warn(err);
       });
     });
   }
@@ -272,7 +276,6 @@ class Main extends React.Component {
     // 'categories' --> ['Burger', 'French', ...]
     // 'radius'     --> 24 miles
     // 'dollar'     --> 0/1/2   0=$, 1=$$, 2=$$$
-    console.log('handleSettings', key, filter);
     switch(key) {
       case 'categories':
         this.setState({categoryFilter: filter});
@@ -340,9 +343,9 @@ class Main extends React.Component {
       }
     }
 
-    !noFilteredPlatesResults && this.props.navigator.pop();
-
     this.setState({filterActivated}, this.handleFilterChange);
+    
+    !noFilteredPlatesResults && this.props.navigator.pop();
   }
 
   componentWillMount() {
