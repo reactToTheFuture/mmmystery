@@ -4,7 +4,6 @@ import React from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import FBSDKLogin from 'react-native-fbsdklogin';
 import { Icon, } from 'react-native-icons';
-import SideMenu from 'react-native-side-menu';
 
 import InitialLoadingOverlay from './Initial-Loading-Overlay';
 import PlatesDashBoard from './plate-screen/Plates-Dashboard';
@@ -12,7 +11,7 @@ import PlatesFooter from './plate-screen/Plates-Footer';
 import MapDashBoard from './map/Map-Dashboard';
 import Login from './login/Login';
 import SettingsDashboard from './Settings-Dashboard';
-import Menu from './side-menu/Menu';
+import Menu from './Menu';
 
 import firebase_api from '../utils/firebase-api';
 import helpers from '../utils/helpers';
@@ -45,7 +44,6 @@ class Main extends React.Component {
     this.state = {
       status: 'Finding your location...',
       watchID: null,
-      touchToClose: props.route.props.isOpen,
       currFilteredIndex: 0,
       currPlateIndex: 0,
       categoryFilter: [],
@@ -56,7 +54,6 @@ class Main extends React.Component {
       filterActivated: false,
       defaultRadius: 5,
       maxRadius: 10,
-      userInfo: 'not null',
       prevCategory: null,
       touchToClose: false,
     };
@@ -374,24 +371,6 @@ class Main extends React.Component {
     });
   }
 
-  handleOpenWithTouchToClose() {
-    this.setState({
-      touchToClose: true,
-    });
-  }
-
-  handleChange(isOpen) {
-    if (isOpen) {
-      return;
-    }
-    this.setState({
-      touchToClose: false
-    });
-  }
-  sideMenu() {
-    this.props.menuActions.toggle();
-    this.props.onPressSideMenu();
-  }
   render() {
     if (!this.state.plate) {
       return (
@@ -403,7 +382,6 @@ class Main extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.text} onPress={this.sideMenu.bind(this)}>Open Side Menu</Text>
         <PlatesDashBoard
           plate={this.state.plate}
           priceFactor={this.state.priceFactor}
@@ -411,7 +389,8 @@ class Main extends React.Component {
           currPlateIndex={this.state.filterActivated ? this.state.currFilteredIndex : this.state.currPlateIndex}
           onSelection={this.handleSelection.bind(this)}
           onRejection={this.handleRejection.bind(this)} />
-        <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)}/>
+        <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)} />
+        <Menu isVisible={this.props.menuOpen} onMenuToggle={this.props.route.props.onMenuToggle} navigator={this.props.navigator} user={this.props.user} />
       </View>
     );
   }
@@ -423,6 +402,14 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#ffffff',
+  },
+  text: {
+    position: 'absolute',
+    backgroundColor: 'green',
+    width: 200,
+    height: 50,
+    top: 0,
+    left: 0,
   }
 });
 

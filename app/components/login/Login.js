@@ -43,11 +43,7 @@ var {
   constructor(props) {
     super(props);
     this.state = {
-      token: null,
       responseToken: false,
-      result: null,
-      userInfo: null,
-      isOpen: false,
     };
   }
 
@@ -87,15 +83,6 @@ var {
 
       fetchProfileRequest.start(0);
     }));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // prompts login process after logout
-    console.log('Login next', nextProps.logout);
-    console.log('Login this', this.props.logout);
-    if (this.props.logout){
-      this.setState({responseToken: true});
-    }
   }
 
   componentDidMount() {
@@ -139,14 +126,14 @@ var {
   }
 
   switchToMain(userInfo) {
-    this.props.navigator.push({
+    this.props.navigator.replace({
       component: Main,
       props: {
-        isOpen: this.state.isOpen,
+        onMenuToggle: this.props.route.props.onMenuToggle
       },
       navigationBar: (
         <NavigationBar
-          customPrev={<NavigationPrev iconName={'navicon'} size={37} color={globals.primaryLight}/>}
+          customPrev={<NavigationPrev handler={this.props.route.props.onMenuToggle} iconName={'navicon'} size={37} color={globals.primaryLight}/>}
           title="Mystery Meal"
           titleColor={globals.darkText}
           customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={globals.lightText} />}
@@ -161,7 +148,7 @@ var {
     // will be replaced by a loading screen
     if (!this.state.responseToken) {
       return (
-        <Text>Loading screen after login process</Text>
+        <Text>Loading screen during login process</Text>
       );
     }
 

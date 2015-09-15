@@ -2,9 +2,8 @@
 
 import React from 'react-native';
 import NavigatorBar from 'react-native-navbar';
+
 import Login from './app/components/login/Login';
-import SideMenu from 'react-native-side-menu';
-import Menu from './app/components/side-menu/Menu';
 
 let {
   AppRegistry,
@@ -25,13 +24,9 @@ class MysteryMeal extends React.Component {
       initialPosition: null,
       lastPosition: null,
       user: null,
-      logout:false,
+      menuOpen: false,
     };
   }
-  logoutHandler(bool){
-      console.log('setting log')
-      this.setState({logout: bool});
-    }
 
   renderScene(route, navigator) {
     let Component = route.component;
@@ -45,35 +40,16 @@ class MysteryMeal extends React.Component {
       });
     }
 
-    let handleOpenWithTouchToClose = () => {
-        return touchToClose = true;
-    }
-
-    let handleChange = (isOpen) => {
-      if (!isOpen) {
-        return touchToClose = false;
-      }
-    }
-
-
-
     return (
       <View style={styles.app}>
         {navBar}
-        <SideMenu
-          menu={<Menu navigator={navigator} logoutHandler={this.logoutHandler.bind(this)} user={this.state.user}/>}
-          touchToClose={touchToClose}
-          onChange={handleChange}
-          disableGestures={true}>
-          <Component
-            logout={this.state.logout} // show login again if true
-            user={this.state.user}
-            navigator={navigator}
-            route={route}
-            initialPosition={this.state.initialPosition}
-            lastPosition={this.state.lastPosition}
-            onPressSideMenu={handleOpenWithTouchToClose.bind(this)}/>
-        </SideMenu>
+        <Component
+          user={this.state.user}
+          navigator={navigator}
+          route={route}
+          menuOpen={this.state.menuOpen}
+          initialPosition={this.state.initialPosition}
+          lastPosition={this.state.lastPosition} />
       </View>
     );
   }
@@ -109,6 +85,12 @@ class MysteryMeal extends React.Component {
     });
   }
 
+  handleMenuToggle() {
+    this.setState({
+      menuOpen: !this.state.menuOpen
+    });
+  }
+
   componentDidMount() {
     this.getUserLocation();
   }
@@ -124,7 +106,8 @@ class MysteryMeal extends React.Component {
         initialRoute={{
           component: Login,
           props: {
-            onLogin: this.handleLogin.bind(this)
+            onLogin: this.handleLogin.bind(this),
+            onMenuToggle: this.handleMenuToggle.bind(this)
           }
         }}
       />

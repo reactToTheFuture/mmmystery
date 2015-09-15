@@ -12,11 +12,15 @@ var {
 
 class CustomPrev extends React.Component {
 
+  handlePress() {
+    this.props.handler();
+  }
+
   render() {
     return (
       // Need to pass in a handler that actually takes you to the menu
       <TouchableOpacity
-        onPress={() => {}}>
+        onPress={this.handlePress.bind(this)}>
         <Icon name={'ion|' + this.props.iconName} size={this.props.size} color={this.props.color} style={styles.icon}/>
       </TouchableOpacity>
     );
