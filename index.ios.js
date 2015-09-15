@@ -43,17 +43,19 @@ class MysteryMeal extends React.Component {
     );
   }
 
-  getUserLocation() {
+  getUserLocation(count) {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
         this.setState({initialPosition});
       },
       (error) => {
+        count = !count ? 1 : (count + 1);
+        var txt = count <= 3 ? 'We are having trouble finding your location.' : 'We can\'t locate you.\nEnsure your location service is enabled.';
         AlertIOS.alert(
           'Yikes',
-          'We are having trouble finding your location.',
+          txt,
           [
-            {text: 'Try Again', onPress: this.getUserLocation.bind(this)}
+            {text: 'Try Again', onPress: this.getUserLocation.bind(this, count)}
           ]
         )
         console.warn(error.message);

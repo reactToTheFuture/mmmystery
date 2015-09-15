@@ -142,8 +142,11 @@ var Map = React.createClass({
     if (distance < 5 && distance >= 4) return 11;
     if (distance < 4 && distance >= 2.5) return 12;
     if (distance < 2 && distance >= 1.5) return 13;
-    if (distance < 1.5 && distance >= 1) return 14;
-    if (distance < 1) return 15;
+    if (distance < 1.5 && distance >= 0.6) return 14;
+    if (distance < 0.6 && distance >= 0.375) return 15;
+    if (distance < 0.375 && distance >= 0.1875) return 16;
+    if (distance < 0.1875 && distance >= 0.09375) return 17;
+    if (distance < 0.09375) return 18;
   },
 
   adjustMapPosition(userLocation, nextAnnotation) {
@@ -156,8 +159,8 @@ var Map = React.createClass({
 
   recenterUser() {
     var userLocation = this.state.currentPosition;
-
-    this.setCenterCoordinateAnimated(mapRef, userLocation.latitude, userLocation.longitude);
+    var currentAnnotation = this.state.currentAnnotation[0];
+    this.adjustMapPosition(userLocation, currentAnnotation);
   },
 
   onButtonPress() {
