@@ -184,8 +184,7 @@ var Map = React.createClass({
   componentWillReceiveProps(newProps) {
     // add first annotation
     if(!this.state.currentAnnotation.length) {
-      this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
-      console.log(newProps.stepAnnotations);
+      if(newProps.stepAnnotations.length > 0) this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
     }
   },
 
