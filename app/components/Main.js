@@ -420,7 +420,7 @@ let styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   }
 });
 

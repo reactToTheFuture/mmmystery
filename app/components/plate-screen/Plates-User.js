@@ -1,7 +1,6 @@
 var React = require('react-native');
 var Colors = require('../../../globalVariables');
 
-
 var {
   View,
   Text,
@@ -46,9 +45,3 @@ let styles = StyleSheet.create({
 })
 
 module.exports = PlatesUser;
-
-
-
-
-
-

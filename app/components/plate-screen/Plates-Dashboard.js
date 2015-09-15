@@ -130,6 +130,11 @@ class PlatesDashBoard extends React.Component {
 
     return (
       <View style={styles.container}>
+        <ActivityIndicatorIOS
+          animating={this.state.loadingImage}
+          style={styles.loadingIcon}
+          size="large"
+        />
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
           <Image
             style={styles.img}
@@ -180,6 +185,12 @@ var styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: -1
+  },
+  loadingIcon: {
+    position: 'absolute',
+    top: 200,
+    left: (window.width/2 - 18),
+    backgroundColor: 'transparent',
   },
 });
 
