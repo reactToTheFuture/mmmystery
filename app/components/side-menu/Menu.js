@@ -1,23 +1,28 @@
-const React = require('react-native');
+import FBSDKLogin from 'react-native-fbsdklogin';
+import React from 'react-native';
+import Walkthrough from '../login/Walkthrough';
 const Dimensions = require('Dimensions');
-const {
+const window = Dimensions.get('window');
+
+let {
   StyleSheet,
-  ScrollView,
   View,
+  TouchableHighlight,
   Image,
   Text,
-  Component,
 } = React;
 
-const window = Dimensions.get('window');
-const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
+let {
+  FBSDKLoginManager,
+} = FBSDKLogin;
+
 
 const styles = StyleSheet.create({
   menu: {
     flex: 1,
     width: window.width,
     height: window.height,
-    backgroundColor: 'gray',
+    backgroundColor: 'white',
     padding: 20,
   },
   avatarContainer: {
@@ -40,22 +45,86 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     paddingTop: 5,
   },
+  buttonItem: {
+    flexDirection: 'row',
+    flex: 1,
+    width: 30,
+    height: 12,
+  },
 });
 
-class Menu extends Component {
+class Menu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      alreadySignIn: false,
+    };
+  }
+  closeSideMenu() {
+    this.props.menuActions.toggle();
+  }
+
+  componentWillMount() {
+    console.log('signed in');
+    FBSDKLoginManager.logOut();
+    this.setState({alreadySignIn: true});
+  }
+
+  onPressLogOut() {
+   // this.props.route.props.responseToken();
+   console.log('OnpresLogOuot');
+   FBSDKLoginManager.logOut();
+   this.props.logoutHandler(true);
+   this.props.navigator.popToTop();
+  }
+
+  onPressProfile() {
+
+  }
+  onPressShare() {
+
+  }
+
+  onPressHowWorks() {
+     this.props.navigator.push({
+      component: Walkthrough,
+      props: {
+        alreadySignIn: this.state.alreadySignIn
+      }
+    });
+  }
+
   render() {
     return (
-      <ScrollView style={styles.menu}>
+      <View style={styles.menu}>
+        <Text onPress={this.closeSideMenu.bind(this)}>X</Text>
         <View style={styles.avatarContainer}>
           <Image
             style={styles.avatar}
-            source={{ uri, }}/>
-          <Text style={styles.name}>Your name</Text>
+            source={{uri: this.props.user && this.props.user.picture.data.url}}/>
+          <Text style={styles.name}>{this.props.user && this.props.user.first_name}</Text>
         </View>
-
-        <Text style={styles.item}>About</Text>
-        <Text style={styles.item}>Contacts</Text>
-      </ScrollView>
+        <TouchableHighlight
+          style={styles.buttonItem}
+          onPress={this.onPressProfile.bind(this)}>
+            <Text style={styles.item}>Profile</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.buttonItem}
+          onPress={this.onPressShare.bind(this)}>
+            <Text style={styles.item}>Share</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.buttonItem}
+          onPress={this.onPressHowWorks.bind(this)}>
+            <Text style={styles.item}>How it works</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.buttonItem}
+          onPress={this.onPressLogOut.bind(this)}>
+            <Text style={styles.item}>Logout</Text>
+        </TouchableHighlight>
+      </View>
     );
   }
 }

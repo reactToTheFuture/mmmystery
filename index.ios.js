@@ -3,6 +3,8 @@
 import React from 'react-native';
 import NavigatorBar from 'react-native-navbar';
 import Login from './app/components/login/Login';
+import SideMenu from 'react-native-side-menu';
+import Menu from './app/components/side-menu/Menu';
 
 let {
   AppRegistry,
@@ -11,6 +13,7 @@ let {
   Navigator,
   Text,
   View,
+  TouchableOpacity,
   Image
 } = React;
 
@@ -21,13 +24,20 @@ class MysteryMeal extends React.Component {
     this.state = {
       initialPosition: null,
       lastPosition: null,
-      user: null
+      user: null,
+      logout:false,
     };
   }
+  logoutHandler(bool){
+      console.log('setting log')
+      this.setState({logout: bool});
+    }
 
   renderScene(route, navigator) {
     let Component = route.component;
     let navBar = route.navigationBar;
+    let touchToClose = false;
+    let logout = false;
 
     if (navBar) {
       navBar = React.addons.cloneWithProps(navBar, {
@@ -35,10 +45,35 @@ class MysteryMeal extends React.Component {
       });
     }
 
+    let handleOpenWithTouchToClose = () => {
+        return touchToClose = true;
+    }
+
+    let handleChange = (isOpen) => {
+      if (!isOpen) {
+        return touchToClose = false;
+      }
+    }
+
+
+
     return (
       <View style={styles.app}>
         {navBar}
-        <Component user={this.state.user} navigator={navigator} route={route} initialPosition={this.state.initialPosition} lastPosition={this.state.lastPosition} />
+        <SideMenu
+          menu={<Menu navigator={navigator} logoutHandler={this.logoutHandler.bind(this)} user={this.state.user}/>}
+          touchToClose={touchToClose}
+          onChange={handleChange}
+          disableGestures={true}>
+          <Component
+            logout={this.state.logout} // show login again if true
+            user={this.state.user}
+            navigator={navigator}
+            route={route}
+            initialPosition={this.state.initialPosition}
+            lastPosition={this.state.lastPosition}
+            onPressSideMenu={handleOpenWithTouchToClose.bind(this)}/>
+        </SideMenu>
       </View>
     );
   }
@@ -98,6 +133,9 @@ class MysteryMeal extends React.Component {
 }
 
 var styles = StyleSheet.create({
+  buttonSide: {
+    marginTop: 30,
+  },
   app: {
     flex: 1,
     position: 'relative',
