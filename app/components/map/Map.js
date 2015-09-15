@@ -160,7 +160,6 @@ var Map = React.createClass({
   recenterUser() {
     var userLocation = this.state.currentPosition;
     var currentAnnotation = this.state.currentAnnotation[0];
-    console.log(this.getDistanceToAnnotation(userLocation, currentAnnotation));
     this.adjustMapPosition(userLocation, currentAnnotation);
   },
 
