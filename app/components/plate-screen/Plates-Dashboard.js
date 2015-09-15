@@ -6,7 +6,6 @@ import mapbox_api from '../../utils/mapbox-api';
 import Colors from '../../../globalVariables';
 var window = Dimensions.get('window');
 
-
 var {
   StyleSheet,
   PanResponder,
@@ -27,10 +26,8 @@ class PlatesDashBoard extends React.Component {
       pan: new Animated.ValueXY(),
       enter: new Animated.Value(0.5),
       loadingImage: true,
-      priceFactor: props.plates[0].priceFactor,
       showMinutes: false,
       searchAddress: null,
-      plate: props.plates[0],
     };
   }
 
@@ -42,15 +39,10 @@ class PlatesDashBoard extends React.Component {
   }
 
   _goToNextPlate() {
-    let newPlateIndex = this.props.currPlateIndex + 1;
-    newPlateIndex = newPlateIndex >= this.props.plates.length ? 0 : newPlateIndex;
-
-    this.props.onRejection(newPlateIndex);
+    this.props.onRejection();
 
     this.setState({
-      loadingImage: true,
-      plate: this.props.plates[newPlateIndex],
-      priceFactor: this.props.plates[newPlateIndex].priceFactor,
+      loadingImage: true
     });
   }
 
@@ -86,7 +78,7 @@ class PlatesDashBoard extends React.Component {
 
         // Accepted Dish
         if( this.state.pan.x._value > 0 ) {
-          this.props.onSelection(this.state.plate);
+          this.props.onSelection();
           this._springBack();
           return;
         }
@@ -101,6 +93,7 @@ class PlatesDashBoard extends React.Component {
     this.setState({
       loadingImage: false
     });
+
     this._animateEntrance();
   }
 
@@ -114,16 +107,6 @@ class PlatesDashBoard extends React.Component {
   _resetState() {
     this.state.pan.setValue({x: 0, y: 0});
     this.state.enter.setValue(0);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // New set of options chosen if 0
-    if (nextProps.currPlateIndex === 0) {
-      this.setState({
-        priceFactor: nextProps.plates[0].priceFactor,
-        plate: nextProps.plates[0],
-      })
-    }
   }
 
   render() {
@@ -144,16 +127,17 @@ class PlatesDashBoard extends React.Component {
     let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
     let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
     let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
+
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
           <Image
             style={styles.img}
-            source={{uri: this.state.plate ? this.state.plate.img_url : null}}
+            source={{uri: this.props.plate.img_url}}
             onLoad={this._imageLoaded.bind(this)}>
           <View style={styles.imageCrop}></View>
           </Image>
-          <PlatesDashboardContent plate={this.state.plate} priceFactor={this.state.priceFactor} />
+          <PlatesDashboardContent plate={this.props.plate} priceFactor={this.props.priceFactor} />
         </Animated.View>
       </View>
     );

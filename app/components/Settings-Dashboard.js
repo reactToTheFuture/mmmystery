@@ -1,5 +1,5 @@
 import React from 'react-native';
-import helpers from '../utils/helpers';
+import { createSettingsFilter } from '../utils/filters';
 import Slider from 'react-native-slider';
 
 var {
@@ -56,7 +56,7 @@ class SettingsDashboard extends React.Component {
   onPressImage(i){
     this.setState({selected: !this.state.selected});
     setsOfSelected[i] = !setsOfSelected[i];
-    var filterCategories = helpers.createSettingsFilter(setsOfSelected, this.state.setsOfNineNames)
+    var filterCategories = createSettingsFilter(setsOfSelected, this.state.setsOfNineNames)
     this.props.route.props.handleSettingsConfig('categories', filterCategories);
   }
 
