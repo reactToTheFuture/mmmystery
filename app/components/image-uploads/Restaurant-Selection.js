@@ -1,12 +1,15 @@
 import React from 'react-native';
+import NavigationBar from 'react-native-navbar';
+import _ from 'underscore';
+import Dimensions from 'Dimensions';
+import { Icon } from 'react-native-icons';
 
 import MealSelection from './Meal-Selection';
-import NavigationBar from 'react-native-navbar';
 
-import firebase_api from '../utils/firebase-api';
-import yelp_api from '../utils/yelp-api';
-import _ from 'underscore';
-import helpers from '../utils/helpers';
+import firebase_api from '../../utils/firebase-api';
+import yelp_api from '../../utils/yelp-api';
+import helpers from '../../utils/helpers';
+import globals from '../../../globalVariables';
 
 var {
   StyleSheet,
@@ -18,11 +21,7 @@ var {
   View
 } = React;
 
-var { Icon } = require('react-native-icons');
-
-var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var globals = require('../../globalVariables');
 
 class RestaurantSelection extends React.Component {
 

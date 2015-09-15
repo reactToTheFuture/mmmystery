@@ -1,9 +1,11 @@
 import React from 'react-native';
-import RestaurantSelection from './Restaurant-Selection';
-import MealSelection from './Meal-Selection';
 import NavigationBar from 'react-native-navbar';
-import CameraCrop from './Camera-Crop';
 import Dimensions from 'Dimensions';
+
+import RestaurantSelection from './image-uploads/Restaurant-Selection';
+import MealSelection from './image-uploads/Meal-Selection';
+
+import CameraCrop from './Camera-Crop';
 
 import globals from '../../globalVariables';
 

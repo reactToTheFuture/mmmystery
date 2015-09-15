@@ -10,11 +10,11 @@ var {
   StyleSheet
 } = React;
 
-var { Icon } = require('react-native-icons');
+import { Icon } from 'react-native-icons';
+import Dimensions from 'Dimensions';
 
-var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var globals = require('../../globalVariables');
+var globals = require('../../../globalVariables');
 
 class AddMealOverlay extends React.Component {
 

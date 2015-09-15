@@ -1,14 +1,16 @@
 import React from 'react-native';
-import Camera from 'react-native-camera';
-import Button from './Button';
 import NavigationBar from 'react-native-navbar';
-import RestaurantSelection from './Restaurant-Selection';
-import MealSelection from './Meal-Selection';
+import Camera from 'react-native-camera';
+import { Icon } from 'react-native-icons';
+import Dimensions from 'Dimensions';
+
+import Button from './Button';
+import RestaurantSelection from './image-uploads/Restaurant-Selection';
+import MealSelection from './image-uploads/Meal-Selection';
 import CameraLiveButton from './Button-Camera';
 import CameraCrop from './Camera-Crop';
-import { Icon } from 'react-native-icons';
+
 import Colors from '../../globalVariables';
-import Dimensions from 'Dimensions';
 
 var {
   StyleSheet,

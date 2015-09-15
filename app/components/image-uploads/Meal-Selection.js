@@ -1,13 +1,15 @@
 import React from 'react-native';
+import _ from 'underscore';
+import Dimensions from 'Dimensions';
 
 import AddMealOverlay from './AddMeal-Overlay';
 import MealSubmittedOverlay from './MealSubmitted-Overlay';
 
-import firebase_api from '../utils/firebase-api';
-import aws_api from '../utils/aws-api';
-import yelp_api from '../utils/yelp-api';
-import _ from 'underscore';
-import helpers from '../utils/helpers';
+import firebase_api from '../../utils/firebase-api';
+import aws_api from '../../utils/aws-api';
+import yelp_api from '../../utils/yelp-api';
+import helpers from '../../utils/helpers';
+import globals from '../../../globalVariables';
 
 var {
   StyleSheet,
@@ -19,9 +21,7 @@ var {
   View
 } = React;
 
-var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var globals = require('../../globalVariables');
 
 class MealSelection extends React.Component {
 
