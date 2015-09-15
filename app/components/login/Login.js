@@ -89,9 +89,13 @@ var {
     }));
   }
 
-  responseToken() {
+  componentWillReceiveProps(nextProps) {
     // prompts login process after logout
-    this.setState({responseToken: true});
+    console.log('Login next', nextProps.logout);
+    console.log('Login this', this.props.logout);
+    if (this.props.logout){
+      this.setState({responseToken: true});
+    }
   }
 
   componentDidMount() {
@@ -128,11 +132,6 @@ var {
     });
   }
 
-  handleSideMenu(bool){
-    console.log('!this.state.isOpen', bool);
-    this.setState({isOpen: bool});
-  }
-
   onTourStart() {
     this.props.navigator.push({
       component: Walkthrough,
@@ -147,7 +146,7 @@ var {
       },
       navigationBar: (
         <NavigationBar
-          customPrev={<NavigationPrev handleSideMenu={this.handleSideMenu.bind(this)} iconName={'navicon'} size={37} color={globals.primaryLight}/>}
+          customPrev={<NavigationPrev iconName={'navicon'} size={37} color={globals.primaryLight}/>}
           title="Mystery Meal"
           titleColor={globals.darkText}
           customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={globals.lightText} />}
@@ -155,11 +154,6 @@ var {
       )
     });
   }
-
-  // Logout:
-  // componentWillMount() {
-  //   FBSDKLoginManager.logOut();
-  // }
 
   render() {
 

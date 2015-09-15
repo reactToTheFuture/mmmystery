@@ -58,6 +58,7 @@ class Main extends React.Component {
       maxRadius: 10,
       userInfo: 'not null',
       prevCategory: null,
+      touchToClose: false,
     };
   }
 
@@ -265,12 +266,6 @@ class Main extends React.Component {
     });
   }
 
-  _onPressLogOut() {
-   FBSDKLoginManager.logOut();
-   this.props.route.props.responseToken();
-   this.props.navigator.popToTop();
-  }
-
   handleSettingsConfig(key, filter) {
     // Get the queries to make on radius, dollar and/or category
     // 'categories' --> ['Burger', 'French', ...]
@@ -344,7 +339,7 @@ class Main extends React.Component {
     }
 
     this.setState({filterActivated}, this.handleFilterChange);
-    
+
     !noFilteredPlatesResults && this.props.navigator.pop();
   }
 
@@ -379,6 +374,12 @@ class Main extends React.Component {
     });
   }
 
+  handleOpenWithTouchToClose() {
+    this.setState({
+      touchToClose: true,
+    });
+  }
+
   handleChange(isOpen) {
     if (isOpen) {
       return;
@@ -387,7 +388,10 @@ class Main extends React.Component {
       touchToClose: false
     });
   }
-
+  sideMenu() {
+    this.props.menuActions.toggle();
+    this.props.onPressSideMenu();
+  }
   render() {
     if (!this.state.plate) {
       return (
@@ -399,6 +403,7 @@ class Main extends React.Component {
 
     return (
       <View style={styles.container}>
+        <Text style={styles.text} onPress={this.sideMenu.bind(this)}>Open Side Menu</Text>
         <PlatesDashBoard
           plate={this.state.plate}
           priceFactor={this.state.priceFactor}
@@ -413,9 +418,6 @@ class Main extends React.Component {
 }
 
 let styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     flexDirection: 'column',

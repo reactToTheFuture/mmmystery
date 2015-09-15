@@ -11,16 +11,12 @@ var {
 } = React;
 
 class CustomPrev extends React.Component {
-  onPressSide() {
-    console.log('onPressSide');
-    this.props.handleSideMenu(true);
-  }
 
   render() {
     return (
       // Need to pass in a handler that actually takes you to the menu
       <TouchableOpacity
-        onPress={this.onPressSide.bind(this)}>
+        onPress={() => {}}>
         <Icon name={'ion|' + this.props.iconName} size={this.props.size} color={this.props.color} style={styles.icon}/>
       </TouchableOpacity>
     );
