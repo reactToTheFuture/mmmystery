@@ -51,23 +51,15 @@ class Main extends React.Component {
       userInfo: 'not null',
       prevCategory: null,
     };
-
-    if(props.initialPosition) {
-      this.state.status = 'Finding nearby restaurants...';
-
-      var {latitude, longitude} = props.initialPosition.coords;
-      this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
-      this._getAddress(latitude, longitude);
-    }
   }
 
   buildPlatesArray(userLocation, radius) {
     console.log('new search on radius:', radius);
-    this.setState({
-      status: 'Fetching yummy dishes...'
-    });
 
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, distance) => {
+      this.setState({
+        status: 'Fetching yummy dishes...'
+      });
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
         if(!plates.length) {
@@ -282,6 +274,15 @@ class Main extends React.Component {
   }
 
   componentWillMount() {
+    if(this.props.initialPosition) {
+      this.setState({status: 'Finding nearby restaurants...'});
+
+      var {latitude, longitude} = this.props.initialPosition.coords;
+      
+      this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
+      
+      this._getAddress(latitude, longitude);
+    }
     this.setState({touchToClose: this.props.route.props.isOpen});
   }
 
