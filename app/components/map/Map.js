@@ -1,8 +1,10 @@
 import React from 'react-native';
 import MapboxGLMap from 'react-native-mapbox-gl';
 
-import {mapbox as mapbox_keys} from '../../utils/config';
-import { getRadians, metersToMiles, milesToMins, getDegrees } from '../../utils/helpers';
+import { mapbox as mapbox_keys } from '../../utils/config';
+import { getRadians, kilometersToMiles, milesToMins, getDegrees } from '../../utils/helpers';
+
+import { getDistance } from '../../utils/firebase-api';
 
 import globals from '../../../globalVariables';
 
@@ -55,21 +57,10 @@ var Map = React.createClass({
     var annotationLat = annotationCoords.latitude;
     var annotationLng = annotationCoords.longitude;
 
-    var R = 6371000; //meters
-    var userLatRads = getRadians(userLat);
-    var annotationLatRads = getRadians(annotationLat);
-    var latDifference = getRadians(annotationLat - userLat);
-    var lngDirrerence = getRadians(annotationLng - userLng);
+    // returns kilometers
+    var d = getDistance([userLat, userLng], [annotationLat, annotationLng]);
 
-    var a = Math.sin(latDifference/2) * Math.sin(latDifference/2) +
-      Math.cos(userLatRads) * Math.cos(annotationLatRads) *
-      Math.sin(lngDirrerence/2) * Math.sin(lngDirrerence/2);
-
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-    var d = R * c;
-
-    return metersToMiles(d);
+    return kilometersToMiles(d);
   },
 
   getMidPoint(userCoords, annotationCoords) {
@@ -183,8 +174,8 @@ var Map = React.createClass({
 
   componentWillReceiveProps(newProps) {
     // add first annotation
-    if(!this.state.currentAnnotation.length) {
-      if(newProps.stepAnnotations.length > 0) this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
+    if( !this.state.currentAnnotation.length && newProps.stepAnnotations.length > 0 ) {
+      this.addNextAnnotation(this.props.userPosition.coords, newProps.stepAnnotations);
     }
   },
 

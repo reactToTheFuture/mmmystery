@@ -1,65 +1,25 @@
-var Rebase = require('re-base');
-var GeoFire = require('geofire');
-var Q = require('q');
+import Rebase from 're-base';
+import GeoFire from 'geofire';
+import Q from 'q';
 
-var ENDPOINT_URI = require('./config').firebase.ENDPOINT_URI;
+import { firebase } from './config';
+
+var ENDPOINT_URI = firebase.ENDPOINT_URI;
+
+import helpers from './helpers';
+
 var base = Rebase.createClass(ENDPOINT_URI);
+
 var platesRef = new Firebase(ENDPOINT_URI + '/plates');
 var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
 var usersRef = new Firebase(ENDPOINT_URI + '/users');
 
 var geoFire = new GeoFire(geoFireRef);
 
-var helpers = require('./helpers');
-
 var firebase_api = {
-  _updateImageData() {
-    var feelings = ['Satisfied', 'Seconds?', 'Sleepy', 'Sick', 'Happy', 'Gimme More!', 'Energetic', 'Stuffed', 'Comforted', 'Bloated'];
-    var userIds = ['10204677161988934', '427362984114044', '10100870666170545'];
-
-    var getImgKeys = function(restaurants) {
-      return restaurants.reduce((result, restaurant) => {
-        for(let plate in restaurant) {
-          if( !restaurant.hasOwnProperty(plate) || plate === 'key' ) {
-            continue;
-          }
-
-          var images = restaurant[plate].images;
-          var imagesLo = restaurant[plate]['images-lo'];
-
-          if(!images || !imagesLo) {
-            continue;
-          }
-
-          var imgKeys = imagesLo ? Object.keys(imagesLo) : Object.keys(images);
-          result = result.concat(imgKeys);
-        }
-        return result;
-      }, []);
-    };
-
-    var uploadImageData = function(imgKeys) {
-      imgKeys.forEach((imgKey) => {
-        var user_id = userIds[Math.floor(Math.random() * userIds.length)];
-        var date = helpers.getRandomDate(new Date(2015, 7, 1), new Date()).toString();
-        var feeling = feelings[Math.floor(Math.random() * feelings.length)];
-
-        base.post(`image-data/${imgKey}`, {
-          data: {user_id, date, feeling},
-          then() {
-            console.log('image data updated');
-          }
-        });
-      });
-    };
-
-    base.fetch('plates', {
-      context: this,
-      asArray: true,
-      then(restaurants) {
-        uploadImageData(getImgKeys(restaurants));
-      }
-    });
+  getDistance(location1, location2) {
+    // returns kms
+    return GeoFire.distance(location1, location2);
   },
   getReBase() {
     return base;
@@ -141,12 +101,14 @@ var firebase_api = {
     return deferred.promise;
   },
   getNearbyRestaurants(loc, radius, cb) {
+    radius = helpers.milesToKilometers(radius);
+
     var geoQuery = geoFire.query({
       center: [loc.latitude, loc.longitude],
       radius: radius
     });
 
-    // cb gets key, location and distance as params
+    // cb gets key, location and distance (in km) as params
     geoQuery.on('key_entered', cb);
   },
   addRestaurant(restaurant) {
@@ -173,6 +135,7 @@ var firebase_api = {
   },
   addGeoFireLocation(restaurant) {
     var id = restaurant.id;
+    var name = restaurant.name;
     var coords = restaurant.location.coordinate;
     var lat = coords.latitude;
     var lng = coords.longitude;
@@ -182,6 +145,79 @@ var firebase_api = {
       console.log(`Added ${name} to GeoFire`);
     }, (error) => {
       console.warn("Geofire Error: " + error);
+    });
+  },
+  _updateImageData() {
+    var feelings = ['Satisfied', 'Seconds?', 'Sleepy', 'Sick', 'Happy', 'Gimme More!', 'Energetic', 'Stuffed', 'Comforted', 'Bloated'];
+    var userIds = ['10204677161988934', '427362984114044', '10100870666170545'];
+
+    var getImgKeys = function(restaurants) {
+      return restaurants.reduce((result, restaurant) => {
+        for(let plate in restaurant) {
+          if( !restaurant.hasOwnProperty(plate) || plate === 'key' ) {
+            continue;
+          }
+
+          var images = restaurant[plate].images;
+          var imagesLo = restaurant[plate]['images-lo'];
+
+          if(!images || !imagesLo) {
+            continue;
+          }
+
+          var imgKeys = imagesLo ? Object.keys(imagesLo) : Object.keys(images);
+          result = result.concat(imgKeys);
+        }
+        return result;
+      }, []);
+    };
+
+    var uploadImageData = function(imgKeys) {
+      imgKeys.forEach((imgKey) => {
+        var user_id = userIds[Math.floor(Math.random() * userIds.length)];
+        var date = helpers.getRandomDate(new Date(2015, 7, 1), new Date()).toString();
+        var feeling = feelings[Math.floor(Math.random() * feelings.length)];
+
+        base.post(`image-data/${imgKey}`, {
+          data: {user_id, date, feeling},
+          then() {
+            console.log('image data updated');
+          }
+        });
+      });
+    };
+
+    base.fetch('plates', {
+      context: this,
+      asArray: true,
+      then(restaurants) {
+        uploadImageData(getImgKeys(restaurants));
+      }
+    });
+  },
+  _updateGeoFireData() {
+    base.fetch('restaurants', {
+      context: this,
+      asArray: true,
+      then(restaurants) {
+        restaurants = restaurants.reduce((dict, restaurant) => {
+          var id = restaurant.key;
+          var coords = restaurant.location.coordinate;
+          var lat = coords.latitude;
+          var lng = coords.longitude;
+
+          dict[id] = [lat, lng];
+
+          return dict;
+        },{});
+
+        geoFire.set(restaurants)
+        .then(() => {
+          console.log('Geofire Data Updated');
+        }, (error) => {
+          console.warn(`Geofire Error: ${error}`);
+        });
+      }
     });
   }
 };

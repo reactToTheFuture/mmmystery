@@ -21,50 +21,60 @@ class ArrivalOverlay extends React.Component {
     return (
       <Modal
         visible={this.props.isVisible}>
-        <Image
-          source={require('image!celebration-bg')}
-          style={styles.arrivalOverlay}>
-          <View style={styles.topText}>
-            <Text style={[styles.text, styles.announcement]}>Congrats, you've arrrived at...</Text>
-            <Text style={[styles.text, styles.title]}>{this.props.imageInfo.restaurant}</Text>
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.arrivalImage}
-              source={{uri: this.props.imageInfo.img_url}}
-            />
-            <Text style={[styles.text, styles.title, styles.subtitle]}>{this.props.imageInfo.name}</Text>
-          </View>
-          <View style={styles.bottomText}>
-            <Text style={[styles.text, styles.reminder]}>Take a pic when your meal arrives!</Text>
-            <TouchableHighlight
-              underlayColor={globals.primaryLight}
-              onPress={this.props.onConfirmation}
-              style={styles.button}>
-              <View style={styles.innerBtn}>
-                <Icon
-                  name='ion|ios-camera-outline'
-                  size={30}
-                  color='#ffffff'
-                  style={styles.icon}
-                />
-                <Text style={styles.text}>Upload Photo</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-        </Image>
+        <View
+          style={styles.container}>
+          <Image
+            source={require('image!celebration-bg')}
+            style={styles.bg}>
+            <View style={styles.topText}>
+              <Text style={[styles.text, styles.announcement]}>Congrats, you've arrrived at...</Text>
+              <Text style={[styles.text, styles.title]}>{this.props.imageInfo.restaurant}</Text>
+            </View>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.arrivalImage}
+                source={{uri: this.props.imageInfo.img_url}}
+              />
+              <Text style={[styles.text, styles.title, styles.subtitle]}>{this.props.imageInfo.name}</Text>
+            </View>
+            <View style={styles.bottomText}>
+              <Text style={[styles.text, styles.reminder]}>Take a pic when your meal arrives!</Text>
+              <TouchableHighlight
+                underlayColor={globals.primaryLight}
+                onPress={this.props.onConfirmation}
+                style={styles.button}>
+                <View style={styles.innerBtn}>
+                  <Icon
+                    name='ion|ios-camera-outline'
+                    size={30}
+                    color='#ffffff'
+                    style={styles.icon}
+                  />
+                  <Text style={styles.text}>Upload Photo</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </Image>
+        </View>
       </Modal>
     );
   }
 }
 
 let styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   topText: {
     flex: 1,
     paddingTop: 25,
   },
   imageContainer: {
     flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bottomText: {
     flex: 1,
@@ -76,11 +86,9 @@ let styles = StyleSheet.create({
   reminder: {
     marginBottom: 20,
   },
-  arrivalOverlay: {
+  bg: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    alignItems: 'center',
+    overflow: 'visible',
   },
   text: {
     fontFamily: 'SanFranciscoText-Regular',

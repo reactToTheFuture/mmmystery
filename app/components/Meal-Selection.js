@@ -105,11 +105,11 @@ class MealSelection extends React.Component {
     var props = this.props.route.props;
     var restaurantID = props.restaurant.id;
     var plateID = helpers.formatNameString(meal);
-    var image = props.image;
+    var base64 = props.image;
 
     firebase_api.addPlate(restaurantID, plateID, '')
     .then((imageId) => {
-      aws_api.uploadToS3(image, imageId)
+      aws_api.uploadToS3(base64, imageId)
       .then((res) => {
         if(!res) {
           throw new Error('upload to s3 failed');
@@ -121,7 +121,6 @@ class MealSelection extends React.Component {
           return firebase_api.addImageData(imageId, this.props.user.id);
         })
         .then(() => {
-          console.log('here too');
           this.setState({
             isLoading: false,
             isAddingMeal: false,

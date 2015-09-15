@@ -1,21 +1,28 @@
 'use strict';
 
 import React from 'react-native';
+import NavigationBar from 'react-native-navbar';
+import FBSDKLogin from 'react-native-fbsdklogin';
+import { Icon, } from 'react-native-icons';
+import SideMenu from 'react-native-side-menu';
+
 import InitialLoadingOverlay from './Initial-Loading-Overlay';
 import PlatesDashBoard from './plate-screen/Plates-Dashboard';
 import PlatesFooter from './plate-screen/Plates-Footer';
 import MapDashBoard from './map/Map-Dashboard';
-import NavigationBar from 'react-native-navbar';
+import Login from './login/Login';
+import SettingsDashboard from './Settings-Dashboard';
+import Menu from './side-menu/Menu';
+
 import firebase_api from '../utils/firebase-api';
 import helpers from '../utils/helpers';
-import FBSDKLogin from 'react-native-fbsdklogin';
-import Login from './login/Login';
 import Colors from '../../globalVariables';
-import SettingsDashboard from './Settings-Dashboard';
-import { Icon, } from 'react-native-icons';
-import SideMenu from 'react-native-side-menu';
-import Menu from './side-menu/Menu';
-var emptySettings=false;
+import { filterByDistance, filterByCategory, filterByPrice, formatCategory } from '../utils/filters';
+
+var platesTimer;
+var allPlates = [];
+var filteredPlates = [];
+var noFilteredPlatesResults = false;
 
 let {
   View,
@@ -38,10 +45,11 @@ class Main extends React.Component {
     this.state = {
       status: 'Finding your location...',
       watchID: null,
-      currPlateIndex: -1,
-      plates: [],
-      goSettings: false,
+      touchToClose: props.route.props.isOpen,
+      currFilteredIndex: 0,
+      currPlateIndex: 0,
       categoryFilter: [],
+      plate: null,
       radius: null,
       prevRadius: null,
       dollar: null,
@@ -53,29 +61,53 @@ class Main extends React.Component {
     };
   }
 
+  prepareToBuildPlatesArray(props) {
+    this.setState({status: 'Finding nearby restaurants...'});
+    var {latitude, longitude} = props.initialPosition.coords;
+    this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
+    this._getAddress(latitude, longitude);
+  }
+
   buildPlatesArray(userLocation, radius) {
-    console.log('new search on radius:', radius);
+    var initialBuild = true;
+    var shuffleStartIndex = 0;
+    var firstPlatesFound = false;
 
     firebase_api.getNearbyRestaurants(userLocation, radius, (restaurantId, locationTuple, distance) => {
-      this.setState({
-        status: 'Fetching yummy dishes...'
-      });
+
       firebase_api.getPlatesByRestaurantId(restaurantId)
       .then((plates) => {
+
         if(!plates.length) {
           throw new Error(`no plates for ${restaurantId}`);
         }
+
+        // we find restaurants so fast,
+        // so wait at least 1sec before displaying next status
+        if(!firstPlatesFound) {
+          setTimeout(() => {
+            this.setState({
+              status: 'Fetching yummy dishes...'
+            });
+          }, 1000);
+
+          firstPlatesFound = true;
+        }
+
         return plates;
       })
       .then((plates) => {
         return [plates, firebase_api.getRestaurantById(restaurantId)];
       })
       .spread((plates, restaurantInfo) => {
+
         var restaurant = helpers.formatIdString(restaurantId);
         var location = {
           lat: locationTuple[0],
           lng: locationTuple[1]
         };
+
+        distance = helpers.kilometersToMiles(distance);
 
         var morePlates = plates.reduce((plates, plate) => {
           var imageKeys = [];
@@ -99,7 +131,7 @@ class Main extends React.Component {
           var img_url = plate[prop][randomImageKey];
 
           var name = helpers.formatIdString(plate.key);
-          var category = helpers.formatCategory(restaurantInfo.categories);
+          var category = formatCategory(restaurantInfo.categories);
           var priceFactor = !restaurantInfo.price ? '$' : restaurantInfo.price;
 
           var platesObj = {
@@ -129,21 +161,25 @@ class Main extends React.Component {
           return;
         }
 
-        var shuffleIndexIncrement = 2;
-        var currPlateIndex = this.state.currPlateIndex;
+        allPlates = helpers.shuffle(allPlates.concat(morePlates), this.state.currPlateIndex + shuffleStartIndex);
 
-        // initally, shuffle entire array of images
-        // otherwise, start shuffling 2 indexes up from current plate index
-        if( currPlateIndex === -1 ) {
-          shuffleIndexIncrement = 1;
-          currPlateIndex = 0;
+        clearTimeout(platesTimer);
+
+        // after 500ms without plates being added,
+        // assign the first plate in the array as the current plate.
+        // if subsequent calls are made and more plates are added,
+        // start shuffling 5 indexes up from the current plate index
+        if(initialBuild) {
+          platesTimer = setTimeout(() => {
+            this.setState({
+              plate: allPlates[0],
+              priceFactor: allPlates[0].priceFactor
+            });
+
+            initialBuild = false;
+            shuffleStartIndex = 5;
+          }, 500);
         }
-
-        // First time: defaul radius
-        this.setState({
-          currPlateIndex,
-          plates: helpers.shuffle(this.state.plates.concat(morePlates),this.state.currPlateIndex+shuffleIndexIncrement)
-        });
 
       })
       .catch((err) => {
@@ -163,24 +199,19 @@ class Main extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    // already started building the plates array
     if(this.props.initialPosition || !newProps.initialPosition) {
       return;
     }
 
-    this.setState({
-      status: 'Finding nearby restaurants...'
-    });
-
-    var {latitude, longitude} = newProps.initialPosition.coords;
-    this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
-    this._getAddress(latitude, longitude);
+    this.prepareToBuildPlatesArray(newProps);
   }
 
-  handleSelection(image) {
+  handleSelection() {
     this.props.navigator.push({
       component: MapDashBoard,
       props: {
-        image,
+        image: this.state.plate,
         userPosition: this.props.lastPosition
       },
       navigationBar: (
@@ -190,12 +221,48 @@ class Main extends React.Component {
     });
   }
 
-  handleRejection(imageIndex) {
-    if (this.state.filterActivated) {
-      this.setState({indexFilter: imageIndex});
+  handleRejection() {
+    var platesToUse;
+    var newPlateIndex;
+
+    if(this.state.filterActivated) {
+      platesToUse = filteredPlates;
+      newPlateIndex = this.state.currFilteredIndex + 1;
     } else {
-      this.setState({currPlateIndex: imageIndex});
+      platesToUse = allPlates;
+      newPlateIndex = this.state.currPlateIndex + 1;
     }
+
+    newPlateIndex = newPlateIndex >= platesToUse.length ? 0 : newPlateIndex;
+
+    if (this.state.filterActivated) {
+      this.setState({currFilteredIndex: newPlateIndex});
+    } else {
+      this.setState({currPlateIndex: newPlateIndex});
+    }
+
+    this.setState({
+      plate: platesToUse[newPlateIndex],
+      priceFactor: platesToUse[newPlateIndex].priceFactor
+    });
+  }
+
+  handleFilterChange() {
+    var platesToUse;
+    var index;
+
+    if (this.state.filterActivated) {
+      platesToUse = filteredPlates;
+      index = this.state.currFilteredIndex;
+    } else {
+      platesToUse = allPlates;
+      index = this.state.currPlateIndex;
+    }
+
+    this.setState({
+      plate: platesToUse[index],
+      priceFactor: platesToUse[index].priceFactor
+    });
   }
 
   _onPressLogOut() {
@@ -209,7 +276,6 @@ class Main extends React.Component {
     // 'categories' --> ['Burger', 'French', ...]
     // 'radius'     --> 24 miles
     // 'dollar'     --> 0/1/2   0=$, 1=$$, 2=$$$
-    console.log('handleSettings', key, filter);
     switch(key) {
       case 'categories':
         this.setState({categoryFilter: filter});
@@ -224,77 +290,80 @@ class Main extends React.Component {
       default:
         break;
     }
-
   }
 
   doneButtonSettingsPressed() {
-    console.log('emptySettings',emptySettings);
-    var filterActivated;
-    emptySettings= emptySettings || false;
+    var filterActivated = false;
 
-    // reptresent no changes
-    if (this.state.defaultRadius === this.state.maxRadius &&
-        this.state.dollar === -1 &&
-        this.state.categoryFilter.length === 0 && !emptySettings) {
-      filterActivated=false;
-    } else if (this.state.defaultRadius === this.state.prevRadius &&
-               this.state.dollar === this.state.prevDollar &&
-               this.state.categoryFilter === this.state.prevCategory && !emptySettings) {
-      filterActivated=true;
+     // no changes at all
+    if ( this.state.defaultRadius === this.state.maxRadius &&
+          this.state.dollar === null &&
+          this.state.categoryFilter.length === 0 && !noFilteredPlatesResults ) {
+
+      filterActivated = false;
+
+    // no new changes but filter has been activated
+    } else if (
+      this.state.defaultRadius === this.state.prevRadius &&
+      this.state.dollar === this.state.prevDollar &&
+      this.state.categoryFilter === this.state.prevCategory && !noFilteredPlatesResults ) {
+
+      filterActivated = true;
+
     } else {
-      filterActivated=true;
-      var filteredPlates = this.state.plates.slice();
-      if (this.state.defaultRadius>0){
-        filteredPlates = helpers.filterByDistance(filteredPlates, this.state.defaultRadius);
+
+      filterActivated = true;
+      var tempFilteredPlates = allPlates.slice();
+
+      if ( this.state.defaultRadius > 0 ){
+        tempFilteredPlates = filterByDistance(tempFilteredPlates, this.state.defaultRadius);
       }
 
-      if (this.state.dollar !== null && this.state.dollar >= 0) {
-        filteredPlates = helpers.filterByPrice(filteredPlates, this.state.dollar);
+      if ( this.state.dollar !== null && this.state.dollar >= 0 ) {
+        tempFilteredPlates = filterByPrice(tempFilteredPlates, this.state.dollar);
       }
 
-      // Filtering by categories
-
-      if (this.state.categoryFilter.length > 0) {
-        filteredPlates = helpers.filterBycategory(filteredPlates, this.state.categoryFilter );
+      if ( this.state.categoryFilter.length > 0 ) {
+        tempFilteredPlates = filterByCategory(tempFilteredPlates, this.state.categoryFilter );
       }
-      this.setState({indexFilter: 0});
-      console.log('after settings', filteredPlates.length);
-      if (filteredPlates.length === 0) {
+
+      this.setState({currFilteredIndex: 0});
+
+      if ( tempFilteredPlates.length === 0 ) {
         AlertIOS.alert('No plates found. Please, try different settings.');
-        emptySettings=true;
-        filterActivated=false;
+
+        noFilteredPlatesResults = true;
+        filterActivated = false;
       } else {
-        emptySettings=false;
+        noFilteredPlatesResults = false;
       }
 
-      !emptySettings && this.setState({filteredPlates: filteredPlates});
+      if(!noFilteredPlatesResults) {
+        filteredPlates = tempFilteredPlates;
+      }
     }
-    !emptySettings && this.props.navigator.pop();
-    this.setState({filterActivated});
+
+    this.setState({filterActivated}, this.handleFilterChange);
+    
+    !noFilteredPlatesResults && this.props.navigator.pop();
   }
 
   componentWillMount() {
-    if(this.props.initialPosition) {
-      this.setState({status: 'Finding nearby restaurants...'});
-
-      var {latitude, longitude} = this.props.initialPosition.coords;
-      
-      this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
-      
-      this._getAddress(latitude, longitude);
+    // don't have position yet, can't start building plates array
+    if(!this.props.initialPosition) {
+      return;
     }
-    this.setState({touchToClose: this.props.route.props.isOpen});
-  }
 
-  componentDidMount() {
-    console.log('currPlateIndex',this.state.currPlateIndex);
+    this.prepareToBuildPlatesArray(this.props);
   }
 
   _onPressSettings() {
+    this.setState({
+      prevRadius: this.state.defaultRadius,
+      prevDollar: this.state.dollar,
+      prevCategory: this.state.categoryFilter
+    });
 
-    this.setState({prevRadius: this.state.defaultRadius});
-    this.setState({prevDollar: this.state.dollar});
-    this.setState({prevCategory: this.state.categoryFilter});
     this.props.navigator.push({
       component: SettingsDashboard,
       props: {
@@ -308,38 +377,38 @@ class Main extends React.Component {
           nextTitle="Done"/>
       )
     });
-    this.setState({goSettings: true});
   }
 
   handleChange(isOpen) {
-    if (!isOpen) {
-      this.setState({
-        touchToClose: false,
-      });
+    if (isOpen) {
+      return;
     }
+    this.setState({
+      touchToClose: false
+    });
   }
 
   render() {
-    if ( this.state.plates.length <= 0 ) {
+    if (!this.state.plate) {
       return (
         <InitialLoadingOverlay
-          isVisible={this.state.goSettings ? false : !this.state.plates.length}
+          isVisible={true}
           status={this.state.status} />
       );
-    } else {
-      return (
-          <View style={styles.container}>
-            <PlatesDashBoard
-              filterOn={this.state.filterActivated}
-              plates={this.state.filterActivated ? this.state.filteredPlates : this.state.plates}
-              lastPosition={this.props.lastPosition}
-              currPlateIndex={this.state.filterActivated ? this.state.indexFilter : this.state.currPlateIndex}
-              onSelection={this.handleSelection.bind(this)}
-              onRejection={this.handleRejection.bind(this)} />
-            <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)}/>
-          </View>
-      );
     }
+
+    return (
+      <View style={styles.container}>
+        <PlatesDashBoard
+          plate={this.state.plate}
+          priceFactor={this.state.priceFactor}
+          lastPosition={this.props.lastPosition}
+          currPlateIndex={this.state.filterActivated ? this.state.currFilteredIndex : this.state.currPlateIndex}
+          onSelection={this.handleSelection.bind(this)}
+          onRejection={this.handleRejection.bind(this)} />
+        <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)}/>
+      </View>
+    );
   }
 }
 
@@ -351,7 +420,7 @@ let styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   }
 });
 

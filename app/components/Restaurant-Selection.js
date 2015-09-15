@@ -40,7 +40,7 @@ class RestaurantSelection extends React.Component {
   }
 
   componentDidMount() {
-    firebase_api.getNearbyRestaurants(this.props.lastPosition.coords, 60, (id, loc, dist) => {
+    firebase_api.getNearbyRestaurants(this.props.lastPosition.coords, 10, (id, loc, dist) => {
       var restaurants = this.state.restaurantKeys;
 
       if( Object.keys(restaurants).length < 20 ) {
