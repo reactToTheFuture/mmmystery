@@ -5,6 +5,9 @@ import NavigationBar from 'react-native-navbar';
 
 import Walkthrough from '../login/Walkthrough';
 import Profile from '../profile/Profile';
+import Contact from '../side-menu/ContactUs';
+import About from '../side-menu/About';
+import FAQ from '../side-menu/FAQ';
 
 const window = Dimensions.get('window');
 
@@ -35,11 +38,6 @@ class Menu extends React.Component {
     };
   }
 
-  onLogOut() {
-    FBSDKLoginManager.logOut();
-    this.props.onLogOut();
-    this.props.navigator.popToTop();
-  }
 
   onPressProfile() {
     this.props.navigator.push({
@@ -47,13 +45,11 @@ class Menu extends React.Component {
       component: Profile,
       navigationBar: (
         <NavigationBar
-          title="Profile" />
+          title='Profile' />
       )
     });
   }
 
-  onPressFaq() {
-  }
 
   onPressHowWorks() {
     this.props.navigator.push({
@@ -62,6 +58,42 @@ class Menu extends React.Component {
         isSignedIn: true
       }
     });
+  }
+
+  onPressAbout() {
+    this.props.navigator.push({
+      component: About,
+      navigationBar: (
+        <NavigationBar
+          title='About' />
+      )
+    });
+  }
+
+  onPressFaq() {
+    this.props.navigator.push({
+      component: FAQ,
+      navigationBar: (
+        <NavigationBar
+          title='F.A.Q.' />
+      )
+    });
+  }
+
+  onPressContact() {
+  this.props.navigator.push({
+      component: Contact,
+      navigationBar: (
+        <NavigationBar
+          title='Profile' />
+      )
+    });
+  }
+
+  onLogOut() {
+    FBSDKLoginManager.logOut();
+    this.props.onLogOut();
+    this.props.navigator.popToTop();
   }
 
   componentWillReceiveProps(newProps) {
@@ -89,7 +121,7 @@ class Menu extends React.Component {
       toValue: value,
       easing: Easing.linear,
       duration: 350,
-     }).start(onAnimationComplete); 
+     }).start(onAnimationComplete);
   }
 
   render() {
@@ -136,8 +168,18 @@ class Menu extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.buttonItem}
+              onPress={this.onPressAbout.bind(this)}>
+                <Text style={styles.item}>About</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.buttonItem}
               onPress={this.onPressFaq.bind(this)}>
                 <Text style={styles.item}>FAQ</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.buttonItem}
+              onPress={this.onPressContact.bind(this)}>
+                <Text style={styles.item}>Contact Us</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.buttonItem}
