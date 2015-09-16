@@ -1,5 +1,5 @@
 import React from 'react-native';
-import Communications  from 'react-native-communications';
+var Mailer = require('NativeModules').RNMail;
 
 let {
   StyleSheet,
@@ -15,7 +15,6 @@ let {
   Animated,
 } = React;
 
-var url =  'mailto:lee.marreros@pucp.pe?subject=My%20Subject&body=My%20body%20text';
 class Contact extends React.Component {
 
   constructor(props) {
@@ -25,17 +24,32 @@ class Contact extends React.Component {
       bodyText: 'Rain or shine, early breakfast or last cocktail. We\'re here for you and just a tap away.',
     };
   }
-
-  componentWillReceiveProps(newProps) {
+  onPressSendEmail() {
+    console.log(Mailer);
+    Mailer.mail({
+      subject: 'Support Request - iOS',
+      recipients: ['contact@mmmystery.com'],
+      body: 'What\'s up Mmmystery team?  I wanna report the following: ',
+      attachment: {
+        path: '',  // The absolute path of the file from which to read data.
+        type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf
+        name: '',   // Optional: Custom filename for attachment
+      }
+    }, (error, event) => {
+        if(error) {
+          AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
+        }
+    });
   }
 
-  onPressSendEmail() {
-    console.log('press send e-mail');
-    LinkingIOS.canOpenURL('www.fb.com', (supported) => {
-      if (!supported) {
-        AlertIOS.alert('Can\'t handle url: ' + url);
+  onPressCall() {
+    console.log('onPress Call');
+    var url = 'tel:1-408-555-5555';
+    LinkingIOS.canOpenURL(url, (supported) => {
+    if (!supported) {
+        console.log('Can\'t handle url: ' + url);
       } else {
-        LinkingIOS.openURL('www.fb.com');
+        LinkingIOS.openURL(url);
       }
     });
   }
@@ -57,7 +71,7 @@ class Contact extends React.Component {
             <Text style={styles.text}>Send us an email</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Communications.phonecall('4088768841', true)} style={styles.buttomItemCall}>
+        <TouchableOpacity onPress={this.onPressCall.bind(this)} style={styles.buttomItemCall}>
           <View style={styles.phone}>
             <Text style={styles.text}>Give us a call</Text>
           </View>
