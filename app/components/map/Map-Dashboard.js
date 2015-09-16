@@ -1,16 +1,15 @@
 import React from 'react-native';
 import NavigationBar from 'react-native-navbar';
 
+import CameraDashboard from '../camera/Camera-Dashboard';
+import Main from '../main/Main';
+
 import Directions from './Directions';
 import RouteOverlay from './Route-Overlay';
 import ArrivalOverlay from './Arrival-Overlay';
 import Map from './Map';
 
 import mapbox_api from '../../utils/mapbox-api';
-
-import CameraDashboard from '../camera/Camera-Dashboard';
-import Main from '../Main';
-
 import { formatNameString } from '../../utils/helpers';
 
 var {
@@ -203,11 +202,11 @@ class MapDashBoard extends React.Component {
   }
 }
 
+export default MapDashBoard;
+
 let styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
   }
 });
-
-module.exports = MapDashBoard;

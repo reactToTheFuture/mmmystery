@@ -34,4 +34,4 @@ styles = StyleSheet.create({
 });
 
 
-module.exports = CameraLiveButton;
+export default CameraLiveButton;

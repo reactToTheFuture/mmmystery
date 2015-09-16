@@ -6,17 +6,17 @@ import FBSDKLogin from 'react-native-fbsdklogin';
 import { Icon, } from 'react-native-icons';
 
 import InitialLoadingOverlay from './Initial-Loading-Overlay';
-import PlatesDashBoard from './plate-screen/Plates-Dashboard';
-import PlatesFooter from './plate-screen/Plates-Footer';
-import MapDashBoard from './map/Map-Dashboard';
-import Login from './login/Login';
-import SettingsDashboard from './Settings-Dashboard';
-import Menu from './Menu';
+import PlatesDashBoard from '../plate-screen/Plates-Dashboard';
+import PlatesFooter from '../plate-screen/Plates-Footer';
+import SettingsDashboard from '../plate-screen/Settings-Dashboard';
+import MapDashBoard from '../map/Map-Dashboard';
+import Login from '../login/Login';
+import Menu from '../navigation/Menu';
 
-import firebase_api from '../utils/firebase-api';
-import helpers from '../utils/helpers';
-import Colors from '../../globalVariables';
-import { filterByDistance, filterByCategory, filterByPrice, formatCategory } from '../utils/filters';
+import firebase_api from '../../utils/firebase-api';
+import helpers from '../../utils/helpers';
+import Colors from '../../../globalVariables';
+import { filterByDistance, filterByCategory, filterByPrice, formatCategory } from '../../utils/filters';
 
 var platesTimer;
 var allPlates = [];
@@ -407,6 +407,8 @@ class Main extends React.Component {
   }
 }
 
+export default Main;
+
 let styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -415,5 +417,3 @@ let styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   }
 });
-
-module.exports = Main;

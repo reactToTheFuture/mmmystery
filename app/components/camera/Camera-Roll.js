@@ -150,6 +150,8 @@ class CameraRollView extends React.Component {
   }
 }
 
+export default CameraRollView;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,5 +187,3 @@ var styles = StyleSheet.create({
     borderColor: 'orange'
   }
 });
-
-module.exports = CameraRollView;

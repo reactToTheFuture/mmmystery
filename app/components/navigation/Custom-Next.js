@@ -25,6 +25,8 @@ class CustomNext extends React.Component {
   }
 }
 
+export default CustomNext;
+
 let styles = StyleSheet.create({
   icon: {
     width: 37,
@@ -33,5 +35,3 @@ let styles = StyleSheet.create({
     top: 21
   },
 });
-
-module.exports = CustomNext;

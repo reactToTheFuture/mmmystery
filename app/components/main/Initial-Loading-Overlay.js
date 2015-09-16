@@ -26,6 +26,8 @@ class initialLoadingOverlay extends React.Component {
   }
 }
 
+export default initialLoadingOverlay;
+
 let styles = StyleSheet.create({
   overlayContainer: {
     position: 'relative',
@@ -42,5 +44,3 @@ let styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-
-module.exports = initialLoadingOverlay;

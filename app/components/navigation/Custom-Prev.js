@@ -27,6 +27,9 @@ class CustomPrev extends React.Component {
   }
 }
 
+
+export default CustomPrev;
+
 let styles = StyleSheet.create({
   icon: {
     width: 35,
@@ -35,5 +38,3 @@ let styles = StyleSheet.create({
     top: 22
   },
 });
-
-module.exports = CustomPrev;

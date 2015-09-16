@@ -149,6 +149,8 @@ class PlatesDashBoard extends React.Component {
   }
 }
 
+export default PlatesDashBoard;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -193,5 +195,3 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 });
-
-module.exports = PlatesDashBoard;

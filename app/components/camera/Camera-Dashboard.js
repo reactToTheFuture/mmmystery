@@ -117,6 +117,8 @@ class CameraDashboard extends React.Component {
   }
 }
 
+export default CameraDashboard;
+
 let styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -194,5 +196,3 @@ let styles = StyleSheet.create({
     fontFamily: 'SanFranciscoText-Regular',
   }
 });
-
-module.exports = CameraDashboard;

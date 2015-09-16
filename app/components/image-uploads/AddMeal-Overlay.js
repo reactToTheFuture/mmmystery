@@ -1,5 +1,9 @@
 import React from 'react-native';
 
+import { Icon } from 'react-native-icons';
+import Dimensions from 'Dimensions';
+import globals from '../../../globalVariables';
+
 var {
   View,
   Text,
@@ -10,11 +14,7 @@ var {
   StyleSheet
 } = React;
 
-import { Icon } from 'react-native-icons';
-import Dimensions from 'Dimensions';
-
 var window = Dimensions.get('window');
-var globals = require('../../../globalVariables');
 
 class AddMealOverlay extends React.Component {
 
@@ -82,6 +82,8 @@ class AddMealOverlay extends React.Component {
   }
 }
 
+export default AddMealOverlay;
+
 let styles = StyleSheet.create({
   searchIcon: {
     width: 30,
@@ -136,5 +138,3 @@ let styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
 });
-
-module.exports = AddMealOverlay;

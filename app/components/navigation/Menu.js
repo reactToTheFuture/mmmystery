@@ -2,7 +2,7 @@ import React from 'react-native';
 import Dimensions from 'Dimensions';
 import FBSDKLogin from 'react-native-fbsdklogin';
 
-import Walkthrough from './login/Walkthrough';
+import Walkthrough from '../login/Walkthrough';
 
 const window = Dimensions.get('window');
 
@@ -140,6 +140,8 @@ class Menu extends React.Component {
   }
 }
 
+export default Menu;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -201,5 +203,3 @@ const styles = StyleSheet.create({
     height: 12,
   },
 });
-
-module.exports = Menu;

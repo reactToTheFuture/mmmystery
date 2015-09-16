@@ -234,7 +234,7 @@ class ImageCropper extends React.Component {
 
 }
 
-module.exports = CameraCrop;
+export default CameraCrop;
 
 var styles = StyleSheet.create({
   container: {

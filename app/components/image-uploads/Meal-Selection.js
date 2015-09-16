@@ -210,6 +210,8 @@ class MealSelection extends React.Component {
   }
 };
 
+export default MealSelection;
+
 var styles = StyleSheet.create({
   restaurantTitle: {
     padding: 15,
@@ -285,5 +287,3 @@ var styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 });
-
-module.exports = MealSelection;

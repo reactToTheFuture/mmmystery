@@ -3,20 +3,18 @@
 import React from 'react-native';
 import FBSDKCore from 'react-native-fbsdkcore';
 import FBSDKLogin from 'react-native-fbsdklogin';
-
-import Main from '../Main';
 import NavigationBar from 'react-native-navbar';
+import { Icon } from 'react-native-icons';
+
+import Main from '../main/Main';
 
 import NavigationPrev from '../navigation/Custom-Prev';
 import NavigationNext from '../navigation/Custom-Next';
-
-import CameraDashboard from '../camera/Camera-Dashboard';
 import Walkthrough from './Walkthrough';
+import CameraDashboard from '../camera/Camera-Dashboard';
 
-var { Icon } = require('react-native-icons');
 
 import globals from '../../../globalVariables';
-
 import firebase_api from '../../utils/firebase-api';
 
 var {
@@ -200,6 +198,8 @@ var {
   }
 };
 
+export default Login;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -261,5 +261,3 @@ var styles = StyleSheet.create({
     overflow: 'visible'
   },
 });
-
-module.exports = Login;

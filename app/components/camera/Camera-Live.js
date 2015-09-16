@@ -179,6 +179,8 @@ class CameraLive extends React.Component {
   }
 }
 
+export default CameraLive;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -268,5 +270,3 @@ var styles = StyleSheet.create({
     color: '#333333'
   }
 });
-
-module.exports = CameraLive;

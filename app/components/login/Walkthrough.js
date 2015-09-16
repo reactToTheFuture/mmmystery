@@ -1,9 +1,10 @@
 import React from 'react-native';
 import Swiper from 'react-native-swiper';
 import Login from './Login';
-import globals from '../../../globalVariables';
-import Main from '../Main';
 import Dimensions from 'Dimensions';
+import Main from '../main/Main';
+
+import globals from '../../../globalVariables';
 
 var window = Dimensions.get('window');
 
@@ -90,6 +91,8 @@ class Walkthrough extends React.Component {
   }
 }
 
+export default Walkthrough;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -154,5 +157,3 @@ var styles = StyleSheet.create({
     marginBottom: 25,
   }
 });
-
-module.exports = Walkthrough;

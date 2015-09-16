@@ -31,6 +31,8 @@ class PlatesFooter extends React.Component {
   }
 }
 
+export default PlatesFooter;
+
 let styles = StyleSheet.create({
   footer: {
     height: 40,
@@ -54,6 +56,3 @@ let styles = StyleSheet.create({
     height: 32,
   }
 });
-
-
-module.exports = PlatesFooter;

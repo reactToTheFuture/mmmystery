@@ -169,6 +169,8 @@ class RestaurantSelection extends React.Component {
   }
 };
 
+export default RestaurantSelection;
+
 var styles = StyleSheet.create({
   searchIcon: {
     width: 30,
@@ -224,5 +226,3 @@ var styles = StyleSheet.create({
     borderWidth: 1,
   }
 });
-
-module.exports = RestaurantSelection;

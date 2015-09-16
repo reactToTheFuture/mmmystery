@@ -22,6 +22,8 @@ class PlatesUser extends React.Component {
   }
 }
 
+export default PlatesUser;
+
 let styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -43,5 +45,3 @@ let styles = StyleSheet.create({
     fontSize: 18
   },
 })
-
-module.exports = PlatesUser;

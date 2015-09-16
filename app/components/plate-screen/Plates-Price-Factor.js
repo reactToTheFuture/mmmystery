@@ -37,6 +37,8 @@ class PlatesPriceFactor extends React.Component {
   }
 }
 
+export default PlatesPriceFactor;
+
 let styles = StyleSheet.create({
   dollarSigns: {
     width: 60,
@@ -58,14 +60,3 @@ let styles = StyleSheet.create({
     fontFamily: 'SanFranciscoDisplay-Regular'
   }
 });
-
-module.exports = PlatesPriceFactor;
-
-
-
-
-
-
-
-
-

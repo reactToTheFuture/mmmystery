@@ -43,6 +43,8 @@ class PlatesDashboardContent extends React.Component {
   }
 }
 
+export default PlatesDashboardContent;
+
 let styles = StyleSheet.create({
   imageFooter: {
     flex: 3,
@@ -98,5 +100,3 @@ let styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
-
-module.exports = PlatesDashboardContent;
