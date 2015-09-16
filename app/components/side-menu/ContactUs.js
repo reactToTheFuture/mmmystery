@@ -94,7 +94,7 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   baseText: {
-    fontFamily: 'Cochin',
+    fontFamily: 'SanFranciscoText-Regular',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',

@@ -59,7 +59,7 @@ var styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   baseText: {
-    fontFamily: 'Cochin',
+    fontFamily: 'SanFranciscoText-Regular',
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',

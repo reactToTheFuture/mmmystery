@@ -62,7 +62,7 @@ class FAQ extends React.Component {
 
 var styles = StyleSheet.create({
   baseText: {
-    fontFamily: 'Cochin',
+    fontFamily: 'SanFranciscoText-Regular',
   },
   question: {
     fontWeight: 'bold',
