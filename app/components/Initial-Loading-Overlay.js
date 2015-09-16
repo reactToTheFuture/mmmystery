@@ -1,7 +1,7 @@
-var React = require('react-native');
-var Overlay = require('react-native-overlay');
+import React from 'react-native';
+import Overlay from 'react-native-overlay';
 
-var Dimensions = require('Dimensions');
+import Dimensions from 'Dimensions';
 var window = Dimensions.get('window');
 
 var {

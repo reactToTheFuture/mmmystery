@@ -9,7 +9,7 @@ var {
   StyleSheet
 } = React;
 
-var globals = require('../../globalVariables');
+var globals = require('../../../globalVariables');
 
 class MealSubmittedOverlay extends React.Component {
   render() {

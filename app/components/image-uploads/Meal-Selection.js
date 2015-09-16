@@ -1,13 +1,15 @@
 import React from 'react-native';
+import _ from 'underscore';
+import Dimensions from 'Dimensions';
 
 import AddMealOverlay from './AddMeal-Overlay';
 import MealSubmittedOverlay from './MealSubmitted-Overlay';
 
-import firebase_api from '../utils/firebase-api';
-import aws_api from '../utils/aws-api';
-import yelp_api from '../utils/yelp-api';
-import _ from 'underscore';
-import helpers from '../utils/helpers';
+import firebase_api from '../../utils/firebase-api';
+import aws_api from '../../utils/aws-api';
+import yelp_api from '../../utils/yelp-api';
+import helpers from '../../utils/helpers';
+import globals from '../../../globalVariables';
 
 var {
   StyleSheet,
@@ -19,9 +21,7 @@ var {
   View
 } = React;
 
-var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var globals = require('../../globalVariables');
 
 class MealSelection extends React.Component {
 
@@ -34,7 +34,8 @@ class MealSelection extends React.Component {
       isMealSubmitted: false,
       noPlates: false,
       isAddingMeal: false,
-      searchText: ''
+      searchText: '',
+      status: null
     };
   }
 
@@ -169,9 +170,17 @@ class MealSelection extends React.Component {
       </View>
     );
 
+    var status = '';
+
+    if(!this.state.noPlates) {
+      status = !this.state.status ? 'Click on a meal to upload your image!' : this.state.status;
+    }
+
     return (
       <View style={styles.container}>
         <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
+
+        <Text style={[styles.centerText, styles.headline, styles.status]}>{status}</Text>
 
         <View style={[styles.innerContainer, this.state.noPlates && styles.noPlates]}>
           { this.state.noPlates ? noPlatesView : platesView }
@@ -249,11 +258,17 @@ var styles = StyleSheet.create({
   button: {
     fontSize: 18,
     fontFamily: 'SanFranciscoText-Semibold',
-    color: globals.primary,
+    color: globals.primaryDark,
+  },
+  status: {
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 16,
+    color: globals.primaryDark,
   },
   callout: {
-    fontSize: 16,
     marginBottom: 10,
+    fontSize: 16,
   },
   meal: {
     paddingTop: 15,

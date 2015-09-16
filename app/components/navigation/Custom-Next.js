@@ -11,15 +11,17 @@ var {
 } = React;
 
 class CustomNext extends React.Component {
+
+  handlePress() {
+    this.props.handler();
+  }
+
   render() {
     return (
-      <TouchableOpacity onPress={this.handlePress.bind(this) }>
+      <TouchableOpacity onPress={this.handlePress.bind(this)}>
         <Icon name={'ion|' + this.props.iconName} size={this.props.size} color={this.props.color} style={styles.icon}/>
       </TouchableOpacity>
     );
-  }
-  handlePress() {
-    this.props.handler();
   }
 }
 

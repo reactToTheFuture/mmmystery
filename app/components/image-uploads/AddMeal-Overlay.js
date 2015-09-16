@@ -10,11 +10,11 @@ var {
   StyleSheet
 } = React;
 
-var { Icon } = require('react-native-icons');
+import { Icon } from 'react-native-icons';
+import Dimensions from 'Dimensions';
 
-var Dimensions = require('Dimensions');
 var window = Dimensions.get('window');
-var globals = require('../../globalVariables');
+var globals = require('../../../globalVariables');
 
 class AddMealOverlay extends React.Component {
 
@@ -63,12 +63,12 @@ class AddMealOverlay extends React.Component {
           <TouchableHighlight
             underlayColor={'#ffffff'}
             onPress={this.handleMealAdd.bind(this)}>
-            <Text style={[styles.centerText, styles.button]}>ADD IT!</Text>
+            <Text style={[styles.centerText, styles.button]}>Add it and Upload Image!</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={'#ffffff'}
             onPress={this.props.onOverlayClose}>
-            <Text style={[styles.centerText, styles.button]}>CANCEL</Text>
+            <Text style={[styles.centerText, styles.button]}>Cancel</Text>
           </TouchableHighlight>
           <ActivityIndicatorIOS
             animating={this.state.isLoading}
@@ -106,9 +106,9 @@ let styles = StyleSheet.create({
     flex: 3,
     height: 50,
     paddingTop: 15,
-    paddingRight: 5,
+    paddingRight: 10,
     paddingBottom: 15,
-    paddingLeft: 5,
+    paddingLeft: 10,
     borderColor: globals.lightText,
     fontFamily: 'SanFranciscoText-Regular',
     borderWidth: 1,
@@ -120,7 +120,7 @@ let styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 20,
     fontFamily: 'SanFranciscoText-Semibold',
-    color: globals.primary,
+    color: globals.primaryDark,
   },
   loadingIcon: {
     position: 'absolute',
