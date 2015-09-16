@@ -27,13 +27,13 @@ var RadiatingCircles = React.createClass({
   _createOpacityAnimation(currentStep) {
     return this.state.size.interpolate({
       inputRange: [0, 1],
-      outputRange: currentStep === 1 ? [1, 0] : [0, 1]
+      outputRange: currentStep < 3 ? [1, 0] : [0, 1]
     });
   },
   _createScaleAnimation(currentStep) {
     return this.state.size.interpolate({
       inputRange: [0, 1],
-      outputRange: currentStep === 1 ? [0, 2.5] : [2.5, 0]
+      outputRange: currentStep < 3 ? [.8, 2] : [2, .8]
     });
   },
   componentWillMount() {
@@ -43,7 +43,7 @@ var RadiatingCircles = React.createClass({
   componentDidMount() {
     Animated.timing(this.state.size, {
       toValue: 1,
-      duration: this.props.currentStep === 1 ? 2000 : 3500
+      duration: this.props.currentStep < 3 ? 1500 : 1500
     }).start(this.props.onComplete);
   },
   ComponentWillReceiveProps(nextProps) {
@@ -68,16 +68,16 @@ var RadiatingCircles = React.createClass({
 
 var styles = StyleSheet.create ({
   circleAnim: {
-    width: 126,
-    height: 126,
-    borderRadius: 126/2,
+    width: 100,
+    height: 100,
+    borderRadius: 100/2,
     backgroundColor: '#ffc000',
     borderWidth: 1,
     borderColor: '#F78914',
     position: 'absolute',
-    left: (width / 2) - 63,
+    left: (width / 2) - 50,
     right: 0,
-    top: (height / 2.25) - 63,
+    top: (height / 2.25) - 50,
   }
 });
 

@@ -54,6 +54,11 @@ var LoadingComponent = React.createClass({
     });
     this.setState(this.state);
   },
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      currentStep: nextProps.status
+    });
+  },
   removeCircle(v) {
     var index = this.state.circles.findIndex(function(circle) {
       return circle.id === v;

@@ -42,6 +42,7 @@ var CenterCircle = React.createClass({
       items: [],
       size: new Animated.Value(0),
       addingItems: false,
+      firstItem: false,
       icon: [
         'ios-bolt',
         'ios-paper-outline',
@@ -49,10 +50,6 @@ var CenterCircle = React.createClass({
         'ios-bookmarks',
         'ios-navigate',
         'ios-bolt',
-        'ios-paper-outline',
-        'ios-world',
-        'ios-bookmarks',
-        'ios-navigate'
       ]
     }
   },
@@ -72,8 +69,8 @@ var CenterCircle = React.createClass({
     }).start();
   },
   componentWillReceiveProps(nextProp) {
-    if (nextProp.currentStep !== 1 && !this.state.addingItems) {
-      this.setInterval(this.addItem, 4000);
+    if (nextProp.currentStep === 3 && !this.state.addingItems) {
+      this.setInterval(this.addItem, 500);
       this.setState({
         addingItems: true
       });
@@ -102,15 +99,16 @@ var CenterCircle = React.createClass({
   },
 
   render() {
+    var randomIcon = 0 || Math.floor(Math.random() * (this.state.icon.length - 1));
     var secondPiece;
-    if(this.props.currentStep === 1) {
+    if(this.props.currentStep < 3) {
       secondPiece = <FetchingRestaurants />
     } else {
       secondPiece =
       this.state.items.map((v, i) => {
         return (
           <FetchingItems
-            icon={this.state.icon[v.id]}
+            icon={this.state.icon[randomIcon]}
             mealItem={v.id}
             key={v.id}
             onComplete={this.removeItem.bind(this, v.id)}

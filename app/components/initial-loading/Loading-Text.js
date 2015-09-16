@@ -20,49 +20,37 @@ class LoadingText extends React.Component {
 
     this.state = {
       fadeAnim: new Animated.Value(0),
-      title: "Searching for your location",
-      subtitle: "Please be patient!",
+      title: "Searching your location",
+      subtitle: "Wait one moment while we find all your nearby restaurants!",
     };
   }
   componentWillMount() {
     this._opacityAnimation = this.state.fadeAnim.interpolate({
       inputRange: [0, 0.5, 1],
       outputRange: [0, 0.3, 1]
-    }),
-    this._yAnimation = this.state.fadeAnim.interpolate({
-      inputRange: [0, 1],
-      outputRange: [20, 0]
-    });
+    })
   }
   componentDidMount() {
-    Animated.sequence([
-      Animated.delay(750),
-      Animated.timing(this.state.fadeAnim, {
-        toValue: 1,
-        duration: 1500,
-        easing: Easing.circle(3)
-      })
-    ]).start();
+    Animated.timing(this.state.fadeAnim, {
+      toValue: 1,
+      duration: 1500,
+      easing: Easing.circle(3)
+    }).start();
   }
   componentWillReceiveProps(nextProps) {
     var title, subtitle;
-    if (nextProps.currentStep === 2) {
+    if (nextProps.currentStep === 3) {
       title="Fetching yummy meals";
       subtitle="You are in for quite the treat!";
-    } else {
-      title = "Searching your location";
-      subtitle = "Wait one moment while we find all your nearby restaurants!";
+
+      this.setState({
+        title: title,
+        subtitle: subtitle
+      });
     }
-    this.setState({
-      title: title,
-      subtitle: subtitle
-    });
   }
   getFadeInAnimationStyle() {
     return {
-      transform: [
-        {translateY: this._yAnimation}
-      ],
       opacity: this._opacityAnimation
     }
   }

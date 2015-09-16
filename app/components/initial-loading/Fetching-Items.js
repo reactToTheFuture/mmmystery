@@ -23,13 +23,13 @@ class FetchingItems extends React.Component {
     this.state = {
       panAnim: new Animated.Value(0),
       secondPanAnim: new Animated.Value(0),
-      itemIcons: []
+      itemIcons: [0]
     };
   }
   componentWillMount() {
     this._yAnimation = this.state.panAnim.interpolate({
       inputRange: [0, 1],
-      outputRange: [-75, 0]
+      outputRange: [-75, 75]
     });
     this._secondYAnimation = this.state.secondPanAnim.interpolate({
       inputRange: [0, 1],
@@ -38,18 +38,9 @@ class FetchingItems extends React.Component {
   }
   componentDidMount() {
     Animated.sequence([
-      Animated.spring(this.state.panAnim, {
+      Animated.timing(this.state.panAnim, {
         toValue: 1,
-        velocity: 6,
-        tension: 1,
-        friction: 5,
-      }),
-      Animated.delay(250),
-      Animated.spring(this.state.secondPanAnim, {
-        toValue: 1,
-        velocity: 2,
-        tension: 0,
-        friction: 4,
+        duration: 500
       })
     ]).start(this.props.onComplete);
   }
