@@ -46,7 +46,8 @@ class PlatesDashBoard extends React.Component {
     this.props.onRejection();
 
     this.setState({
-      loadingImage: true
+      loadingImage: true,
+      arr: this._randomArray(4)
     });
   }
 
