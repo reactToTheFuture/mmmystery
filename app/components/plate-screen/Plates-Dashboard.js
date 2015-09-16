@@ -4,6 +4,7 @@ import Dimensions from 'Dimensions';
 import PlatesDashboardContent from './Plates-Dashboard-Content';
 import mapbox_api from '../../utils/mapbox-api';
 import Colors from '../../../globalVariables';
+
 var window = Dimensions.get('window');
 
 var {

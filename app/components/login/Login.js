@@ -13,7 +13,6 @@ import NavigationNext from '../navigation/Custom-Next';
 import Walkthrough from './Walkthrough';
 import CameraDashboard from '../camera/Camera-Dashboard';
 
-
 import globals from '../../../globalVariables';
 import firebase_api from '../../utils/firebase-api';
 
