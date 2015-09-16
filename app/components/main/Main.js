@@ -408,8 +408,6 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
-
 let styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -418,3 +416,5 @@ let styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   }
 });
+export default Main;
+
