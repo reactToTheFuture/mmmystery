@@ -29,6 +29,7 @@ class PlatesDashBoard extends React.Component {
       loadingImage: true,
       showMinutes: false,
       searchAddress: null,
+      arr: this._randomArray(4),
     };
   }
 
@@ -36,7 +37,9 @@ class PlatesDashBoard extends React.Component {
     Animated.spring(this.state.pan, {
       toValue: {x: 0, y: 0},
       friction: 10
-    }).start();
+    }).start(function() {
+      this.setState({arr: this._randomArray(4)});
+    }.bind(this));
   }
 
   _goToNextPlate() {
@@ -45,6 +48,14 @@ class PlatesDashBoard extends React.Component {
     this.setState({
       loadingImage: true
     });
+  }
+
+  _randomArray(n) {
+    let res = [];
+    for(let i = 0; i < n; i++) {
+      res.push(Math.random());
+    }
+    return res;
   }
 
   componentWillMount() {
@@ -110,24 +121,48 @@ class PlatesDashBoard extends React.Component {
     this.state.enter.setValue(0);
   }
 
+  nopeStyle() {
+    return {
+      bottom: 20 + (window.height*3/4 - 40) * this.state.arr[0],
+      left: 20 + (window.width/3 - 40) * this.state.arr[1],
+    };
+  }
+
+  yupStyle() {
+    return {
+      bottom: 20 + (window.height*3/4 - 40) * this.state.arr[2],
+      right: 20 + (window.width/3 - 40) * this.state.arr[3],
+    };
+  }
+
+  nopeText() {
+    var options = ['Nope!', 'No Way!', 'Never!', 'Thumbs down!', 'Nasty!', 'Yuck!', 'Awful!', 'Gross!', 'Not in my lifetime!', 'Over my dead body!'];
+    return options[Math.floor(options.length * this.state.arr[0])];
+  }
+
+  yupText() {
+    var options = ['Yup!', 'Let\'s go!', 'Mmmm!', 'Gimme!', 'Tasty!', 'Sweet!', 'Nice!', 'Yay!', 'Lets eat!', 'Yummy!'];
+    return options[Math.floor(options.length * this.state.arr[2])];
+  }
+
   render() {
     let { pan, enter, } = this.state;
 
     let [translateX, translateY] = [pan.x, pan.y];
 
     let rotate = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ['-30deg', '0deg', '30deg']});
-    let opacity = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: [0.5, 1, 0.5]})
+    let opacity = pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: [0.5, 1, 0.5]});
     let scale = enter;
 
     let animatedCardStyles = {transform: [{translateX}, {translateY}, {rotate}, {scale}], opacity};
 
     let yupOpacity = pan.x.interpolate({inputRange: [0, 150], outputRange: [0, 1]});
     let yupScale = pan.x.interpolate({inputRange: [0, 150], outputRange: [0.5, 1], extrapolate: 'clamp'});
-    let animatedYupStyles = {transform: [{scale: yupScale}], opacity: yupOpacity}
+    let animatedYupStyles = {transform: [{scale: yupScale}], opacity: yupOpacity};
 
     let nopeOpacity = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0]});
     let nopeScale = pan.x.interpolate({inputRange: [-150, 0], outputRange: [1, 0.5], extrapolate: 'clamp'});
-    let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity}
+    let animatedNopeStyles = {transform: [{scale: nopeScale}], opacity: nopeOpacity};
 
     return (
       <View style={styles.container}>
@@ -144,6 +179,12 @@ class PlatesDashBoard extends React.Component {
           <View style={styles.imageCrop}></View>
           </Image>
           <PlatesDashboardContent plate={this.props.plate} priceFactor={this.props.priceFactor} />
+        </Animated.View>
+        <Animated.View style={[styles.nope, animatedNopeStyles, this.nopeStyle()]}>
+          <Text style={styles.nopeText}>{this.nopeText()}</Text>
+        </Animated.View>
+        <Animated.View style={[styles.yup, animatedYupStyles, this.yupStyle()]}>
+          <Text style={styles.yupText}>{this.yupText()}</Text>
         </Animated.View>
       </View>
     );
@@ -195,5 +236,31 @@ var styles = StyleSheet.create({
     top: 200,
     left: (window.width/2 - 18),
     backgroundColor: 'transparent',
+  },
+  yup: {
+    borderColor: 'green',
+    borderWidth: 2,
+    position: 'absolute',
+    padding: 20,
+    bottom: 20,
+    borderRadius: 5,
+    right: 20,
+  },
+  yupText: {
+    fontSize: 16,
+    color: 'green',
+  },
+  nope: {
+    borderColor: 'red',
+    borderWidth: 2,
+    position: 'absolute',
+    bottom: 20,
+    padding: 20,
+    borderRadius: 5,
+    left: 20,
+  },
+  nopeText: {
+    fontSize: 16,
+    color: 'red',
   },
 });
