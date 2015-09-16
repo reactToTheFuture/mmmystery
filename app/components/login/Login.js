@@ -152,7 +152,7 @@ var {
     // will be replaced by a loading screen
     if (!this.state.responseToken) {
       return (
-        <Text>Loading screen during login process</Text>
+        <Text></Text>
       );
     }
 
