@@ -43,15 +43,29 @@ class MapDashBoard extends React.Component {
       lng: userCoords.longitude
     };
 
+    var timeStart = Date.now();
+
     this.getAsyncDirections(userPosition, this.props.route.props.image.location)
     .then((res) => {
-      this.setState({
-        steps: res.steps,
-        stepDirections: res.stepDirections,
-        endStepIndex: res.stepDirections.length-1,
-        stepAnnotations: res.stepAnnotations,
-        isLoading: false
-      })
+      var wait = 0;
+      var timeEnd = Date.now();
+      var timeElapsed = timeEnd - timeStart;
+
+      // we get route so fast, make sure we wait at least 1 sec
+      if( timeElapsed < 1000 ) {
+        wait = 1000 - timeElapsed;
+      }
+
+      setTimeout(() => {
+        this.setState({
+          steps: res.steps,
+          stepDirections: res.stepDirections,
+          endStepIndex: res.stepDirections.length-1,
+          stepAnnotations: res.stepAnnotations,
+          isLoading: false
+        });
+      }, wait);
+
     })
     .catch((err) => { console.log(`Problem getting directions: ${err}`); });
   }
