@@ -3,9 +3,10 @@ import React from 'react-native';
 import { Icon } from 'react-native-icons';
 
 import Dimensions from 'Dimensions';
-var window = Dimensions.get('window');
 
 import globals from '../../../globalVariables';
+
+var window = Dimensions.get('window');
 
 var {
   View,
@@ -60,6 +61,8 @@ class ArrivalOverlay extends React.Component {
     );
   }
 }
+
+export default ArrivalOverlay;
 
 let styles = StyleSheet.create({
   container: {
@@ -130,5 +133,3 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-module.exports = ArrivalOverlay;

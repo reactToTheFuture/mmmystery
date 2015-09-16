@@ -43,6 +43,8 @@ class RouteOverlay extends React.Component {
   }
 }
 
+export default RouteOverlay;
+
 let styles = StyleSheet.create({
   overlayContainer: {
     position: 'relative',
@@ -61,5 +63,3 @@ let styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   }
 });
-
-module.exports = RouteOverlay;

@@ -1,6 +1,16 @@
-var React = require('react-native');
-var NavigationBar = require('react-native-navbar');
-var Dimensions = require('Dimensions');
+import React from 'react-native';
+import NavigationBar from 'react-native-navbar';
+import { Icon } from 'react-native-icons';
+import Dimensions from 'Dimensions';
+
+import CameraRollView from './Camera-Roll';
+import CameraLiveView from './Camera-Live';
+
+import tips_api from '../../utils/tips.js';
+import img_api from '../../utils/img.js';
+
+import globals from '../../../globalVariables';
+
 var window = Dimensions.get('window');
 
 var {
@@ -11,16 +21,6 @@ var {
   TouchableHighlight,
   NavigatorIOS,
 } = React;
-
-var { Icon } = require('react-native-icons');
-
-var CameraRollView = require('./Camera-Roll');
-var CameraLiveView = require('./Camera-Live');
-
-var tips_api = require('../utils/tips.js');
-var img_api = require('../utils/img.js');
-
-var globals = require('../../globalVariables');
 
 class CameraDashboard extends React.Component {
 
@@ -117,6 +117,8 @@ class CameraDashboard extends React.Component {
   }
 }
 
+export default CameraDashboard;
+
 let styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -194,5 +196,3 @@ let styles = StyleSheet.create({
     fontFamily: 'SanFranciscoText-Regular',
   }
 });
-
-module.exports = CameraDashboard;

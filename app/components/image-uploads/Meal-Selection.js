@@ -100,7 +100,8 @@ class MealSelection extends React.Component {
     }
 
     this.setState({
-      isLoading: true
+      isLoading: true,
+      status: 'Uploading image...'
     });
 
     var props = this.props.route.props;
@@ -117,6 +118,10 @@ class MealSelection extends React.Component {
         }
         var imageUrl = res._bodyText;
 
+        this.setState({
+          status: 'Saving plate info...'
+        });
+
         firebase_api.updatePlate(restaurantID, plateID, imageId, imageUrl)
         .then(() => {
           return firebase_api.addImageData(imageId, this.props.user.id);
@@ -125,7 +130,7 @@ class MealSelection extends React.Component {
           this.setState({
             isLoading: false,
             isAddingMeal: false,
-            isMealSubmitted: true
+            isMealSubmitted: true,
           });
         });
 
@@ -187,6 +192,7 @@ class MealSelection extends React.Component {
         </View>
 
         <AddMealOverlay
+          status={this.state.status}
           isVisible={this.state.isAddingMeal}
           onAddMeal={this.selectMeal.bind(this)}
           onOverlayClose={this.handleOverlayClose.bind(this)} />
@@ -203,6 +209,8 @@ class MealSelection extends React.Component {
     );
   }
 };
+
+export default MealSelection;
 
 var styles = StyleSheet.create({
   restaurantTitle: {
@@ -261,10 +269,10 @@ var styles = StyleSheet.create({
     color: globals.primaryDark,
   },
   status: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 15,
     fontSize: 16,
-    color: globals.primaryDark,
+    color: globals.darkText,
   },
   callout: {
     marginBottom: 10,
@@ -279,5 +287,3 @@ var styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 });
-
-module.exports = MealSelection;

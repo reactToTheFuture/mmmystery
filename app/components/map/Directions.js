@@ -1,10 +1,10 @@
 import React from 'react-native';
 
 import Dimensions from 'Dimensions';
-var window = Dimensions.get('window');
 
 import globals from '../../../globalVariables';
 
+var window = Dimensions.get('window');
 var directionsBoxWidth = window.width * 0.85;
 var progressBarFullWidth = directionsBoxWidth - 20;
 
@@ -45,6 +45,8 @@ class Directions extends React.Component {
   };
 }
 
+export default Directions;
+
 let styles = StyleSheet.create({
   progressBar: {
     height: 5,
@@ -74,5 +76,3 @@ let styles = StyleSheet.create({
     fontSize: 16,
   }
 });
-
-module.exports = Directions;

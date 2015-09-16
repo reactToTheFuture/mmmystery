@@ -2,12 +2,12 @@ import React from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Dimensions from 'Dimensions';
 
-import RestaurantSelection from './image-uploads/Restaurant-Selection';
-import MealSelection from './image-uploads/Meal-Selection';
-
 import CameraCrop from './Camera-Crop';
 
-import globals from '../../globalVariables';
+import RestaurantSelection from '../image-uploads/Restaurant-Selection';
+import MealSelection from '../image-uploads/Meal-Selection';
+
+import globals from '../../../globalVariables';
 
 var {
   StyleSheet,
@@ -150,6 +150,8 @@ class CameraRollView extends React.Component {
   }
 }
 
+export default CameraRollView;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,5 +187,3 @@ var styles = StyleSheet.create({
     borderColor: 'orange'
   }
 });
-
-module.exports = CameraRollView;

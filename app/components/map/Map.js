@@ -216,6 +216,8 @@ var Map = React.createClass({
   },
 });
 
+export default Map;
+
 var styles = StyleSheet.create({
   mapContainer: {
     flex: 1,
@@ -232,6 +234,3 @@ var styles = StyleSheet.create({
     left: 20,
   },
 });
-
-module.exports = Map;
-

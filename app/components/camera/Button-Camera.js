@@ -1,4 +1,5 @@
-var React = require('react-native');
+import React from 'react-native';
+
 var  {
   View,
   Text,
@@ -33,4 +34,4 @@ styles = StyleSheet.create({
 });
 
 
-module.exports = CameraLiveButton;
+export default CameraLiveButton;

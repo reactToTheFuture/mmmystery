@@ -1,8 +1,10 @@
 import React from 'react-native';
-import Colors from '../../globalVariables';
 import { Icon } from 'react-native-icons';
+
+import Colors from '../../../globalVariables';
 import Button from './Button';
 import Dimensions from 'Dimensions';
+
 var {
   Image,
   Modal,
@@ -232,7 +234,7 @@ class ImageCropper extends React.Component {
 
 }
 
-module.exports = CameraCrop;
+export default CameraCrop;
 
 var styles = StyleSheet.create({
   container: {

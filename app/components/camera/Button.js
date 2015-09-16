@@ -1,4 +1,5 @@
-var React = require('react-native');
+import React from 'react-native';
+
 var  {
   Text,
   TouchableHighlight,
@@ -28,4 +29,4 @@ var styles = StyleSheet.create({
 })
 
 
-module.exports = Button;
+export default Button;

@@ -1,5 +1,9 @@
 import React from 'react-native';
 
+import { Icon } from 'react-native-icons';
+import Dimensions from 'Dimensions';
+import globals from '../../../globalVariables';
+
 var {
   View,
   Text,
@@ -10,11 +14,7 @@ var {
   StyleSheet
 } = React;
 
-import { Icon } from 'react-native-icons';
-import Dimensions from 'Dimensions';
-
 var window = Dimensions.get('window');
-var globals = require('../../../globalVariables');
 
 class AddMealOverlay extends React.Component {
 
@@ -45,6 +45,7 @@ class AddMealOverlay extends React.Component {
       <Modal
         visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
+          <Text style={[styles.centerText, styles.status]}>{this.props.status}</Text>
           <View style={styles.inputContainer}>
             <Icon
               name='ion|fork'
@@ -63,7 +64,7 @@ class AddMealOverlay extends React.Component {
           <TouchableHighlight
             underlayColor={'#ffffff'}
             onPress={this.handleMealAdd.bind(this)}>
-            <Text style={[styles.centerText, styles.button]}>Add it and Upload Image!</Text>
+            <Text style={[styles.centerText, styles.button]}>Add Meal and Upload Image!</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={'#ffffff'}
@@ -80,6 +81,8 @@ class AddMealOverlay extends React.Component {
     );
   }
 }
+
+export default AddMealOverlay;
 
 let styles = StyleSheet.create({
   searchIcon: {
@@ -116,6 +119,12 @@ let styles = StyleSheet.create({
   centerText: {
     textAlign: 'center',
   },
+  status: {
+    marginBottom: 25,
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: globals.darkText,
+  },
   button: {
     marginBottom: 20,
     fontSize: 20,
@@ -129,5 +138,3 @@ let styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
 });
-
-module.exports = AddMealOverlay;

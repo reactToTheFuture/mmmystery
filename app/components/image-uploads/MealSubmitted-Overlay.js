@@ -34,6 +34,8 @@ class MealSubmittedOverlay extends React.Component {
   }
 }
 
+export default MealSubmittedOverlay;
+
 let styles = StyleSheet.create({
   confirmationOverlay: {
     flex: 1,
@@ -56,5 +58,3 @@ let styles = StyleSheet.create({
     color: globals.primary,
   },
 });
-
-module.exports = MealSubmittedOverlay;

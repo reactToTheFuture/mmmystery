@@ -1,6 +1,6 @@
 import Slider from 'react-native-slider';
 import React from 'react-native';
-import { createSettingsFilter, resetFilter } from '../utils/filters';
+import { createSettingsFilter, resetFilter } from '../../utils/filters';
 
 var {
   StyleSheet,
@@ -183,6 +183,8 @@ class SettingsDashboard extends React.Component {
   }
 }
 
+export default SettingsDashboard;
+
 var styles = StyleSheet.create({
   pressDollar: {
     width: 70,
@@ -283,5 +285,3 @@ var sliderStyle = StyleSheet.create({
     shadowOpacity: 0.35,
   }
 });
-
-module.exports = SettingsDashboard;

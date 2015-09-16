@@ -1,8 +1,12 @@
 import React from 'react-native';
 import Swiper from 'react-native-swiper';
 import Login from './Login';
+import Dimensions from 'Dimensions';
+import Main from '../main/Main';
+
 import globals from '../../../globalVariables';
-import Main from '../Main';
+
+var window = Dimensions.get('window');
 
 var {
   StyleSheet,
@@ -18,73 +22,76 @@ class Walkthrough extends React.Component {
     // console.log(state, context.state);
   }
   onButtonPress() {
+    console.log('pressed');
     this.props.navigator.pop();
   }
 
   render() {
     return (
-    <View
-      style={styles.container}>
-      <Image
-        style={styles.bg}
-        source={require('image!food-bg')}>
-        <Swiper
-          loop={false}
-          onMomentumScrollEnd={this.onMomentumScrollEnd.bind(this)}
-          showsPagination={true}
-          buttonWrapperStyle={styles.button}
-          dot={<View style={styles.dot}></View>}
-          activeDot={<View style={[styles.dot, styles.activeDot]}></View>}>
-          <View style={[styles.slide]}>
-            <Image
-              style={styles.image}
-              source={require('image!GodMother')}>
-            </Image>
-            <Text style={styles.headline}>Pick a meal</Text>
-            <Text style={styles.paragraph}>
-              When you see a meal that you can't resist, swipe right to begin your adventure!
-              Swipe left to move on to other choices.
-            </Text>
-          </View>
-          <View style={[styles.slide]}>
-            <Image
-              style={styles.image}
-              source={require('image!GodMother')}>
-            </Image>
-            <Text style={styles.headline}>Mmmystery Walk</Text>
-            <Text style={styles.paragraph}>
-              You will then be given step by step walking directions to the restaurant of your selected meal.
-            </Text>
-            <Text style={styles.paragraph}>
-              The catch? We only give you one step at a time!
-              You will be given your next step each time you reach the current hamburger marker.
-            </Text>
-          </View>
-          <View style={[styles.slide]}>
-            <Image
-              style={styles.image}
-              source={require('image!GodMother')}>
-            </Image>
-            <Text style={styles.headline}>Snap a photo</Text>
-            <Text style={styles.paragraph}>
-              When you arrive at your destination, you can upload your own photo of the meal.
-            </Text>
-            <Text style={styles.paragraph}>
-              Your pic may become the beginning of someone else's next adventure!
-            </Text>
-          </View>
-        </Swiper>
+      <View
+        style={styles.container}>
+        <Image
+          style={styles.bg}
+          source={require('image!food-bg')}>
+          <Swiper
+            loop={false}
+            onMomentumScrollEnd={this.onMomentumScrollEnd.bind(this)}
+            showsPagination={true}
+            buttonWrapperStyle={styles.button}
+            dot={<View style={styles.dot}></View>}
+            activeDot={<View style={[styles.dot, styles.activeDot]}></View>}>
+            <View style={[styles.slide]}>
+              <Image
+                style={styles.image}
+                source={require('image!GodMother')}>
+              </Image>
+              <Text style={styles.headline}>Pick a meal</Text>
+              <Text style={styles.paragraph}>
+                When you see a meal that you can't resist, swipe right to begin your adventure!
+                Swipe left to move on to other choices.
+              </Text>
+            </View>
+            <View style={[styles.slide]}>
+              <Image
+                style={styles.image}
+                source={require('image!GodMother')}>
+              </Image>
+              <Text style={styles.headline}>Mmmystery Walk</Text>
+              <Text style={styles.paragraph}>
+                You will then be given step by step walking directions to the restaurant of your selected meal.
+              </Text>
+              <Text style={styles.paragraph}>
+                The catch? We only give you one step at a time!
+                You will be given your next step each time you reach the current hamburger marker.
+              </Text>
+            </View>
+            <View style={[styles.slide]}>
+              <Image
+                style={styles.image}
+                source={require('image!GodMother')}>
+              </Image>
+              <Text style={styles.headline}>Snap a photo</Text>
+              <Text style={styles.paragraph}>
+                When you arrive at your destination, you can upload your own photo of the meal.
+              </Text>
+              <Text style={styles.paragraph}>
+                Your pic may become the beginning of someone else's next adventure!
+              </Text>
+            </View>
+          </Swiper>
           <TouchableHighlight
             underlayColor={globals.primaryDark}
             style={styles.button}
             onPress={this.onButtonPress.bind(this)}>
-            <Text>{this.props.route.props.isSignedIn ? 'Back' : 'Sign in'}</Text>
+            <Text style={styles.buttonText}>{this.props.route.props.isSignedIn ? 'Back' : 'Sign in!'}</Text>
           </TouchableHighlight>
         </Image>
       </View>
     );
   }
 }
+
+export default Walkthrough;
 
 var styles = StyleSheet.create({
   container: {
@@ -130,23 +137,23 @@ var styles = StyleSheet.create({
     backgroundColor: globals.primaryDark,
   },
   button: {
+    width: 100,
     position: 'absolute',
     top: 40,
-    right: 265,
+    left: window.width/2 - 50,
     padding: 10,
     borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: globals.primary,
     borderColor: '#ffffff',
+    borderRadius: 20,
+    backgroundColor: globals.primaryDark,
   },
-  text: {
+  buttonText: {
     color: '#ffffff',
     fontSize: 20,
+    textAlign: 'center',
     fontFamily: 'SanFranciscoDisplay-SemiBold',
   },
   image: {
     marginBottom: 25,
   }
 });
-
-module.exports = Walkthrough;

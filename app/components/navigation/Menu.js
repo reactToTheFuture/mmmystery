@@ -1,8 +1,10 @@
 import React from 'react-native';
 import Dimensions from 'Dimensions';
 import FBSDKLogin from 'react-native-fbsdklogin';
+import NavigationBar from 'react-native-navbar';
 
-import Walkthrough from './login/Walkthrough';
+import Walkthrough from '../login/Walkthrough';
+import Profile from '../profile/Profile';
 
 const window = Dimensions.get('window');
 
@@ -34,19 +36,27 @@ class Menu extends React.Component {
   }
 
   onLogOut() {
-   FBSDKLoginManager.logOut();
-   this.props.onLogOut();
-   this.props.navigator.popToTop();
+    FBSDKLoginManager.logOut();
+    this.props.onLogOut();
+    this.props.navigator.popToTop();
   }
 
   onPressProfile() {
-
+    this.props.navigator.push({
+      title: 'Profile',
+      component: Profile,
+      navigationBar: (
+        <NavigationBar
+          title="Profile" />
+      )
+    });
   }
-  onPressShare() {
+
+  onPressFaq() {
   }
 
   onPressHowWorks() {
-     this.props.navigator.push({
+    this.props.navigator.push({
       component: Walkthrough,
       props: {
         isSignedIn: true
@@ -121,13 +131,13 @@ class Menu extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.buttonItem}
-              onPress={this.onPressShare.bind(this)}>
-                <Text style={styles.item}>Share</Text>
+              onPress={this.onPressHowWorks.bind(this)}>
+                <Text style={styles.item}>How it works</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.buttonItem}
-              onPress={this.onPressHowWorks.bind(this)}>
-                <Text style={styles.item}>How it works</Text>
+              onPress={this.onPressFaq.bind(this)}>
+                <Text style={styles.item}>FAQ</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.buttonItem}
@@ -139,6 +149,8 @@ class Menu extends React.Component {
     );
   }
 }
+
+export default Menu;
 
 const styles = StyleSheet.create({
   container: {
@@ -201,5 +213,3 @@ const styles = StyleSheet.create({
     height: 12,
   },
 });
-
-module.exports = Menu;
