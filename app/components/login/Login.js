@@ -219,7 +219,6 @@ var styles = StyleSheet.create({
   },
   subHeadline: {
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Regular',
     fontSize: 25,
   },
   loginContainer: {
@@ -245,11 +244,12 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 30,
     borderRadius: 30,
-    borderColor: '#fee7b3',
-    borderWidth: 3,
+    borderColor: '#ffffff',
+    borderWidth: 1,
+    backgroundColor: globals.primary,
   },
   text: {
-    fontFamily: 'SanFranciscoDisplay-Regular',
+    fontFamily: 'SanFranciscoDisplay-SemiBold',
     color: '#ffffff',
     fontSize: 20,
   },
