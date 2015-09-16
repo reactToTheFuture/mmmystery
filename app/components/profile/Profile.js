@@ -23,42 +23,49 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
+      _imagesUploadedData: [],
+      _adventuresData: [],
+      imagesEndIndex: 3,
       imagesUploaded: ds.cloneWithRows([]),
       adventures: ds.cloneWithRows([]),
-      totalLikes: 0
+      totalLikes: 0,
     };
   }
 
   getImagesUploaded() {
-    var images = [];
     firebase_api.getImagesByUser(this.props.user.id, (image) => {
-      var likeCount = 0;
-      images.push(image);
+      this.state._imagesUploadedData.push(image);
 
       if(image.likes) {
-        likeCount = Object.keys(image.likes).length;
+        this.state.totalLikes += Object.keys(image.likes).length;
       }
 
-      this.setState({
-        imagesUploaded: this.state.imagesUploaded.cloneWithRows(images),
-        totalLikes: this.state.totalLikes += likeCount
+      this.setState(this.state, () => {
+        // if no images in list view, get the first batch
+        if( !this.state.imagesUploaded.getRowCount() ) {
+          this.setState({
+            imagesUploaded: this.getMoreImages()
+          });
+        }
+
       });
     });
   }
 
   getAdventuresTaken() {
-    var adventures = [];
     firebase_api.getAdventuresByUser(this.props.user.id)
     .then((adventures) => {
+
       adventures.forEach((image_id) => {
+
         firebase_api.getImageById(image_id)
-        .then((img) => {
-          adventures.push(img);
-          this.setState({
-            adventures: this.state.adventures.cloneWithRows(adventures)
-          });
+        .then((image) => {
+          this.state._adventuresData.push(image);
+          this.setState(this.state);
         });
+
       });
+
     })
     .catch((err) => {
       console.warn(err);
@@ -70,10 +77,29 @@ class Profile extends React.Component {
     this.getAdventuresTaken();
   }
 
-  _renderImageUploaded() {
+  getMoreImages(increment) {
+    increment = increment || 0;
+    return this.state.imagesUploaded.cloneWithRows( this.state._imagesUploadedData.slice(0, this.state.imagesEndIndex + increment) )
+  }
+
+  _renderImageUploaded(imgData) {
     return (
-      <Text>hey</Text>
+      <View>
+        <Image
+          style={styles.image}
+          source={{uri: imgData.img_url}}/>
+        <Text>{imgData.plate_id}</Text>
+        <Text>{imgData.restaurant_id}</Text>
+        <Text>{imgData.date}</Text>
+      </View>
     );
+  }
+
+  _onImagesEndReached() {
+    this.setState({
+      imagesUploaded: this.getMoreImages(3),
+      imagesEndIndex: this.state.imagesEndIndex + 3
+    });
   }
 
   render () {
@@ -85,8 +111,12 @@ class Profile extends React.Component {
           source={{uri: this.props.user && this.props.user.picture.data.url}}/>
         <Text style={styles.name}>{this.props.user && this.props.user.first_name}</Text>
         <ListView
+          style={styles.imagesContainer}
+          initialListSize={2}
+          scrollRenderAheadDistance={0}
           dataSource={this.state.imagesUploaded}
-          renderRow={this._renderImageUploaded}
+          renderRow={this._renderImageUploaded.bind(this)}
+          onEndReached={this._onImagesEndReached.bind(this)}
         />
       </View>
     );
@@ -102,4 +132,11 @@ let styles = StyleSheet.create({
     borderRadius: 24,
     flex: 1,
   },
+  imagesContainer: {
+    height: 500
+  },
+  image: {
+    width: 50,
+    height: 50,
+  }
 });

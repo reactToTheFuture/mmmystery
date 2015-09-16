@@ -36,13 +36,13 @@ var firebase_api = {
       }
     });
   },
-  addImageData(image_id, image_url, user_id) {
+  addImageData(image_id, image_url, user_id, restaurant_id, plate_id) {
     var deferred = Q.defer();
     var date = new Date().toString();
     var feeling = 'meh';
 
     base.post(`image-data/${image_id}`, {
-      data: {user_id, date, feeling, image_url},
+      data: {date, feeling, user_id, image_url, restaurant_id, plate_id},
       then() {
         deferred.resolve('image data updated');
       }
@@ -199,43 +199,55 @@ var firebase_api = {
 
     var getImages = function(restaurants) {
       return restaurants.reduce((result, restaurant) => {
+        var restaurant_id = restaurant.key;
+
         for(let k in restaurant) {
           if( !restaurant.hasOwnProperty(k) || k === 'key' ) {
             continue;
           }
 
-          var plate = restaurant[k];
-          var images = plate.images;
-          var imagesLo = plate['images-lo'];
 
-          if(!images || !imagesLo) {
+          var plateData;
+          var plate = restaurant[k];
+          var plate_id = k;
+          var images = plate['images-lo'] || plate.images;
+
+          if(!images) {
             continue;
           }
 
-          result = imagesLo ? result.concat(imagesLo) : result.concat(images);
+          plateData = {
+            restaurant_id,
+            plate_id,
+            images
+          };
+
+          result.push(plateData);
         }
+
         return result;
       }, []);
     };
 
-    var uploadImageData = function(setOfImages) {
-      setOfImages.forEach((images) => {
+    var uploadImageData = function(plates) {
+      plates.forEach((plate) => {
 
-        for(let k in images) {
+        var restaurant_id = plate.restaurant_id;
+        var plate_id = plate.plate_id;
 
-          var img_key = k;
-          var img_url = images[k];
+        for( let img_key in plate.images ) {
+
           var user_id = userIds[Math.floor(Math.random() * userIds.length)];
           var date = helpers.getRandomDate(new Date(2015, 7, 1), new Date()).toString();
           var feeling = feelings[Math.floor(Math.random() * feelings.length)];
+          var img_url = plate.images[img_key];
 
           base.post(`image-data/${img_key}`, {
-            data: {user_id, date, feeling, img_url},
+            data: {user_id, date, feeling, img_url, restaurant_id, plate_id},
             then() {
               console.log('image data updated');
             }
           });
-
         }
       });
     };

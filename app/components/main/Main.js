@@ -209,7 +209,6 @@ class Main extends React.Component {
 
   handleSelection() {
     firebase_api.addLikeToImage(this.state.plate.img_key, this.props.user.id);
-    firebase_api.addAdventureToUser(this.props.user.id, this.state.plate.img_key);
 
     this.props.navigator.push({
       component: MapDashBoard,
