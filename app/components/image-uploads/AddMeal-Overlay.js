@@ -45,6 +45,7 @@ class AddMealOverlay extends React.Component {
       <Modal
         visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
+          <Text style={[styles.centerText, styles.status]}>{this.props.status}</Text>
           <View style={styles.inputContainer}>
             <Icon
               name='ion|fork'
@@ -63,7 +64,7 @@ class AddMealOverlay extends React.Component {
           <TouchableHighlight
             underlayColor={'#ffffff'}
             onPress={this.handleMealAdd.bind(this)}>
-            <Text style={[styles.centerText, styles.button]}>Add it and Upload Image!</Text>
+            <Text style={[styles.centerText, styles.button]}>Add Meal and Upload Image!</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={'#ffffff'}
@@ -115,6 +116,12 @@ let styles = StyleSheet.create({
   },
   centerText: {
     textAlign: 'center',
+  },
+  status: {
+    marginBottom: 25,
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: globals.darkText,
   },
   button: {
     marginBottom: 20,
