@@ -179,7 +179,8 @@ var styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: 'transparent',
     borderWidth: 1,
-    position: 'relative'
+    position: 'relative',
+    resizeMode: 'cover',
   },
   imageCrop: {
     width: window.width - 30,
