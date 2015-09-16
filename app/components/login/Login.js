@@ -108,6 +108,10 @@ var {
     });
   };
 
+  onLogOut() {
+    this.setState({responseToken: true});
+  }
+
   onCameraBtnPress(navigator, route) {
     navigator.push({
       title: 'Camera',
@@ -122,13 +126,17 @@ var {
   onTourStart() {
     this.props.navigator.push({
       component: Walkthrough,
+      props: {
+        isSignedIn: false
+      }
     });
   }
 
   switchToMain(userInfo) {
-    this.props.navigator.replace({
+    this.props.navigator.push({
       component: Main,
       props: {
+        onLogOut: this.onLogOut.bind(this),
         onMenuToggle: this.props.route.props.onMenuToggle
       },
       navigationBar: (
@@ -143,7 +151,6 @@ var {
   }
 
   render() {
-
     // this page appears after login process and before main screen
     // will be replaced by a loading screen
     if (!this.state.responseToken) {

@@ -21,12 +21,12 @@ import { filterByDistance, filterByCategory, filterByPrice, formatCategory } fro
 var platesTimer;
 var allPlates = [];
 var filteredPlates = [];
+var defaultRadius = 5;
 var noFilteredPlatesResults = false;
 
 let {
   View,
   StyleSheet,
-  Text,
   TouchableHighlight,
   TouchableOpacity,
   Image,
@@ -52,10 +52,10 @@ class Main extends React.Component {
       prevRadius: null,
       dollar: null,
       filterActivated: false,
-      defaultRadius: 5,
       maxRadius: 10,
       prevCategory: null,
       touchToClose: false,
+      defaultRadius,
     };
   }
 
@@ -288,7 +288,7 @@ class Main extends React.Component {
     var filterActivated = false;
 
      // no changes at all
-    if ( this.state.defaultRadius === this.state.maxRadius &&
+    if ( this.state.defaultRadius === defaultRadius  &&
           this.state.dollar === null &&
           this.state.categoryFilter.length === 0 && !noFilteredPlatesResults ) {
 
@@ -390,7 +390,7 @@ class Main extends React.Component {
           onSelection={this.handleSelection.bind(this)}
           onRejection={this.handleRejection.bind(this)} />
         <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)} />
-        <Menu isVisible={this.props.menuOpen} onMenuToggle={this.props.route.props.onMenuToggle} navigator={this.props.navigator} user={this.props.user} />
+        <Menu onLogOut={this.props.route.props.onLogOut} isVisible={this.props.menuOpen} onMenuToggle={this.props.route.props.onMenuToggle} navigator={this.props.navigator} user={this.props.user} />
       </View>
     );
   }
@@ -402,14 +402,6 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#ffffff',
-  },
-  text: {
-    position: 'absolute',
-    backgroundColor: 'green',
-    width: 200,
-    height: 50,
-    top: 0,
-    left: 0,
   }
 });
 

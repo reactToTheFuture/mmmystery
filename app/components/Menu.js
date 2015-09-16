@@ -6,6 +6,8 @@ import Walkthrough from './login/Walkthrough';
 
 const window = Dimensions.get('window');
 
+var menuWidth = window.width * 0.70;
+
 let {
   StyleSheet,
   View,
@@ -13,6 +15,7 @@ let {
   TouchableHighlight,
   Image,
   Text,
+  Easing,
   Animated,
 } = React;
 
@@ -21,27 +24,18 @@ let {
 } = FBSDKLogin;
 
 class Menu extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      alreadySignIn: false,
       hidden: true,
       fadeAnim: new Animated.Value(0)
     };
   }
-  closeSideMenu() {
-    this.props.menuActions.toggle();
-  }
 
-  componentWillMount() {
-    this.setState({alreadySignIn: true});
-  }
-
-  onPressLogOut() {
-   // this.props.route.props.responseToken();
-   console.log('OnpresLogOuot');
+  onLogOut() {
    FBSDKLoginManager.logOut();
-   this.props.logoutHandler(true);
+   this.props.onLogOut();
    this.props.navigator.popToTop();
   }
 
@@ -49,14 +43,13 @@ class Menu extends React.Component {
 
   }
   onPressShare() {
-
   }
 
   onPressHowWorks() {
      this.props.navigator.push({
       component: Walkthrough,
       props: {
-        alreadySignIn: this.state.alreadySignIn
+        isSignedIn: true
       }
     });
   }
@@ -82,10 +75,11 @@ class Menu extends React.Component {
       value = 1;
     }
 
-    Animated.timing(
-     this.state.fadeAnim,
-     {toValue: value},
-    ).start(onAnimationComplete); 
+    Animated.timing(this.state.fadeAnim, {
+      toValue: value,
+      easing: Easing.linear,
+      duration: 350,
+     }).start(onAnimationComplete); 
   }
 
   render() {
@@ -111,7 +105,7 @@ class Menu extends React.Component {
             transform: [{
               translateX: this.state.fadeAnim.interpolate({
                 inputRange: [0, 1],
-                outputRange: [-window.width, 0]
+                outputRange: [-menuWidth, 0]
               }),
             }]}, styles.menu]}>
             <View style={styles.avatarContainer}>
@@ -137,7 +131,7 @@ class Menu extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.buttonItem}
-              onPress={this.onPressLogOut.bind(this)}>
+              onPress={this.onLogOut.bind(this)}>
                 <Text style={styles.item}>Logout</Text>
             </TouchableHighlight>
         </Animated.View>
@@ -150,18 +144,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'absolute',
-    top: -64,
+    top: 0,
     left: 0,
     backgroundColor: 'transparent',
     width: window.width,
-    height: window.height + 64,
+    height: window.height,
   },
   menu: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(155,35,255,1)',
-    width: window.width * 0.75,
+    backgroundColor: '#ffffff',
+    width: menuWidth,
     height: window.height,
     position: 'absolute',
     top: 0,

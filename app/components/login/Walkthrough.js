@@ -13,35 +13,13 @@ var {
 } = React
 
 class Walkthrough extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      alreadySignIn: false,
-    };
-  }
+
   onMomentumScrollEnd(e, state, context) {
-    // console.log(state, context.state)
-  }
-  componentWillMount() {
-    console.log('inside walkthourh after login');
-    this.props.route.props && this.setState({alreadySignIn: this.props.route.props.alreadySignIn});
-  }
-  onLoginBtnPress() {
-    // Go to login screen
-    console.log('not signed in');
-    this.props.navigator.pop();
+    // console.log(state, context.state);
   }
 
-  onBackBtnPress() {
-      this.props.navigator.pop();
-    if (this.props.route.props && this.props.route.props.alreadySignIn) {
-      console.log('alreadySignIn');
-      // this.props.navigator.popToTop();
-      // this.props.navigator.jumpTo(Main);
-      // this.props.navigator.push({
-      // component: Main});
-    // this.props.navigator.popToRoute(Main);
-    }
+  onButtonPress() {
+    this.props.navigator.pop();
   }
 
   render() {
@@ -97,19 +75,12 @@ class Walkthrough extends React.Component {
             </Text>
           </View>
         </Swiper>
-        {this.state.alreadySignIn ?
           <TouchableHighlight
             underlayColor={globals.primaryDark}
-            style={styles.backButton}
-            onPress={this.onBackBtnPress.bind(this)}>
-              <Text style={styles.text}>Back</Text>
-          </TouchableHighlight> :
-          <TouchableHighlight
-            underlayColor={globals.primaryDark}
-            style={styles.loginButton}
-            onPress={this.onLoginBtnPress.bind(this)}>
-            <Text style={styles.loginText}>Sign in</Text>
-          </TouchableHighlight> }
+            style={styles.button}
+            onPress={this.onButtonPress.bind(this)}>
+            <Text>{this.props.route.props.isSignedIn ? 'Back' : 'Sign in'}</Text>
+          </TouchableHighlight>
         </Image>
       </View>
     );
@@ -159,17 +130,7 @@ var styles = StyleSheet.create({
   activeDot: {
     backgroundColor: globals.primaryDark,
   },
-  loginButton: {
-    position: 'absolute',
-    top: 40,
-    right: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: globals.primary,
-    borderColor: '#ffffff',
-  },
-  backButton: {
+  button: {
     position: 'absolute',
     top: 40,
     right: 265,
