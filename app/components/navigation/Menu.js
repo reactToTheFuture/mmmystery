@@ -97,6 +97,10 @@ class Menu extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if( this.state.hidden && !newProps.isVisible ) {
+      return;
+    }
+
     this.setState({
       hidden: false
     });
@@ -125,7 +129,6 @@ class Menu extends React.Component {
   }
 
   render() {
-
     if(this.state.hidden) {
       return (
         <View></View>
