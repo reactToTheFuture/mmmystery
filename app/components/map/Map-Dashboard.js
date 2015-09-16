@@ -8,7 +8,7 @@ import Map from './Map';
 
 import mapbox_api from '../../utils/mapbox-api';
 
-import CameraDashboard from '../Camera-Dashboard';
+import CameraDashboard from '../camera/Camera-Dashboard';
 import Main from '../Main';
 
 import { formatNameString } from '../../utils/helpers';

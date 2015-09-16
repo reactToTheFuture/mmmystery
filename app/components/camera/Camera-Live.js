@@ -5,12 +5,12 @@ import { Icon } from 'react-native-icons';
 import Dimensions from 'Dimensions';
 
 import Button from './Button';
-import RestaurantSelection from './image-uploads/Restaurant-Selection';
-import MealSelection from './image-uploads/Meal-Selection';
 import CameraLiveButton from './Button-Camera';
 import CameraCrop from './Camera-Crop';
+import RestaurantSelection from '../image-uploads/Restaurant-Selection';
+import MealSelection from '../image-uploads/Meal-Selection';
 
-import Colors from '../../globalVariables';
+import Colors from '../../../globalVariables';
 
 var {
   StyleSheet,

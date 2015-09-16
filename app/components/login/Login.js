@@ -10,7 +10,7 @@ import NavigationBar from 'react-native-navbar';
 import NavigationPrev from '../navigation/Custom-Prev';
 import NavigationNext from '../navigation/Custom-Next';
 
-import CameraDashboard from '../Camera-Dashboard';
+import CameraDashboard from '../camera/Camera-Dashboard';
 import Walkthrough from './Walkthrough';
 
 var { Icon } = require('react-native-icons');
