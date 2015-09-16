@@ -1,6 +1,6 @@
-import React from 'react-native';
-import { createSettingsFilter } from '../utils/filters';
 import Slider from 'react-native-slider';
+import React from 'react-native';
+import { createSettingsFilter, resetFilter } from '../utils/filters';
 
 var {
   StyleSheet,
@@ -14,30 +14,39 @@ var {
   NativeModules
 } = React;
 
-// Dummy data. Insert pics and categories here.
-var foodImages = ['http://www.thetimes.co.uk/tto/multimedia/archive/00378/70911634__378645c.jpg',
-                  'http://www.ndtv.com/cooks/images/pizza-junk-food-600.jpg',
-                  'http://static2.businessinsider.com/image/51f03f966bb3f73c7700000b/19-fast-food-hacks-that-will-change-the-way-you-order.jpg',
-                  'http://blog.nepaladvisor.com/wp-content/uploads/2013/10/Thamel-Food.jpg',
-                  'http://isthiswhatyouarelookingfor.com/wp-content/uploads/2015/05/food-spoilt.jpg',
-                  'http://images.medicinenet.com/images/slideshow/digestive_disease_myths_s2_spicy_foods_stress.jpg',
-                  'http://npic.orst.edu/images/foodsafebnr.jpg',
-                  'http://media.independent.com/img/photos/2008/03/05/garden04.jpg',
-                  'https://media.licdn.com/mpr/mpr/p/1/005/098/14b/3100678.jpg'];
-
-// Category names
-var imagesName = ['Burgers', 'French', 'Pizza', 'japanese','Fish', 'Italian', 'Sushi', 'Pizza', 'Hotpot'];
-var setsOfSelected = [false,false,false,false,false,false,false,false,false];
-
-              // = [$, $$, $$$];
+// = [$, $$, $$$];
 var dollarImages = [['http://www.cedarpostnj.com/icon-dollar.png', false],
-                    ['http://www.cedarpostnj.com/icon-dollar.png', false],
-                    ['http://www.cedarpostnj.com/icon-dollar.png', false]];
+                ['http://www.cedarpostnj.com/icon-dollar.png', false],
+                ['http://www.cedarpostnj.com/icon-dollar.png', false]];
+
+var setsOfSelected= [false,false,false,false,false,false,false,false,false];
+
+var foodImages= ['http://www.thetimes.co.uk/tto/multimedia/archive/00378/70911634__378645c.jpg',
+                'http://www.ndtv.com/cooks/images/pizza-junk-food-600.jpg',
+                'http://static2.businessinsider.com/image/51f03f966bb3f73c7700000b/19-fast-food-hacks-that-will-change-the-way-you-order.jpg',
+                'http://blog.nepaladvisor.com/wp-content/uploads/2013/10/Thamel-Food.jpg',
+                'http://isthiswhatyouarelookingfor.com/wp-content/uploads/2015/05/food-spoilt.jpg',
+                'http://images.medicinenet.com/images/slideshow/digestive_disease_myths_s2_spicy_foods_stress.jpg',
+                'http://npic.orst.edu/images/foodsafebnr.jpg',
+                'http://media.independent.com/img/photos/2008/03/05/garden04.jpg',
+                'https://media.licdn.com/mpr/mpr/p/1/005/098/14b/3100678.jpg'];
+
+  // Category names
+var imagesName= [['American', 'newamerican', 'tradamerican', 'hotdogs', 'hotdog', 'burgers'],
+                  ['Mexican & Latin', 'mexican', 'tex-mex', 'latin'],
+                  ['Delis & Sandwiches', 'delis', 'sandwiches'],
+                  ['Breakfast', 'Brunch & Bakeries', 'breakfast_brunch', 'bakeries', 'cafes'],
+                  ['Italian & Pizza', 'italian', 'pizza'],
+                  ['Asian', 'japanese', 'sushi', 'asianfusion', 'thai', 'ramen', 'vietnamese', 'indpak', 'chinese', 'korean'],
+                  ['Seafood or Raw', 'seafood', 'raw_food'],
+                  ['Healthy','salad','juicebars','vegan','gluten_free'],
+                  ['Other']];
 
 class SettingsDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      dollarImages,
       setsOfNinePics: foodImages,
       setsOfNineNames: imagesName,
       selected: false,
@@ -45,15 +54,18 @@ class SettingsDashboard extends React.Component {
       maximumValue: 10,
       selected: false,
       value: null,
-      dollarImages: dollarImages,
       radius: null,
     };
   }
 
-  componentWillMount() {
+  resetSettings() {
+    this.setState({value: 5,});
+    dollarImages = resetFilter(dollarImages, true);
+    setsOfSelected =  resetFilter(setsOfSelected, false);
   }
 
   onPressImage(i){
+    console.log('press Image');
     this.setState({selected: !this.state.selected});
     setsOfSelected[i] = !setsOfSelected[i];
     var filterCategories = createSettingsFilter(setsOfSelected, this.state.setsOfNineNames)
@@ -65,17 +77,18 @@ class SettingsDashboard extends React.Component {
   }
 
   onSlidingComplete() {
+    console.log('slide Image');
     this.props.route.props.handleSettingsConfig('keepRadius', this.state.value);
   }
 
   dollarOnPress(i) {
-    console.log('dollar pressed');
+
     this.setState({selected: !this.state.selected});
 
     // Unselect same button
     if (dollarImages[i][1]) {
       dollarImages[i][1] = !dollarImages[i][1];
-      this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
+      this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]));
       return;
     };
 
@@ -85,32 +98,40 @@ class SettingsDashboard extends React.Component {
     // first time
     if (counter===3) {
       dollarImages[i][1] = !dollarImages[i][1];
-      this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
+      this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]));
       return;
     };
 
     // second time, different button
     if (counter===2) {
-        dollarImages.map((image, i) => {
-          if (image[1]) dollarImages[i][1] = !dollarImages[i][1];
-        });
         dollarImages[i][1] = !dollarImages[i][1];
-        this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
+        this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]));
         return;
     };
-    // this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
+
+    if (counter===1) {
+        dollarImages[i][1] = !dollarImages[i][1];
+        this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]));
+        return;
+    };
   }
 
   componentWillMount() {
     this.setState({value: Math.round(this.props.route.props.radiusDefault)});
+    if (this.props.route.props.resetSettings) {
+      this.resetSettings();
+    }
   }
 
   componentDidMount() {
-    // gets the index of $ sign
-    // this.props.route.props.handleSettingsConfig('dollar', dollarImages.map((image)=>{return image[1];},[]).indexOf(true));
   }
 
-  render () {
+  componentWillReceiveProps(newProps) {
+    // already started building the plates array
+
+  }
+
+  render() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}> Is there anything

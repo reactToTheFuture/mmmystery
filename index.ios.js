@@ -2,7 +2,6 @@
 
 import React from 'react-native';
 import NavigatorBar from 'react-native-navbar';
-
 import Login from './app/components/login/Login';
 
 let {

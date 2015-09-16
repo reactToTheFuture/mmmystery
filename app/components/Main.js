@@ -50,11 +50,12 @@ class Main extends React.Component {
       plate: null,
       radius: null,
       prevRadius: null,
-      dollar: null,
+      dollar: [false,false,false],
       filterActivated: false,
       maxRadius: 10,
       prevCategory: null,
       touchToClose: false,
+      resetSettings: false,
       defaultRadius,
     };
   }
@@ -245,9 +246,95 @@ class Main extends React.Component {
     });
   }
 
+  handleSettingsConfig(key, filter) {
+    // Get the queries to make on radius, dollar and/or category
+    // 'categories' --> ['Burger', 'French', ...]
+    // 'radius'     --> 24 miles
+    // 'dollar'     --> 0/1/2   0=$, 1=$$, 2=$$$
+    switch(key) {
+      case 'categories':
+        this.setState({categoryFilter: filter});
+        break;
+
+      case 'dollar':
+        this.setState({dollar: filter}); // dollar is []
+        break;
+
+      case 'keepRadius':
+        this.setState({defaultRadius: filter});
+      default:
+        break;
+    }
+    console.log(key, filter);
+  }
+
+  onPressResetSettings() {
+
+    this.props.navigator.pop();
+    this.setState({
+      resetSettings: true,
+      defaultRadius: defaultRadius,
+      categoryFilter: [],
+    });
+
+  }
+
+  doneButtonSettingsPressed() {
+    this.setState({resetSettings: false});
+    let filterActivated = false;
+    if (  this.state.defaultRadius === defaultRadius &&
+          this.state.dollar.indexOf(true) === [false,false,false].indexOf(true) &&
+          this.state.categoryFilter.length === 0 && !noFilteredPlatesResults ) {
+      filterActivated = false;
+    // no new changes but filter has been activated
+    } else if (
+      this.state.defaultRadius === this.state.prevRadius &&
+      this.state.dollar        === this.state.prevDollar &&
+      this.state.categoryFilter === this.state.prevCategory && !noFilteredPlatesResults ) {
+      filterActivated = true;
+    } else {
+      filterActivated = true;
+      let tempFilteredPlates = allPlates.slice();
+      if ( this.state.defaultRadius > 0 ){
+        tempFilteredPlates = filterByDistance(tempFilteredPlates, this.state.defaultRadius);
+      }
+      if ( this.state.dollar.indexOf(true)  !== -1 ) {
+        tempFilteredPlates = filterByPrice(tempFilteredPlates, this.state.dollar);
+      }
+      if ( this.state.categoryFilter.length > 0 ) {
+        tempFilteredPlates = filterByCategory(tempFilteredPlates, this.state.categoryFilter );
+      }
+      this.setState({currFilteredIndex: 0});
+
+      if ( tempFilteredPlates.length === 0 ) {
+        AlertIOS.alert(
+          'Please, try again!',
+          'No plates found with this selection.',
+          [
+            {text: 'All plates', onPress: this.onPressResetSettings.bind(this)},
+            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+          ]
+        )
+        noFilteredPlatesResults = true;
+        filterActivated = false;
+      } else {
+        noFilteredPlatesResults = false;
+      }
+
+      if(!noFilteredPlatesResults) {
+        filteredPlates = tempFilteredPlates;
+      }
+
+    }
+
+    this.setState({filterActivated}, this.handleFilterChange);
+
+    !noFilteredPlatesResults && this.props.navigator.pop();
+  }
+
   handleFilterChange() {
-    var platesToUse;
-    var index;
+    let platesToUse;
+    let index;
 
     if (this.state.filterActivated) {
       platesToUse = filteredPlates;
@@ -261,83 +348,6 @@ class Main extends React.Component {
       plate: platesToUse[index],
       priceFactor: platesToUse[index].priceFactor
     });
-  }
-
-  handleSettingsConfig(key, filter) {
-    // Get the queries to make on radius, dollar and/or category
-    // 'categories' --> ['Burger', 'French', ...]
-    // 'radius'     --> 24 miles
-    // 'dollar'     --> 0/1/2   0=$, 1=$$, 2=$$$
-    switch(key) {
-      case 'categories':
-        this.setState({categoryFilter: filter});
-        break;
-
-      case 'dollar':
-        this.setState({dollar: filter});
-        break;
-
-      case 'keepRadius':
-        this.setState({defaultRadius: filter});
-      default:
-        break;
-    }
-  }
-
-  doneButtonSettingsPressed() {
-    var filterActivated = false;
-
-     // no changes at all
-    if ( this.state.defaultRadius === defaultRadius  &&
-          this.state.dollar === null &&
-          this.state.categoryFilter.length === 0 && !noFilteredPlatesResults ) {
-
-      filterActivated = false;
-
-    // no new changes but filter has been activated
-    } else if (
-      this.state.defaultRadius === this.state.prevRadius &&
-      this.state.dollar === this.state.prevDollar &&
-      this.state.categoryFilter === this.state.prevCategory && !noFilteredPlatesResults ) {
-
-      filterActivated = true;
-
-    } else {
-
-      filterActivated = true;
-      var tempFilteredPlates = allPlates.slice();
-
-      if ( this.state.defaultRadius > 0 ){
-        tempFilteredPlates = filterByDistance(tempFilteredPlates, this.state.defaultRadius);
-      }
-
-      if ( this.state.dollar !== null && this.state.dollar >= 0 ) {
-        tempFilteredPlates = filterByPrice(tempFilteredPlates, this.state.dollar);
-      }
-
-      if ( this.state.categoryFilter.length > 0 ) {
-        tempFilteredPlates = filterByCategory(tempFilteredPlates, this.state.categoryFilter );
-      }
-
-      this.setState({currFilteredIndex: 0});
-
-      if ( tempFilteredPlates.length === 0 ) {
-        AlertIOS.alert('No plates found. Please, try different settings.');
-
-        noFilteredPlatesResults = true;
-        filterActivated = false;
-      } else {
-        noFilteredPlatesResults = false;
-      }
-
-      if(!noFilteredPlatesResults) {
-        filteredPlates = tempFilteredPlates;
-      }
-    }
-
-    this.setState({filterActivated}, this.handleFilterChange);
-
-    !noFilteredPlatesResults && this.props.navigator.pop();
   }
 
   componentWillMount() {
@@ -361,12 +371,13 @@ class Main extends React.Component {
       props: {
         handleSettingsConfig: this.handleSettingsConfig.bind(this),
         radiusDefault: this.state.defaultRadius,
+        resetSettings: this.state.resetSettings,
       },
       navigationBar: (
         <NavigationBar
-          title="Discover Settings"
-          onNext={this.doneButtonSettingsPressed.bind(this)}
-          nextTitle="Done"/>
+          onPrev={this.doneButtonSettingsPressed.bind(this)}
+          prevTitle="Done"
+          title="Discover Settings"/>
       )
     });
   }
