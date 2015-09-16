@@ -1,4 +1,5 @@
 import helpers from './helpers';
+var allFilters = ['American','newamerican','tradamerican','hotdogs','hotdog','burgers','Mexican & Latin','mexican','tex-mex','latin','Delis & Sandwiches','delis','sandwiches','Breakfast','Brunch & Bakeries','breakfast_brunch','bakeries','cafes','Italian & Pizza','italian','pizza','Asian','japanese','sushi','asianfusion','thai','ramen','vietnamese','indpak','chinese','korean','Seafood or Raw','seafood','raw_food','Healthy','salad','juicebars','vegan','gluten_free'];
 
 var filters = {
 
@@ -11,19 +12,43 @@ var filters = {
   },
 
   // filters plates based on category
+  // priceFilter = [false,true,false]
   filterByPrice(plates, priceFilter) {
+    var compareAgainst = [];
+    compareAgainst[0] = priceFilter[0] ? '$' : null;
+    compareAgainst[1] = priceFilter[1] ? '$$' : null;
+    compareAgainst[2] = priceFilter[2] ? '$$$' : null;
+
     let res = [];
-    var priceFactor = {0: '$', 1: '$$', 2: '$$$'};
     plates.forEach((plate) => {
-      if (priceFactor[priceFilter] === plate.priceFactor){
-            res.push(plate)
-          }
+      if (compareAgainst.indexOf(plate.priceFactor) !==-1 ){
+        res.push(plate)
+      }
     });
     return res = helpers.shuffle(res);;
   },
 
+  // two arrayss: [plates], [filters to apply on plates]
   filterByCategory(plates, categoryfilter) {
     let res = [];
+    if (categoryfilter.indexOf('Other') !==-1) {
+      plates.forEach((plate) => {
+        var founded =false;
+        for (var key in plate.category) {
+          if (allFilters.indexOf(key) !==1 && !founded) {
+            founded = true;
+          }
+        }
+        if (!founded){
+          res.push(plate);
+        };
+      })
+    }
+    // no more filters except 'Other' filter
+    if (categoryfilter.length ===1 &&
+        categoryfilter[0] === 'Other') return res;
+
+    // Add on top of 'Other' filter if it exists
     plates.forEach((plate) => {
       categoryfilter.forEach((filter)=>{
         if (filter in plate.category) {
@@ -65,10 +90,20 @@ var filters = {
   createSettingsFilter(setsOfSelected, setsOfNineNames) {
     var res = [];
     for (var i=0; i<setsOfSelected.length; i++) {
-        if (setsOfSelected[i]) res.push(setsOfNineNames[i]);
+        if (setsOfSelected[i]) res = res.concat(setsOfNineNames[i]);
     }
     return res;
   },
+  resetFilter(arrayFilter, dollar){
+    for (var i=0; i<arrayFilter.length; i++) {
+      if (dollar) {
+        arrayFilter[i][1] = false;
+      } else {
+        arrayFilter[i] = false;
+      }
+    }
+    return arrayFilter;
+  }
 };
 
 module.exports = filters;

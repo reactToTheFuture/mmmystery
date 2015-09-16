@@ -17,7 +17,6 @@ class Walkthrough extends React.Component {
   onMomentumScrollEnd(e, state, context) {
     // console.log(state, context.state);
   }
-
   onButtonPress() {
     this.props.navigator.pop();
   }
