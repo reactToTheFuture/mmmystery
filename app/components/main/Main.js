@@ -5,7 +5,7 @@ import NavigationBar from 'react-native-navbar';
 import FBSDKLogin from 'react-native-fbsdklogin';
 import { Icon, } from 'react-native-icons';
 
-import InitialLoadingOverlay from './Initial-Loading-Overlay';
+import InitialLoadingOverlay from '../initial-loading/Initial-Loading-Overlay';
 import PlatesDashBoard from '../plate-screen/Plates-Dashboard';
 import PlatesFooter from '../plate-screen/Plates-Footer';
 import SettingsDashboard from '../plate-screen/Settings-Dashboard';
@@ -42,7 +42,7 @@ class Main extends React.Component {
     super(props);
 
     this.state = {
-      status: 'Finding your location...',
+      status: 1,
       watchID: null,
       currFilteredIndex: 0,
       currPlateIndex: 0,
@@ -61,7 +61,7 @@ class Main extends React.Component {
   }
 
   prepareToBuildPlatesArray(props) {
-    this.setState({status: 'Finding nearby restaurants...'});
+    this.setState({status: 2});
     var {latitude, longitude} = props.initialPosition.coords;
     this.buildPlatesArray({latitude, longitude}, this.state.maxRadius);
     this._getAddress(latitude, longitude);
@@ -86,9 +86,9 @@ class Main extends React.Component {
         if(!firstPlatesFound) {
           setTimeout(() => {
             this.setState({
-              status: 'Fetching yummy dishes...'
+              status: 3
             });
-          }, 1000);
+          }, 3000);
 
           firstPlatesFound = true;
         }
@@ -177,7 +177,7 @@ class Main extends React.Component {
 
             initialBuild = false;
             shuffleStartIndex = 5;
-          }, 500);
+          }, 2500);
         }
 
       })
