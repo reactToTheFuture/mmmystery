@@ -126,8 +126,8 @@ class Main extends React.Component {
 
           var numOfImgs = imageKeys.length;
           var randomImageIndex = Math.floor(Math.random() * numOfImgs);
-          var randomImageKey = imageKeys[randomImageIndex];
-          var img_url = plate[prop][randomImageKey];
+          var img_key = imageKeys[randomImageIndex];
+          var img_url = plate[prop][img_key];
 
           var name = helpers.formatIdString(plate.key);
           var category = formatCategory(restaurantInfo.categories);
@@ -138,12 +138,13 @@ class Main extends React.Component {
             category,
             restaurant,
             location,
+            img_key,
             img_url,
             priceFactor,
             distance
           };
 
-          firebase_api.getUserByImageId(randomImageKey)
+          firebase_api.getUserByImageId(img_key)
           .then(function(user) {
             platesObj.user = user;
           })
@@ -207,6 +208,9 @@ class Main extends React.Component {
   }
 
   handleSelection() {
+    firebase_api.addLikeToImage(this.state.plate.img_key, this.props.user.id);
+    firebase_api.addAdventureToUser(this.props.user.id, this.state.plate.img_key);
+
     this.props.navigator.push({
       component: MapDashBoard,
       props: {
@@ -265,7 +269,6 @@ class Main extends React.Component {
       default:
         break;
     }
-    console.log(key, filter);
   }
 
   onPressResetSettings() {
