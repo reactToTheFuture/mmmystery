@@ -85,7 +85,7 @@ class Menu extends React.Component {
       component: Contact,
       navigationBar: (
         <NavigationBar
-          title='Profile' />
+          title='Support' />
       )
     });
   }

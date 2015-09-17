@@ -68,12 +68,12 @@ class Contact extends React.Component {
         </Text>
         <TouchableOpacity onPress={this.onPressSendEmail.bind(this)} style={styles.buttomItemEmail}>
           <View style={styles.email}>
-            <Text style={styles.text}>Send us an email</Text>
+            <Text style={styles.text1}>Send us an email</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.onPressCall.bind(this)} style={styles.buttomItemCall}>
           <View style={styles.phone}>
-            <Text style={styles.text}>Give us a call</Text>
+            <Text style={styles.text2}>Give us a call</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -84,37 +84,41 @@ class Contact extends React.Component {
 
 var styles = StyleSheet.create({
   bodyText: {
-    fontSize: 22,
+    fontSize: 19,
   },
   title: {
     textDecorationStyle: 'solid',
     textDecorationColor: 'yellow',
     textAlign: 'center',
-    fontSize: 35,
-    fontWeight: 'bold',
+    fontSize: 33,
+    fontFamily: 'SanFranciscoText-Semibold',
   },
   baseText: {
-    fontFamily: 'SanFranciscoText-Regular',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     marginTop: 150,
+    marginBottom: 40,
+    marginHorizontal: 10,
+    fontFamily: 'SanFranciscoText-Regular',
   },
   buttomItemEmail: {
-    width: 285,
-    height: 65,
+    width: 340,
+    height: 58,
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFBF00',
+    borderRadius: 4,
   },
   buttomItemCall: {
     borderWidth: 1,
-    width: 285,
-    height: 65,
+    width: 340,
+    height: 58,
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 4,
   },
   container: {
     flex: 1,
@@ -131,8 +135,14 @@ var styles = StyleSheet.create({
     flex: 33,
     justifyContent: 'center',
   },
-  text: {
+  text1: {
     fontSize: 19,
+    color: 'white',
+    fontFamily: 'SanFranciscoText-Semibold',
+  },
+  text2: {
+    fontSize: 19,
+    fontFamily: 'SanFranciscoText-Semibold',
   },
 });
 
