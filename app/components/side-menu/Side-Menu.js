@@ -13,8 +13,6 @@ import globals from '../../../globalVariables';
 
 const window = Dimensions.get('window');
 
-var menuWidth = window.width * 0.70;
-
 let {
   StyleSheet,
   View,
@@ -165,26 +163,31 @@ class SideMenu extends React.Component {
               <View style={styles.mainLinks}> 
                 <TouchableHighlight
                   style={styles.button}
+                  underlayColor={globals.primary}
                   onPress={this.onPressProfile.bind(this)}>
                     <Text style={styles.buttonText}>Profile</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={styles.button}
+                  underlayColor={globals.primary}
                   onPress={this.onPressHowWorks.bind(this)}>
                     <Text style={styles.buttonText}>How it works</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={styles.button}
+                  underlayColor={globals.primary}
                   onPress={this.onPressAbout.bind(this)}>
                     <Text style={styles.buttonText}>About</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={styles.button}
+                  underlayColor={globals.primary}
                   onPress={this.onPressFaq.bind(this)}>
                     <Text style={styles.buttonText}>FAQ</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={styles.button}
+                  underlayColor={globals.primary}
                   onPress={this.onPressContact.bind(this)}>
                     <Text style={styles.buttonText}>Contact Us</Text>
                 </TouchableHighlight>
@@ -192,6 +195,7 @@ class SideMenu extends React.Component {
               <View style={styles.logoutContainer}>
                 <TouchableHighlight
                   style={styles.button}
+                  underlayColor={globals.primary}
                   onPress={this.onLogOut.bind(this)}>
                     <Text style={styles.buttonText}>Logout</Text>
                 </TouchableHighlight>
@@ -204,6 +208,9 @@ class SideMenu extends React.Component {
 }
 
 export default SideMenu;
+
+var menuWidth = window.width * 0.70;
+var avatarWidth = 24;
 
 const styles = StyleSheet.create({
   container: {
@@ -240,23 +247,30 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     width: menuWidth,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    position: 'relative',
     backgroundColor: globals.secondary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginBottom: 50,
   },
+  // absolute positioning to ensure, 
+  // a flexDirection of 'column' so text will
+  // never overflow container
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: avatarWidth,
+    height: avatarWidth,
+    borderRadius: avatarWidth/2,
+    position: 'absolute',
+    top: 10,
+    left: 20,
   },
   name: {
-    marginLeft: 10,
+    flex: 1,
+    marginLeft: avatarWidth + 5,
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Medium',
+    fontFamily: 'SanFranciscoText-Regular',
   },
   buttonText: {
     fontSize: 18,
