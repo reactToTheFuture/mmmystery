@@ -133,7 +133,7 @@ class MapDashBoard extends React.Component {
         hasArrived: true
       });
 
-      firebase_api.addAdventureToUser(this.props.user.id, this.state.plate.img_key);
+      firebase_api.addAdventureToUser(this.props.user.id, this.props.route.props.image.img_key);
       return;
     }
 

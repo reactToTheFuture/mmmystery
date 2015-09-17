@@ -168,7 +168,6 @@ var firebase_api = {
 
     base.fetch(`image-data/${img_id}`, {
       context: this,
-      asArray: true,
       then(img) {
         if(!img) {
           return deferred.reject(new Error(`can not find image ${img_id}`));
