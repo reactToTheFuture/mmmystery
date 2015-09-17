@@ -124,7 +124,7 @@ class MealSelection extends React.Component {
 
         firebase_api.updatePlate(restaurantID, plateID, imageId, imageUrl)
         .then(() => {
-          return firebase_api.addImageData(imageId, this.props.user.id);
+          return firebase_api.addImageData(imageId, imageUrl, this.props.user.id, restaurantID, plateID);
         })
         .then(() => {
           this.setState({

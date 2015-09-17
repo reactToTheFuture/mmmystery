@@ -10,9 +10,10 @@ import helpers from './helpers';
 
 var base = Rebase.createClass(ENDPOINT_URI);
 
-var platesRef = new Firebase(ENDPOINT_URI + '/plates');
-var geoFireRef = new Firebase(ENDPOINT_URI + '/geofire');
-var usersRef = new Firebase(ENDPOINT_URI + '/users');
+var platesRef = new Firebase(`${ENDPOINT_URI}/plates`);
+var geoFireRef = new Firebase(`${ENDPOINT_URI}/geofire`);
+var usersRef = new Firebase(`${ENDPOINT_URI}/users`);
+var imageDataRef = new Firebase(`${ENDPOINT_URI}/image-data`);
 
 var geoFire = new GeoFire(geoFireRef);
 
@@ -26,22 +27,20 @@ var firebase_api = {
   },
   addUser(user) {
     var {id, first_name, last_name } = user;
+    var userRef = usersRef.child(id);
     var profile_image = user.picture.data.url;
 
-    base.post(`users/${id}`, {
-      data: {first_name, last_name, profile_image},
-      then() {
-        console.log(`User ${first_name} ${last_name} Updated`);
-      }
-    });
+    userRef.child('first_name').set(first_name);
+    userRef.child('last_name').set(last_name);
+    userRef.child('profile_image').set(profile_image);
   },
-  addImageData(imageId, user_id) {
+  addImageData(image_id, image_url, user_id, restaurant_id, plate_id) {
     var deferred = Q.defer();
     var date = new Date().toString();
     var feeling = 'meh';
 
-    base.post(`image-data/${imageId}`, {
-      data: {user_id, date, feeling},
+    base.post(`image-data/${image_id}`, {
+      data: {date, feeling, user_id, image_url, restaurant_id, plate_id},
       then() {
         deferred.resolve('image data updated');
       }
@@ -133,6 +132,50 @@ var firebase_api = {
     platesRef.child(restaurantID).child(plateID).child('images-lo').child(key).set(imageURL, () => { deferred.resolve(`updated plate ${key}`) });
     return deferred.promise;
   },
+  addLikeToImage(img_key, user_id) {
+    var imageLikes = new Firebase(`${ENDPOINT_URI}/image-data/${img_key}/likes`);
+    imageLikes.push(user_id);
+  },
+  addAdventureToUser(user_id, img_key) {
+    var adventures = new Firebase(`${ENDPOINT_URI}/users/${user_id}/adventures`);
+    adventures.push(img_key);
+  },
+  getAdventuresByUser(user_id) {
+    var deferred = Q.defer();
+
+    base.fetch(`users/${user_id}/adventures`, {
+      context: this,
+      asArray: true,
+      then(adventures) {
+        if(!adventures.length) {
+          return deferred.reject(new Error(`no adventures for ${user_id}`));
+        }
+        deferred.resolve(adventures);
+      }
+    });
+
+    return deferred.promise;
+  },
+  getImagesByUser(user_id, cb) {
+    imageDataRef.orderByChild('user_id').equalTo(user_id).on('child_added', (snapshot) => {
+      cb(snapshot.val());
+    });
+  },
+  getImageById(img_id) {
+    var deferred = Q.defer();
+
+    base.fetch(`image-data/${img_id}`, {
+      context: this,
+      then(img) {
+        if(!img) {
+          return deferred.reject(new Error(`can not find image ${img_id}`));
+        }
+        deferred.resolve(img);
+      }
+    });
+
+    return deferred.promise;
+  },
   addGeoFireLocation(restaurant) {
     var id = restaurant.id;
     var name = restaurant.name;
@@ -147,43 +190,62 @@ var firebase_api = {
       console.warn("Geofire Error: " + error);
     });
   },
-  _updateImageData() {
+  _resetImageData() {
     var feelings = ['Satisfied', 'Seconds?', 'Sleepy', 'Sick', 'Happy', 'Gimme More!', 'Energetic', 'Stuffed', 'Comforted', 'Bloated'];
     var userIds = ['10204677161988934', '427362984114044', '10100870666170545'];
 
-    var getImgKeys = function(restaurants) {
+    var getImages = function(restaurants) {
       return restaurants.reduce((result, restaurant) => {
-        for(let plate in restaurant) {
-          if( !restaurant.hasOwnProperty(plate) || plate === 'key' ) {
+        var restaurant_id = restaurant.key;
+
+        for(let k in restaurant) {
+          if( !restaurant.hasOwnProperty(k) || k === 'key' ) {
             continue;
           }
 
-          var images = restaurant[plate].images;
-          var imagesLo = restaurant[plate]['images-lo'];
 
-          if(!images || !imagesLo) {
+          var plateData;
+          var plate = restaurant[k];
+          var plate_id = k;
+          var images = plate['images-lo'] || plate.images;
+
+          if(!images) {
             continue;
           }
 
-          var imgKeys = imagesLo ? Object.keys(imagesLo) : Object.keys(images);
-          result = result.concat(imgKeys);
+          plateData = {
+            restaurant_id,
+            plate_id,
+            images
+          };
+
+          result.push(plateData);
         }
+
         return result;
       }, []);
     };
 
-    var uploadImageData = function(imgKeys) {
-      imgKeys.forEach((imgKey) => {
-        var user_id = userIds[Math.floor(Math.random() * userIds.length)];
-        var date = helpers.getRandomDate(new Date(2015, 7, 1), new Date()).toString();
-        var feeling = feelings[Math.floor(Math.random() * feelings.length)];
+    var uploadImageData = function(plates) {
+      plates.forEach((plate) => {
 
-        base.post(`image-data/${imgKey}`, {
-          data: {user_id, date, feeling},
-          then() {
-            console.log('image data updated');
-          }
-        });
+        var restaurant_id = plate.restaurant_id;
+        var plate_id = plate.plate_id;
+
+        for( let img_key in plate.images ) {
+
+          var user_id = userIds[Math.floor(Math.random() * userIds.length)];
+          var date = helpers.getRandomDate(new Date(2015, 7, 1), new Date()).toString();
+          var feeling = feelings[Math.floor(Math.random() * feelings.length)];
+          var img_url = plate.images[img_key];
+
+          base.post(`image-data/${img_key}`, {
+            data: {user_id, date, feeling, img_url, restaurant_id, plate_id},
+            then() {
+              console.log('image data updated');
+            }
+          });
+        }
       });
     };
 
@@ -191,11 +253,11 @@ var firebase_api = {
       context: this,
       asArray: true,
       then(restaurants) {
-        uploadImageData(getImgKeys(restaurants));
+        uploadImageData(getImages(restaurants));
       }
     });
   },
-  _updateGeoFireData() {
+  _resetGeoFireData() {
     base.fetch('restaurants', {
       context: this,
       asArray: true,

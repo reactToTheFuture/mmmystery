@@ -10,6 +10,7 @@ import ArrivalOverlay from './Arrival-Overlay';
 import Map from './Map';
 
 import mapbox_api from '../../utils/mapbox-api';
+import firebase_api from '../../utils/firebase-api';
 import { formatNameString } from '../../utils/helpers';
 
 var {
@@ -131,6 +132,8 @@ class MapDashBoard extends React.Component {
       this.setState({
         hasArrived: true
       });
+
+      firebase_api.addAdventureToUser(this.props.user.id, this.props.route.props.image.img_key);
       return;
     }
 
