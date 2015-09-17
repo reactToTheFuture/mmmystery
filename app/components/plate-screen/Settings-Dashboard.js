@@ -2,7 +2,7 @@ import Slider from 'react-native-slider';
 import React from 'react-native';
 import { createSettingsFilter, resetFilter } from '../../utils/filters';
 
-var {
+let {
   StyleSheet,
   View,
   Text,
@@ -15,24 +15,18 @@ var {
 } = React;
 
 // = [$, $$, $$$];
-var dollarImages = [['http://www.cedarpostnj.com/icon-dollar.png', false],
-                ['http://www.cedarpostnj.com/icon-dollar.png', false],
-                ['http://www.cedarpostnj.com/icon-dollar.png', false]];
+let dollarImages = [['http://www.cedarpostnj.com/icon-dollar.png', false],
+                    ['http://www.cedarpostnj.com/icon-dollar.png', false],
+                    ['http://www.cedarpostnj.com/icon-dollar.png', false]];
 
-var setsOfSelected= [false,false,false,false,false,false,false,false,false];
+let setsOfSelected= [false,false,false,false,false,false,false,false,false];
 
-var foodImages= ['http://www.thetimes.co.uk/tto/multimedia/archive/00378/70911634__378645c.jpg',
-                'http://www.ndtv.com/cooks/images/pizza-junk-food-600.jpg',
-                'http://static2.businessinsider.com/image/51f03f966bb3f73c7700000b/19-fast-food-hacks-that-will-change-the-way-you-order.jpg',
-                'http://blog.nepaladvisor.com/wp-content/uploads/2013/10/Thamel-Food.jpg',
-                'http://isthiswhatyouarelookingfor.com/wp-content/uploads/2015/05/food-spoilt.jpg',
-                'http://images.medicinenet.com/images/slideshow/digestive_disease_myths_s2_spicy_foods_stress.jpg',
-                'http://npic.orst.edu/images/foodsafebnr.jpg',
-                'http://media.independent.com/img/photos/2008/03/05/garden04.jpg',
-                'https://media.licdn.com/mpr/mpr/p/1/005/098/14b/3100678.jpg'];
-
+let foodImages= [require('image!icon-american'), require('image!icon-mexican'), require('image!icon-deli'),
+                 require('image!icon-breakfast'), require('image!icon-italian'), require('image!icon-asian'),
+                 require('image!icon-seafood'), require('image!icon-healthy'), require('image!icon-other')];
   // Category names
-var imagesName= [['American', 'newamerican', 'tradamerican', 'hotdogs', 'hotdog', 'burgers'],
+let subTitles = ['American', 'Mexican', 'Deli','Breakfast','Italian','Asian','Seafood','Healthy','Other'];
+let categoryNames= [['American', 'newamerican', 'tradamerican', 'hotdogs', 'hotdog', 'burgers'],
                   ['Mexican & Latin', 'mexican', 'tex-mex', 'latin'],
                   ['Delis & Sandwiches', 'delis', 'sandwiches'],
                   ['Breakfast', 'Brunch & Bakeries', 'breakfast_brunch', 'bakeries', 'cafes'],
@@ -48,7 +42,7 @@ class SettingsDashboard extends React.Component {
     this.state = {
       dollarImages,
       setsOfNinePics: foodImages,
-      setsOfNineNames: imagesName,
+      setsOfNineNames: categoryNames,
       selected: false,
       minimumValue: 0,
       maximumValue: 10,
@@ -134,28 +128,29 @@ class SettingsDashboard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}> Is there anything
-          <Text style={styles.textBold}> you'd especially like today?</Text>
-        </Text>
-        <View style={styles.imageGrid}>
+        <View style={styles.categoriesContainer}>
            { this.state.setsOfNinePics.map((image, i) => {
             return (
               <TouchableHighlight
                 key={i}
                 underlayColor={'transparent'}
-                style={styles.button}
+                style={styles.categoryButton}
                 onPress={this.onPressImage.bind(this, i)}>
-                <Image
+                <View style={this.pictureSelected(i) ? styles.iconContainerSelected : styles.iconContainer}>
+                  <Image
                   key={i}
-                  style={this.pictureSelected(i) ? styles.selectedImage : styles.image}
-                  source={{ uri: image}} />
+                  style={styles.image}
+                  source={image}/>
+                  <Text style={this.pictureSelected(i) ? styles.subTitlesSelected : styles.subTitles}>{subTitles[i]}</Text>
+                </View>
               </TouchableHighlight>
             );
           })}
         </View>
         <View style={styles.containerSlider}>
-          <Text>{this.state.value} Miles</Text>
+          <View style={styles.distanceInfo}><Text style={styles.distanceText}>Distance</Text><Text style={styles.distanceValue}>{this.state.value} Miles</Text></View>
           <Slider
+            minimumTrackTintColor='#FCAE2B'
             trackStyle={sliderStyle.track}
             thumbStyle={sliderStyle.thumb}
             value={this.state.value}
@@ -165,15 +160,14 @@ class SettingsDashboard extends React.Component {
             onValueChange={(value) => {this.setState({value: Math.round(value)});}} />
         </View>
         <View style={styles.priceContainer}>
+          <Text style={styles.priceText}>Price</Text>
           {this.state.dollarImages.map((image, i) => {
             return (
               <TouchableHighlight
                 key={i}
                 onPress={this.dollarOnPress.bind(this, i)}
                 style={dollarImages[i][1] ? styles.pressDollarSelected : styles.pressDollar}>
-                <Image
-                  style={styles.imageDollar}
-                  source={{uri: image[0]}}/>
+                  <Text style={styles.dollarSign}>{i === 0 ? <Text>$</Text> : i === 1 ? <Text>$$</Text> : <Text>$$$</Text>}</Text>
               </TouchableHighlight>
             );
           })}
@@ -186,61 +180,56 @@ class SettingsDashboard extends React.Component {
 export default SettingsDashboard;
 
 var styles = StyleSheet.create({
-  pressDollar: {
-    width: 70,
-    height: 50,
-    marginHorizontal: 10,
-  },
-  pressDollarSelected: {
-    width: 70,
-    height: 50,
-    marginHorizontal: 10,
-    borderWidth: 2.5,
-    borderColor: 'green'
-  },
-  imageDollar: {
-    flex: 1,
-    backgroundColor: '#FFCE00'
-  },
-  priceContainer: {
-    paddingBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-  },
-  containerSlider: {
-    paddingBottom: 30,
-    height: 40,
-    marginLeft: 10,
-    marginRight: 10,
-    marginHorizontal: 100,
-    alignItems: 'stretch',
-    backgroundColor: 'white',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  wrapper: {
-    backgroundColor: 'black',
-  },
-  imageGrid: {
+  categoriesContainer: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
-    backgroundColor: '#FFCE00',
+    justifyContent: 'space-around',
+    paddingTop: 15,
   },
-  button: {
-    width: 110,
-    height: 110,
-    margin: 5
-  },
-  text: {
-    fontSize: 30,
+  categoryButton: {
+    width: 95,
+    height: 95,
+    alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 38
+  },
+  iconContainer: {
+    flex: 1,
+    width: 100,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EDF6FF',
+    borderRadius:50,
+  },
+  iconContainerSelected: {
+    flex: 1,
+    width: 100,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FDEDBF',
+    borderRadius:50,
+  },
+  subTitles: {
+    paddingTop: 8,
+    fontSize: 17,
+    justifyContent: 'center',
+    fontFamily: 'SanFranciscoText-Semibold',
+    backgroundColor: 'transparent',
+  },
+  subTitlesSelected: {
+    paddingTop: 8,
+    fontSize: 17,
+    justifyContent: 'center',
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: '#FCAE2B',
+    backgroundColor: 'transparent',
   },
   textSet: {
     fontSize: 15,
@@ -249,23 +238,63 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 110,
-    height: 110,
-    borderWidth: 4,
-    borderColor: '#ffffff'
+    width: 58,
+    height: 58,
+    backgroundColor: 'transparent',
   },
-  selectedImage: {
-    width: 110,
-    height: 110,
-    borderWidth: 4,
-    borderColor: 'blue'
+  distanceValue: {
+    fontFamily: 'SanFranciscoText-Regular',
+    fontSize: 17,
   },
-  moreSettings: {
-    flex: 1,
-    height: 50,
+  distanceText: {
+    fontWeight: 'bold',
+    fontFamily: 'SanFranciscoText-Semibold',
+    fontSize: 17
+  },
+  distanceInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 16,
+  },
+  containerSlider: {
+    paddingBottom: 62,
+    height: 40,
+    marginHorizontal: 30,
     justifyContent: 'center',
+  },
+  dollarSign: {
+    color: '#5B6674',
+    fontFamily: 'SanFranciscoText-Semibold',
+    fontSize: 20,
+  },
+  priceText: {
+    fontFamily: 'SanFranciscoText-Semibold',
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
+  priceContainer: {
+    paddingBottom: 30,
+    marginHorizontal: 20,
+    flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
+    justifyContent: 'space-between',
+  },
+  pressDollar: {
+    justifyContent: 'center',
+    width: 80,
+    height: 45,
+    alignItems: 'center',
+    marginHorizontal: 10,
+    backgroundColor: '#EDF2FE',
+  },
+  pressDollarSelected: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 80,
+    height: 45,
+    marginHorizontal: 10,
+    backgroundColor: '#FCAE2B',
   },
 });
 
@@ -273,12 +302,13 @@ var sliderStyle = StyleSheet.create({
   track: {
     height: 2,
     borderRadius: 1,
+    backgroundColor: '#AEBCCD',
   },
   thumb: {
     width: 30,
     height: 30,
     borderRadius: 30 / 2,
-    backgroundColor: 'white',
+    backgroundColor: '#EDF2FE',
     shadowColor: 'black',
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 2,
