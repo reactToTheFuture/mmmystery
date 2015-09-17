@@ -1,9 +1,12 @@
 import React from 'react-native';
 import _ from 'underscore';
 import Dimensions from 'Dimensions';
+import NavigationBar from 'react-native-navbar';
+import CameraDashboard from '../camera/Camera-Dashboard';
 
 import firebase_api from '../../utils/firebase-api';
 
+import { formatIdString } from '../../utils/helpers';
 import globals from '../../../globalVariables';
 
 var imagesPerCycle = 3;
@@ -110,25 +113,48 @@ class Profile extends React.Component {
     return string;
   }
 
+  goToCameraDashboard() {
+    this.props.navigator.push({
+      title: 'Camera',
+      component: CameraDashboard,
+      navigationBar: (
+        <NavigationBar
+          title="Picture Time" />
+      )
+    });
+  }
+
   _renderImageRow(imgData, wow) {
 
     var likes = null;
+    var dateData;
+    var dateMonth = '';
+    var dateYear = '';
 
     if(imgData.likes) {
       likes = Object.keys(imgData.likes).length;
-
       likes = this._formatAmount(likes, 'like');
     }
 
+    dateData = imgData.date.split(' ');
+
+    dateMonth = `${dateData[1]}. ${dateData[2]}`;
+    dateYear = `${dateData[3]}`;
+
     return (
-      <View>
+      <View style={styles.imageContainer}>
         <Image
           style={styles.image}
           source={{uri: imgData.img_url}}/>
-        <Text>{imgData.plate_id}</Text>
-        <Text>{imgData.restaurant_id}</Text>
-        <Text>{imgData.date}</Text>
-        {likes ? <Text>{likes}</Text> : <Text></Text>}
+        <View style={styles.mainImageInfo}>
+          <Text style={styles.plate}>{formatIdString(imgData.plate_id)}</Text>
+          <Text style={[styles.text, styles.restaurant]}>{formatIdString(imgData.restaurant_id)}</Text>
+          {likes ? <Text style={styles.text}>{likes}</Text> : <Text></Text>}
+        </View>
+        <View style={styles.secondaryImageInfo}>
+          <Text style={styles.text}>{dateMonth}</Text>
+          <Text style={styles.text}>{dateYear}</Text>
+        </View>
       </View>
     );
   }
@@ -149,39 +175,71 @@ class Profile extends React.Component {
 
   render () {
     var adventures = this.state._adventuresData.length;
-    adventures = this._formatAmount(adventures, 'adventure');
-
     var imagesUploaded = this.state._imagesUploadedData.length;
-    imagesUploaded = this._formatAmount(imagesUploaded, 'mmmeal');
 
     return (
-      <View>
-        <Image
-          style={styles.avatar}
-          source={{uri: this.props.user && this.props.user.picture.data.url}}/>
-        <Text style={styles.name}>{this.props.user && this.props.user.first_name}</Text>
+      <View style={styles.container}>
 
-        <Text>{adventures} complete</Text>
+        <View style={styles.avatarContainer}>
+          <Image
+            style={styles.avatar}
+            source={{uri: this.props.user.picture.data.url}}/>
+          <Text style={[styles.text, styles.name]}>{this.props.user.first_name} {this.props.user.last_name}</Text>
+        </View>
 
-        <Text>{imagesUploaded} uploaded</Text>
+        <View style={styles.statsContainer}>
+          <View style={styles.stat}>
+            <Text style={styles.number}>{adventures}</Text>
+            <Text style={styles.text}>adventure{adventures !== 1 ? 's' : ''}</Text>
+            <Text style={styles.text}>complete</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text style={styles.number}>{imagesUploaded}</Text>
+            <Text style={styles.text}>mmmeal{imagesUploaded !== 1 ? 's' : ''}</Text>
+            <Text style={styles.text}>uploaded</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text style={styles.number}>{this.state.totalLikes}</Text>
+            <Text style={styles.text}>total</Text>
+            <Text style={styles.text}>likes</Text>
+          </View>
+        </View>
 
-        <Text>{this.state.totalLikes} # of likes</Text>
+        <View style={styles.imagesContainer}>
+          <Text style={[styles.text, styles.headline]}>Mmmeals Uploaded:</Text>
+          {imagesUploaded ?
+            <ListView
+              style={styles.list}
+              scrollRenderAheadDistance={0}
+              dataSource={this.state.imagesUploaded}
+              renderRow={this._renderImageRow.bind(this)}
+              onEndReached={this._onImagesEndReached.bind(this)}
+            />
+          :
+            <TouchableHighlight
+              style={styles.button}
+              onPress={this.goToCameraDashboard.bind(this)}
+              underlayColor={globals.primary}>
+              <Text style={[styles.text, styles.none, styles.buttonText]}>Upload an Image!</Text>
+            </TouchableHighlight>
+          }
+        </View>
 
-        <ListView
-          style={styles.imagesUploadedContainer}
-          scrollRenderAheadDistance={0}
-          dataSource={this.state.imagesUploaded}
-          renderRow={this._renderImageRow.bind(this)}
-          onEndReached={this._onImagesEndReached.bind(this)}
-        />
-        <Text>Adventures:</Text>
-        <ListView
-          style={styles.adventuresContainer}
-          scrollRenderAheadDistance={0}
-          dataSource={this.state.adventures}
-          renderRow={this._renderImageRow.bind(this)}
-          onEndReached={this._onAdventuresEndReached.bind(this)}
-        />
+        <View style={styles.imagesContainer}>
+          <Text style={[styles.text, styles.headline]}>Adventures Completed:</Text>
+          {adventures ?
+            <ListView
+              style={styles.list}
+              scrollRenderAheadDistance={0}
+              dataSource={this.state.adventures}
+              renderRow={this._renderImageRow.bind(this)}
+              onEndReached={this._onAdventuresEndReached.bind(this)}
+            />
+          :
+            <Text style={[styles.text, styles.none]}>Swipe right on a tasty meal to get started!</Text>
+          }
+        </View>
+
       </View>
     );
   };
@@ -190,20 +248,97 @@ class Profile extends React.Component {
 export default Profile;
 
 let styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 15,
+  },
+  text: {
+    fontFamily: 'SanFranciscoText-Regular'
+  },
+  headline: {
+    marginBottom: 5,
+    fontSize: 18,
+  },
+  avatarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    flex: 1,
-  },
-  imagesUploadedContainer: {
-    height: 200
-  },
-  adventuresContainer: {
-    height: 200
-  },
-  image: {
     width: 50,
     height: 50,
+    borderRadius: 25,
+  },
+  name: {
+    marginLeft: 15,
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-SemiBold'
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  stat: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    backgroundColor: globals.secondary,
+  },
+  number: {
+    fontSize: 20,
+    fontFamily: 'SanFranciscoText-SemiBold'
+  },
+  imagesContainer: {
+    flex: 1,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: globals.primaryDark,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    borderBottomColor: globals.secondary,
+    paddingVertical: 2.5 
+  },
+  mainImageInfo: {
+    flex: 3,
+    justifyContent: 'center',
+    padding: 5,
+  },
+  secondaryImageInfo: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  plate: {
+    marginBottom: 5,
+    color: globals.primaryDark,
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-SemiBold',
+  },
+  restaurant: {
+    marginBottom: 5,
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+  list: {
+    height: 150,
+  },
+  none: {
+    marginVertical: 50,
+    textAlign: 'center',
+    fontSize: 22,
+  },
+  button: {
+    backgroundColor: globals.primaryDark,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontFamily: 'SanFranciscoText-SemiBold'
   }
 });
