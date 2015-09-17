@@ -28,7 +28,7 @@ class ArrivalOverlay extends React.Component {
             source={require('image!celebration-bg')}
             style={styles.bg}>
             <View style={styles.topText}>
-              <Text style={[styles.text, styles.announcement]}>Congrats, you've arrrived at...</Text>
+              <Text style={[styles.text, styles.announcement]}>Congrats, you've arrived at...</Text>
               <Text style={[styles.text, styles.title]}>{this.props.imageInfo.restaurant}</Text>
             </View>
             <View style={styles.imageContainer}>

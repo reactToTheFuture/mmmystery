@@ -39,11 +39,6 @@ var LoadingComponent = React.createClass({
       currentStep: 1
     }
   },
-  _onPressButton() {
-    this.setState({
-      currentStep: this.state.currentStep != 1 ? 1 : 2
-    });
-  },
   componentDidMount() {
     this.setInterval(this.addCircle, 1500);
   },
@@ -71,7 +66,7 @@ var LoadingComponent = React.createClass({
     return (
       <View style={styles.container}>
 
-        <View style={{flex: 3}}></View>
+        <View style={{flex: 5}}></View>
         {
           this.state.circles.map(function(v, i) {
             return (
@@ -84,12 +79,9 @@ var LoadingComponent = React.createClass({
           }, this)
         }
         <CenterCircle currentStep={this.state.currentStep}/>
-        <View style={{flex: 1}}>
+        <View style={{flex: 3}}>
           <LoadingText currentStep={this.state.currentStep}/>
         </View>
-        <TouchableWithoutFeedback onPress={this._onPressButton}>
-          <Text>Set to 2</Text>
-        </TouchableWithoutFeedback>
       </View>
     );
   }

@@ -20,8 +20,9 @@ class LoadingText extends React.Component {
 
     this.state = {
       fadeAnim: new Animated.Value(0),
-      title: "Searching your location",
-      subtitle: "Wait one moment while we find all your nearby restaurants!",
+      title: "Finding your location",
+      subtitle: "One moment while we find the restaurants within walking distance",
+      switched: false
     };
   }
   componentWillMount() {
@@ -31,22 +32,26 @@ class LoadingText extends React.Component {
     })
   }
   componentDidMount() {
-    Animated.timing(this.state.fadeAnim, {
-      toValue: 1,
-      duration: 1500,
+    this.getFadeAnimation(1, 1500);
+  }
+  getFadeAnimation(toValue, duration) {
+    return Animated.timing(this.state.fadeAnim, {
+      toValue: toValue,
+      duration: duration,
       easing: Easing.circle(3)
     }).start();
   }
   componentWillReceiveProps(nextProps) {
-    var title, subtitle;
-    if (nextProps.currentStep === 3) {
-      title="Fetching yummy meals";
-      subtitle="You are in for quite the treat!";
-
-      this.setState({
-        title: title,
-        subtitle: subtitle
-      });
+    if (nextProps.currentStep === 3 && !this.state.switched) {
+      this.getFadeAnimation(0, 400);
+      setTimeout(() => {
+        this.setState({
+          title: "Fetching Mmmysteries",
+          subtitle: "Bear with us as we grab all the Mmmystery meals from fellow members",
+          switched: true,
+        });
+        this.getFadeAnimation(1, 500);
+      }, 500);
     }
   }
   getFadeInAnimationStyle() {
@@ -54,7 +59,6 @@ class LoadingText extends React.Component {
       opacity: this._opacityAnimation
     }
   }
-
   render() {
     var key = this.state.title;
     return (
@@ -77,9 +81,9 @@ let styles = StyleSheet.create({
   },
   subheader: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'SanFranciscoText-Regular',
-        color: Colors.lightText
+    color: Colors.lightText
   },
   notificationTextAnim: {
     paddingLeft: 35,

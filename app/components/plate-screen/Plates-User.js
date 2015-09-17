@@ -33,15 +33,15 @@ let styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   picture: {
-    width:32,
-    height: 32,
+    width:28,
+    height: 28,
     backgroundColor: Colors.yellowWhite,
-    borderRadius: 32/2,
+    borderRadius: 28/2,
     marginRight: 5,
   },
   name: {
     fontFamily: 'SanFranciscoText-Regular',
     color: Colors.lightText,
-    fontSize: 18
+    fontSize: 16
   },
 })

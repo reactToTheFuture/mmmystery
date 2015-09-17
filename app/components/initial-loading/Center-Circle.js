@@ -16,6 +16,7 @@ var {
 var FetchingRestaurants = require('./Fetching-Restaurants');
 var FetchingItems = require('./Fetching-Items');
 var startItemCount = 1;
+var addingItems = false;
 
 
 var SetIntervalMixin = {
@@ -43,14 +44,6 @@ var CenterCircle = React.createClass({
       size: new Animated.Value(0),
       addingItems: false,
       firstItem: false,
-      icon: [
-        'ios-bolt',
-        'ios-paper-outline',
-        'ios-world',
-        'ios-bookmarks',
-        'ios-navigate',
-        'ios-bolt',
-      ]
     }
   },
 
@@ -69,11 +62,9 @@ var CenterCircle = React.createClass({
     }).start();
   },
   componentWillReceiveProps(nextProp) {
-    if (nextProp.currentStep === 3 && !this.state.addingItems) {
+    if (nextProp.currentStep === 3 && !addingItems) {
+      addingItems = true;
       this.setInterval(this.addItem, 500);
-      this.setState({
-        addingItems: true
-      });
     }
   },
   addItem() {
@@ -98,8 +89,8 @@ var CenterCircle = React.createClass({
     };
   },
 
+
   render() {
-    var randomIcon = 0 || Math.floor(Math.random() * (this.state.icon.length - 1));
     var secondPiece;
     if(this.props.currentStep < 3) {
       secondPiece = <FetchingRestaurants />
@@ -108,7 +99,6 @@ var CenterCircle = React.createClass({
       this.state.items.map((v, i) => {
         return (
           <FetchingItems
-            icon={this.state.icon[randomIcon]}
             mealItem={v.id}
             key={v.id}
             onComplete={this.removeItem.bind(this, v.id)}

@@ -84,13 +84,13 @@ class Main extends React.Component {
         // we find restaurants so fast,
         // so wait at least 1sec before displaying next status
         if(!firstPlatesFound) {
+          this.setState({
+            status: 3
+          });
           setTimeout(() => {
-            this.setState({
-              status: 3
-            });
           }, 3000);
-
           firstPlatesFound = true;
+
         }
 
         return plates;
