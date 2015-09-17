@@ -27,14 +27,12 @@ var firebase_api = {
   },
   addUser(user) {
     var {id, first_name, last_name } = user;
+    var userRef = usersRef.child(id);
     var profile_image = user.picture.data.url;
 
-    base.post(`users/${id}`, {
-      data: {first_name, last_name, profile_image},
-      then() {
-        console.log(`User ${first_name} ${last_name} Updated`);
-      }
-    });
+    userRef.child('first_name').set(first_name);
+    userRef.child('last_name').set(last_name);
+    userRef.child('profile_image').set(profile_image);
   },
   addImageData(image_id, image_url, user_id, restaurant_id, plate_id) {
     var deferred = Q.defer();
