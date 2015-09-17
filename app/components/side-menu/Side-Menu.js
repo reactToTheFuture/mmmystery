@@ -9,6 +9,8 @@ import Contact from '../side-menu/ContactUs';
 import About from '../side-menu/About';
 import FAQ from '../side-menu/FAQ';
 
+import globals from '../../../globalVariables';
+
 const window = Dimensions.get('window');
 
 var menuWidth = window.width * 0.70;
@@ -28,7 +30,7 @@ let {
   FBSDKLoginManager,
 } = FBSDKLogin;
 
-class Menu extends React.Component {
+class SideMenu extends React.Component {
 
   constructor(props) {
     super(props);
@@ -156,46 +158,52 @@ class Menu extends React.Component {
             <View style={styles.avatarContainer}>
               <Image
                 style={styles.avatar}
-                source={{uri: this.props.user && this.props.user.picture.data.url}}/>
-              <Text style={styles.name}>{this.props.user && this.props.user.first_name}</Text>
+                source={{uri: this.props.user.picture.data.url}}/>
+              <Text style={[styles.text, styles.name]}>{this.props.user.first_name} {this.props.user.last_name}</Text>
             </View>
-            <TouchableHighlight
-              style={styles.buttonItem}
-              onPress={this.onPressProfile.bind(this)}>
-                <Text style={styles.item}>Profile</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonItem}
-              onPress={this.onPressHowWorks.bind(this)}>
-                <Text style={styles.item}>How it works</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonItem}
-              onPress={this.onPressAbout.bind(this)}>
-                <Text style={styles.item}>About</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonItem}
-              onPress={this.onPressFaq.bind(this)}>
-                <Text style={styles.item}>FAQ</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonItem}
-              onPress={this.onPressContact.bind(this)}>
-                <Text style={styles.item}>Contact Us</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonItem}
-              onPress={this.onLogOut.bind(this)}>
-                <Text style={styles.item}>Logout</Text>
-            </TouchableHighlight>
+            <View style={styles.links}>
+              <View style={styles.mainLinks}> 
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onPressProfile.bind(this)}>
+                    <Text style={styles.buttonText}>Profile</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onPressHowWorks.bind(this)}>
+                    <Text style={styles.buttonText}>How it works</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onPressAbout.bind(this)}>
+                    <Text style={styles.buttonText}>About</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onPressFaq.bind(this)}>
+                    <Text style={styles.buttonText}>FAQ</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onPressContact.bind(this)}>
+                    <Text style={styles.buttonText}>Contact Us</Text>
+                </TouchableHighlight>
+              </View>
+              <View style={styles.logoutContainer}>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={this.onLogOut.bind(this)}>
+                    <Text style={styles.buttonText}>Logout</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
         </Animated.View>
       </View>
     );
   }
 }
 
-export default Menu;
+export default SideMenu;
 
 const styles = StyleSheet.create({
   container: {
@@ -217,7 +225,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    padding: 20,
   },
   blur: {
     flex: 1,
@@ -232,29 +239,45 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   avatarContainer: {
-    marginBottom: 20,
-    marginTop: 20,
+    width: menuWidth,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: globals.secondary,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 50,
   },
   avatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    flex: 1,
   },
   name: {
-    position: 'absolute',
-    left: 70,
-    top: 20,
+    marginLeft: 10,
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-Medium',
   },
-  item: {
-    fontSize: 14,
-    fontWeight: '300',
-    paddingTop: 5,
+  buttonText: {
+    fontSize: 18,
+    fontFamily: 'SanFranciscoText-Regular',
   },
-  buttonItem: {
-    flexDirection: 'row',
+  links: {
     flex: 1,
-    width: 30,
-    height: 12,
+    justifyContent: 'space-between',
+  },
+  mainLinks: {
+    flex: 4,
+  },
+  logoutContainer: {
+    flex: 1,
+  },
+  button: {
+    width: menuWidth,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10
   },
 });
