@@ -28,7 +28,7 @@ let {
   FBSDKLoginManager,
 } = FBSDKLogin;
 
-class Menu extends React.Component {
+class SideMenu extends React.Component {
 
   constructor(props) {
     super(props);
@@ -195,7 +195,7 @@ class Menu extends React.Component {
   }
 }
 
-export default Menu;
+export default SideMenu;
 
 const styles = StyleSheet.create({
   container: {

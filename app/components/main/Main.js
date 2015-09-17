@@ -11,7 +11,7 @@ import PlatesFooter from '../plate-screen/Plates-Footer';
 import SettingsDashboard from '../plate-screen/Settings-Dashboard';
 import MapDashBoard from '../map/Map-Dashboard';
 import Login from '../login/Login';
-import Menu from '../navigation/Menu';
+import SideMenu from '../side-menu/Side-Menu';
 
 import firebase_api from '../../utils/firebase-api';
 import helpers from '../../utils/helpers';
@@ -404,7 +404,7 @@ class Main extends React.Component {
           onSelection={this.handleSelection.bind(this)}
           onRejection={this.handleRejection.bind(this)} />
         <PlatesFooter address={this.state.searchAddress} onPressSettings={this._onPressSettings.bind(this)} />
-        <Menu onLogOut={this.props.route.props.onLogOut} isVisible={this.props.menuOpen} onMenuToggle={this.props.route.props.onMenuToggle} navigator={this.props.navigator} user={this.props.user} />
+        <SideMenu onLogOut={this.props.route.props.onLogOut} isVisible={this.props.menuOpen} onMenuToggle={this.props.route.props.onMenuToggle} navigator={this.props.navigator} user={this.props.user} />
       </View>
     );
   }
