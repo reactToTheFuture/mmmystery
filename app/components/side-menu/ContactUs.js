@@ -1,4 +1,6 @@
 import React from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+
 var Mailer = require('NativeModules').RNMail;
 
 let {
@@ -25,11 +27,14 @@ class Contact extends React.Component {
     };
   }
   onPressSendEmail() {
-    console.log(Mailer);
+    let getSystemVersion = 'OS: ' + DeviceInfo.getSystemVersion();
+    let getModel = 'Device: ' + DeviceInfo.getSystemName();
+    let getSystemName = 'Sent from my ' +  DeviceInfo.getModel();
+
     Mailer.mail({
       subject: 'Support Request - iOS',
       recipients: ['contact@mmmystery.com'],
-      body: 'What\'s up Mmmystery team?  I wanna report the following: ',
+      body: 'What\'s up Mmmystery team?  I wanna report the following: \n\n\n' + getSystemVersion + '\n' + getModel + '\n\n\n' + getSystemName,
       attachment: {
         path: '',  // The absolute path of the file from which to read data.
         type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf

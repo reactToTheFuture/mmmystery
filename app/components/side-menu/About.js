@@ -57,23 +57,24 @@ var styles = StyleSheet.create({
   container: {
     marginTop: 15,
     marginHorizontal: 25,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   baseText: {
-    fontFamily: 'SanFranciscoText-Regular',
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
-    textAlign: 'auto',
   },
   titleText: {
-    textDecorationStyle: 'solid',
-    textDecorationColor: 'yellow',
+    fontFamily: 'SanFranciscoText-Semibold',
+    color: '#FFCE00',
     textAlign: 'center',
     fontSize: 35,
-    fontWeight: 'bold',
   },
   bodyText: {
-    fontSize: 22,
+    fontFamily: 'SanFranciscoText-Regular',
+    textAlign: 'auto',
+    fontSize: 20,
   },
 });
 

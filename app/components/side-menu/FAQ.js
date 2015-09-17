@@ -36,19 +36,19 @@ class FAQ extends React.Component {
       <View style={styles.container}>
          <Text style={styles.baseText}>
           <Text style={styles.question}>
-            {this.state.question1 + '\n'}
+            {this.state.question1 + '\n\n'}
           </Text>
           <Text numberOfLines={4} style={styles.answer}>
             {this.state.answer1 + '\n\n'}
           </Text>
           <Text style={styles.question}>
-            {this.state.question1 + '\n'}
+            {this.state.question1 + '\n\n'}
           </Text>
           <Text numberOfLines={2} style={styles.answer}>
             {this.state.answer1 + '\n\n'}
           </Text>
           <Text style={styles.question}>
-            {this.state.question1 + '\n'}
+            {this.state.question1 + '\n\n'}
           </Text>
           <Text numberOfLines={4} style={styles.answer}>
             {this.state.answer1+ '\n\n'}
@@ -66,7 +66,7 @@ var styles = StyleSheet.create({
   },
   question: {
     fontWeight: 'bold',
-    fontSize: 21,
+    fontSize: 18,
   },
   container: {
     flex: 1,
@@ -76,7 +76,7 @@ var styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   answer: {
-    fontSize: 20,
+    fontSize: 17,
   },
 });
 
