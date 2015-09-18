@@ -51,14 +51,14 @@ export default PlatesDashboardContent;
 
 let styles = StyleSheet.create({
   imageFooter: {
-    flex: 3,
+    flex: 1,
     marginHorizontal: 15,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   footerTop: {
     flex: 3,
-    justifyContent: 'space-around'
+    justifyContent: 'center'
   },
   footerBottom: {
     flex: 1,
