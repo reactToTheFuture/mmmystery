@@ -30,9 +30,7 @@ class PlatesPriceFactor extends React.Component {
     }
 
     return (
-      <View style={styles.dollarSigns}>
-        <Text style={styles.dollarSign}><Text style={styles.dollarSignBold}>{dollarSignsBold}</Text>{dollarSigns}</Text>
-      </View>
+      <Text style={styles.dollarSign}><Text style={styles.dollarSignBold}>{dollarSignsBold}</Text>{dollarSigns}</Text>
     );
   }
 }
@@ -40,22 +38,11 @@ class PlatesPriceFactor extends React.Component {
 export default PlatesPriceFactor;
 
 let styles = StyleSheet.create({
-  dollarSigns: {
-    width: 60,
-    height: 60,
-    borderRadius: 60/2,
-    backgroundColor: Colors.primary,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   dollarSignBold: {
-    color: 'white',
-    fontFamily: 'SanFranciscoDisplay-Bold'
+    color: Colors.primaryDark,
   },
   dollarSign: {
-    fontSize: 25,
+    fontSize: 22,
     color: Colors.yellowWhite,
     fontFamily: 'SanFranciscoDisplay-Regular'
   }

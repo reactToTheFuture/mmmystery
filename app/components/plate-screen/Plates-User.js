@@ -1,5 +1,5 @@
-var React = require('react-native');
-var Colors = require('../../../globalVariables');
+import React from 'react-native';
+import Colors from '../../../globalVariables';
 
 var {
   View,
@@ -29,8 +29,6 @@ let styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
-    marginTop: 5,
-    marginHorizontal: 4,
   },
   picture: {
     width:28,

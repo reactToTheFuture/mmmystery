@@ -167,26 +167,30 @@ class PlatesDashBoard extends React.Component {
 
     return (
       <View style={styles.container}>
-        <ActivityIndicatorIOS
-          animating={this.state.loadingImage}
-          style={styles.loadingIcon}
-          size="large"
-        />
-        <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
-          <Image
-            style={styles.img}
-            source={{uri: this.props.plate.img_url}}
-            onLoad={this._imageLoaded.bind(this)}>
-          <View style={styles.imageCrop}></View>
-          </Image>
-          <PlatesDashboardContent plate={this.props.plate} priceFactor={this.props.priceFactor} />
-        </Animated.View>
-        <Animated.View style={[styles.nope, animatedNopeStyles, this.nopeStyle()]}>
-          <Text style={styles.nopeText}>{this.nopeText()}</Text>
-        </Animated.View>
-        <Animated.View style={[styles.yup, animatedYupStyles, this.yupStyle()]}>
-          <Text style={styles.yupText}>{this.yupText()}</Text>
-        </Animated.View>
+        <Image
+          source={require('image!food-bg')}
+          style={styles.bgImage}>
+          <ActivityIndicatorIOS
+            animating={this.state.loadingImage}
+            style={styles.loadingIcon}
+            size="large"
+          />
+          <Animated.View style={[styles.card, animatedCardStyles]} {...this._panResponder.panHandlers}>
+            <Image
+              style={styles.img}
+              source={{uri: this.props.plate.img_url}}
+              onLoad={this._imageLoaded.bind(this)}>
+            <View style={styles.imageCrop}></View>
+            </Image>
+            <PlatesDashboardContent plate={this.props.plate} priceFactor={this.props.priceFactor} />
+          </Animated.View>
+          <Animated.View style={[styles.nope, animatedNopeStyles, this.nopeStyle()]}>
+            <Text style={styles.nopeText}>{this.nopeText()}</Text>
+          </Animated.View>
+          <Animated.View style={[styles.yup, animatedYupStyles, this.yupStyle()]}>
+            <Text style={styles.yupText}>{this.yupText()}</Text>
+          </Animated.View>
+        </Image>
       </View>
     );
   }
@@ -201,9 +205,9 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    //marginTop: 100,
     width: window.width - 30,
     height: window.height/1.25,
+    backgroundColor: '#ffffff',
     borderTopLeftRadius: 11,
     borderTopRightRadius: 11,
     borderBottomLeftRadius: 12,
@@ -263,5 +267,10 @@ var styles = StyleSheet.create({
   nopeText: {
     fontSize: 16,
     color: 'red',
+  },
+  bgImage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });

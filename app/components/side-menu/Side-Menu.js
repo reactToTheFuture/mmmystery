@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     backgroundColor: globals.secondary,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginBottom: 50,
+    marginVertical: 25,
   },
   // absolute positioning to ensure, 
   // a flexDirection of 'column' so text will
