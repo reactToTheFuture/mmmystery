@@ -52,4 +52,4 @@ var filtersData = {
   },
 };
 
-module.exports = filtersData;
+export default filtersData;

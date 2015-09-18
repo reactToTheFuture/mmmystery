@@ -138,10 +138,10 @@ var {
       },
       navigationBar: (
         <NavigationBar
-          customPrev={<NavigationPrev handler={this.props.route.props.onMenuToggle} iconName={'navicon'} size={37} color={globals.primaryLight}/>}
+          customPrev={<NavigationPrev handler={this.props.route.props.onMenuToggle} iconName={'navicon'} size={37} color={'#ffffff'}/>}
           title="Mystery Meal"
-          titleColor={globals.darkText}
-          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={globals.lightText} />}
+          titleColor={'#ffffff'}
+          customNext={<NavigationNext handler={this.onCameraBtnPress.bind(this, this.props.navigator, this.props.route)} iconName={'ios-camera-outline'} size={37} color={'#ffffff'} />}
           style={styles.navigator} />
       )
     });
@@ -161,7 +161,7 @@ var {
         style={styles.container}>
         <Image
           source={require('image!food-bg')}
-          style={styles.loginImage}>
+          style={styles.bgImage}>
           <View style={styles.textContainer}>
             <Text style={[styles.text, styles.headline]}>Mmmystery</Text>
             <Text style={[styles.text, styles.subHeadline]}>
@@ -200,6 +200,9 @@ var {
 export default Login;
 
 var styles = StyleSheet.create({
+  navigator: {
+    backgroundColor: '#FFC900',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -255,7 +258,7 @@ var styles = StyleSheet.create({
   emphasis: {
     fontWeight: 'bold',
   },
-  loginImage: {
+  bgImage: {
     flex: 1,
     overflow: 'visible'
   },

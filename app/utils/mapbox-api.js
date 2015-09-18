@@ -7,4 +7,4 @@ var mapbox_api = {
   }
 };
 
-module.exports = mapbox_api;
+export default mapbox_api;

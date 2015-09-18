@@ -15,4 +15,4 @@ tips_api = {
   }
 }
 
-module.exports = tips_api;
+export default tips_api;

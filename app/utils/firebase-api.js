@@ -284,4 +284,4 @@ var firebase_api = {
   }
 };
 
-module.exports = firebase_api;
+export default firebase_api;

@@ -1,5 +1,7 @@
 import React from 'react-native';
 
+import globals from '../../../globalVariables';
+
 let {
   StyleSheet,
   View,
@@ -16,65 +18,48 @@ let {
 
 class About extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      titleText: 'Mmmystery',
-      bodyText1: 'Mmmystery was created to help people choose where they\'d like to eat based solely off of the food itself.',
-      bodyText2: 'We\'ve found that there\'s too high of a reliance on other\' opinions (and reviews), the location or look of the restaurant, or whether it has what you are traditionaly used to.',
-      bodyText3: 'So, my food loving friend, we ask that when using Mmmystery, you trust your gut and discovery all the great cuisine right around you!',
-    };
-  }
-
-  componentWillReceiveProps(newProps) {
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        <Image/>
-         <Text style={styles.baseText}>
-          <Text style={styles.titleText}>
-            {this.state.titleText + '\n\n'}
-          </Text>
-          <Text style={styles.bodyText} numberOfLines={3}>
-            {this.state.bodyText1+ '\n\n'}
-          </Text>
-          <Text style={styles.bodyText} numberOfLines={5}>
-            {this.state.bodyText2 + '\n\n'}
-          </Text>
-          <Text style={styles.bodyText} numberOfLines={4}>
-            {this.state.bodyText3}
-          </Text>
-        </Text>
+        <Image
+          source={require('image!white-pattern-bg')}
+          style={styles.bgImage}>
+            <View style={styles.textContainer}>
+              <Text style={styles.titleText}>Mmmystery</Text>
+              <Text style={styles.bodyText}>Mmmystery was created to help people choose where they'd like to eat based solely off of the food itself.</Text>
+              <Text style={styles.bodyText}>We've found that there's too high of a reliance on other opinions (and reviews), the location or look of the restaurant, or whether it has what you are traditionaly used to.</Text>
+              <Text style={styles.bodyText}>So, my food loving friend, we ask that when using Mmmystery, you trust your gut and discovery all the great cuisine right around you!</Text>
+            </View>
+          </Image>
       </View>
     );
   }
 }
 
-
 var styles = StyleSheet.create({
   container: {
-    marginTop: 15,
-    marginHorizontal: 25,
-    justifyContent: 'space-between',
+    flex: 1,
     alignItems: 'center',
-  },
-  baseText: {
-    alignItems: 'center',
-    flexDirection: 'column',
     justifyContent: 'center',
   },
   titleText: {
+    marginBottom: 25,
     fontFamily: 'SanFranciscoText-Semibold',
-    color: '#FFCE00',
+    color: globals.primary,
     textAlign: 'center',
     fontSize: 35,
   },
+  textContainer: {
+    paddingHorizontal: 20,
+  },
   bodyText: {
+    marginBottom: 10,
     fontFamily: 'SanFranciscoText-Regular',
     textAlign: 'auto',
     fontSize: 20,
+  },
+  bgImage: {
+    flex: 1,
   },
 });
 

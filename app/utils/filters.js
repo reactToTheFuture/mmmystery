@@ -106,4 +106,4 @@ var filters = {
   }
 };
 
-module.exports = filters;
+export default filters;

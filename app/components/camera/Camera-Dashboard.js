@@ -81,37 +81,40 @@ class CameraDashboard extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-        <View style={styles.headlineContainer}>
-          <Text style={styles.headline}>Upload a photo of your meal!</Text>
-        </View>
+        <Image
+          source={require('image!white-pattern-bg')}>
+          <View style={styles.headlineContainer}>
+            <Text style={styles.headline}>Upload a photo of your meal!</Text>
+          </View>
 
-        <View style={styles.imageTipContainer}>
-          <Image style={styles.img} source={this.state.img} />
-          <Text style={styles.tip}>{this.state.tip}</Text>
-        </View>
+          <View style={styles.imageTipContainer}>
+            <Image style={styles.img} source={this.state.img} />
+            <Text style={styles.tip}>{this.state.tip}</Text>
+          </View>
 
-        <View style={styles.btnContainer}>
-          <TouchableHighlight
-            style={styles.mainBtn}
-            onPress={this.goToCameraLiveScreen.bind(this)}
-            underlayColor={globals.primaryLight}>
-            <View style={styles.innerBtn}>
-              <Icon
-                name='ion|ios-camera-outline'
-                size={30}
-                color='#ffffff'
-                style={styles.icon}
-              />
-              <Text style={styles.btnText}>Let's take a photo</Text>
-            </View>
-          </TouchableHighlight>
+          <View style={styles.btnContainer}>
+            <TouchableHighlight
+              style={styles.mainBtn}
+              onPress={this.goToCameraLiveScreen.bind(this)}
+              underlayColor={globals.primaryLight}>
+              <View style={styles.innerBtn}>
+                <Icon
+                  name='ion|ios-camera-outline'
+                  size={30}
+                  color='#ffffff'
+                  style={styles.icon}
+                />
+                <Text style={styles.btnText}>Let's take a photo</Text>
+              </View>
+            </TouchableHighlight>
 
-          <TouchableHighlight
-            onPress={this.goToCameraRollScreen.bind(this)}
-            underlayColor='#ffffff'>
-            <Text style={styles.secondaryBtn}>Choose from my camera roll</Text>
-          </TouchableHighlight>
-        </View>
+            <TouchableHighlight
+              onPress={this.goToCameraRollScreen.bind(this)}
+              underlayColor='#ffffff'>
+              <Text style={styles.secondaryBtn}>Choose from my camera roll</Text>
+            </TouchableHighlight>
+          </View>
+        </Image>
       </View>
     );
   }
@@ -125,7 +128,6 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
   },
   imageTipContainer: {
     flex: 5,
@@ -194,5 +196,5 @@ let styles = StyleSheet.create({
     textAlign: 'center',
     color: globals.primaryDark,
     fontFamily: 'SanFranciscoText-Regular',
-  }
+  },
 });

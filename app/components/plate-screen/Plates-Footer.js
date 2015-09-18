@@ -1,7 +1,7 @@
 'use strict';
-var React = require('react-native');
-var Colors = require('../../../globalVariables');
-var { Icon, } = require('react-native-icons');
+import React from 'react-native';
+import globals from '../../../globalVariables';
+import { Icon, } from 'react-native-icons';
 
 var {
   StyleSheet,
@@ -23,7 +23,7 @@ class PlatesFooter extends React.Component {
         </Text>
         <View>
           <TouchableOpacity onPress={this.props.onPressSettings}>
-            <Icon name='ion|ios-settings' size={32} color={Colors.lightText} style={styles.categories}/>
+            <Icon name='ion|ios-settings' size={32} color={'#ffffff'} style={styles.categories}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -44,7 +44,7 @@ let styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   footerLocation: {
-    color: Colors.lightText,
+    color: '#ffffff',
     fontFamily: 'SanFranciscoText-Regular',
     fontSize: 15
   },

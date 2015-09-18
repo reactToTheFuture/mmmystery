@@ -20,6 +20,13 @@ let {
   TouchableHighlight
 } = React;
 
+var imagesTimer;
+var adventuresTimer;
+
+var _imagesUploadedData = [];
+var _adventuresData = [];
+var totalLikes = 0;
+
 class Profile extends React.Component {
 
   constructor(props) {
@@ -28,34 +35,58 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      _imagesUploadedData: [],
-      _adventuresData: [],
       imagesEndIndex: imagesPerCycle,
       adventuresEndIndex: imagesPerCycle,
       imagesUploaded: ds.cloneWithRows([]),
       adventures: ds.cloneWithRows([]),
-      totalLikes: 0,
+      isLoadingImages: true,
+      isLoadingAdventrues: true,
+      imagesUploadedCount: 0,
+      adventuresCount: 0
     };
+  }
+
+  updateImagesState() {
+    _imagesUploadedData = _.sortBy(_imagesUploadedData, (data) => {
+      if(!data.likes) {
+        return 0;
+      }
+
+      return Object.keys(data.likes).length;
+    }).reverse();
+
+    this.setState({
+      imagesUploadedCount: _imagesUploadedData.length,
+      imagesUploaded: this.getMoreImages(),
+      isLoadingImages: false,
+      totalLikes
+    });
+  }
+
+  updateAdventuresState() {
+    this.setState({
+      adventuresCount: _adventuresData.length,
+      adventures: this.getMoreAdventures(),
+      isLoadingAdventures: false
+    });
   }
 
   getImagesUploaded() {
     firebase_api.getImagesByUser(this.props.user.id, (image) => {
-      this.state._imagesUploadedData.push(image);
+      _imagesUploadedData.push(image);
 
       if(image.likes) {
-        this.state.totalLikes += Object.keys(image.likes).length;
-        this.state._imagesUploadedData = _.sortBy(this.state._imagesUploadedData, 'likes');
+        totalLikes += Object.keys(image.likes).length
       }
 
-      this.setState(this.state, () => {
-        // if no images in list view, get the first batch
-        if( !this.state.imagesUploaded.getRowCount()  ) {
-          this.setState({
-            imagesUploaded: this.getMoreImages()
-          });
-        }
+      // initial build is over, immediately update state
+      if(!this.state.isLoadingImages) {
+        this.updateImageState();
+        return;
+      }
 
-      });
+      clearTimeout(imagesTimer);
+      imagesTimer = setTimeout(this.updateImagesState.bind(this), 500);
     });
   }
 
@@ -67,17 +98,16 @@ class Profile extends React.Component {
 
         firebase_api.getImageById(image_id)
         .then((image) => {
+          _adventuresData.push(image);
 
-          this.state._adventuresData.push(image);
-          this.setState(this.state, () => {
-            // if no images in list view, get the first batch
-            if( !this.state.adventures.getRowCount() ) {
-              this.setState({
-                adventures: this.getMoreAdventures()
-              });
-            }
-          });
+          // initial build is over, immediately update state
+          if(!this.state.isLoadingAdventures) {
+            this.updateAdventuresState();
+            return;
+          }
 
+          clearTimeout(adventuresTimer);
+          adventuresTimer = setTimeout(this.updateAdventuresState.bind(this), 500);
         });
 
       });
@@ -88,18 +118,22 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
+    _imagesUploadedData = [];
+    _adventuresData = [];
+    totalLikes = 0;
+
     this.getImagesUploaded();
     this.getAdventuresTaken();
   }
 
   getMoreImages(increment) {
     increment = increment || 0;
-    return this.state.imagesUploaded.cloneWithRows( this.state._imagesUploadedData.slice(0, this.state.imagesEndIndex + increment) )
+    return this.state.imagesUploaded.cloneWithRows( _imagesUploadedData.slice(0, this.state.imagesEndIndex + increment) )
   }
 
   getMoreAdventures(increment) {
     increment = increment || 0;
-    return this.state.adventures.cloneWithRows( this.state._adventuresData.slice(0, this.state.adventuresEndIndex + increment) )
+    return this.state.adventures.cloneWithRows( _adventuresData.slice(0, this.state.adventuresEndIndex + increment) )
   }
 
   _formatAmount(value, singular) {
@@ -125,7 +159,6 @@ class Profile extends React.Component {
   }
 
   _renderImageRow(imgData, wow) {
-
     var likes = null;
     var dateData;
     var dateMonth = '';
@@ -174,28 +207,23 @@ class Profile extends React.Component {
   }
 
   render () {
-    var adventures = this.state._adventuresData.length;
-    var imagesUploaded = this.state._imagesUploadedData.length;
+    var loading = (
+      <View style={styles.loadingContainer}>
+        <Text style={[styles.text, styles.loadingText]}>Loading your stats...</Text>
+      </View>
+    );
 
-    return (
-      <View style={styles.container}>
-
-        <View style={styles.avatarContainer}>
-          <Image
-            style={styles.avatar}
-            source={{uri: this.props.user.picture.data.url}}/>
-          <Text style={[styles.text, styles.name]}>{this.props.user.first_name} {this.props.user.last_name}</Text>
-        </View>
-
+    var stats = (
+      <View>
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
-            <Text style={styles.number}>{adventures}</Text>
-            <Text style={styles.text}>adventure{adventures !== 1 ? 's' : ''}</Text>
+            <Text style={styles.number}>{this.state.adventuresCount}</Text>
+            <Text style={styles.text}>adventure{this.state.adventuresCount !== 1 ? 's' : ''}</Text>
             <Text style={styles.text}>complete</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.number}>{imagesUploaded}</Text>
-            <Text style={styles.text}>mmmeal{imagesUploaded !== 1 ? 's' : ''}</Text>
+            <Text style={styles.number}>{this.state.imagesUploadedCount}</Text>
+            <Text style={styles.text}>mmmeal{this.state.imagesUploadedCount !== 1 ? 's' : ''}</Text>
             <Text style={styles.text}>uploaded</Text>
           </View>
           <View style={styles.stat}>
@@ -207,7 +235,7 @@ class Profile extends React.Component {
 
         <View style={styles.imagesContainer}>
           <Text style={[styles.text, styles.headline]}>Mmmeals Uploaded:</Text>
-          {imagesUploaded ?
+          {this.state.imagesUploadedCount ?
             <ListView
               style={styles.list}
               scrollRenderAheadDistance={0}
@@ -227,7 +255,7 @@ class Profile extends React.Component {
 
         <View style={styles.imagesContainer}>
           <Text style={[styles.text, styles.headline]}>Adventures Completed:</Text>
-          {adventures ?
+          {this.state.adventuresCount ?
             <ListView
               style={styles.list}
               scrollRenderAheadDistance={0}
@@ -239,6 +267,21 @@ class Profile extends React.Component {
             <Text style={[styles.text, styles.none]}>Swipe right on a tasty meal to get started!</Text>
           }
         </View>
+      </View>
+    );
+
+    return (
+      <View style={styles.container}>
+
+        <View style={styles.avatarContainer}>
+          <Image
+            style={styles.avatar}
+            source={{uri: this.props.user.picture.data.url}}/>
+          <Text style={[styles.text, styles.name]}>{this.props.user.first_name} {this.props.user.last_name}</Text>
+        </View>
+
+        { (this.state.isLoadingImages || this.state.isLoadingAdventures) && loading }
+        { (!this.state.isLoadingImages && !this.state.isLoadingAdventures) && stats }
 
       </View>
     );
@@ -248,7 +291,17 @@ class Profile extends React.Component {
 export default Profile;
 
 let styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: globals.primaryDark,
+    fontSize: 22,
+  },
   container: {
+    flex: 1,
     paddingHorizontal: 15,
   },
   text: {
