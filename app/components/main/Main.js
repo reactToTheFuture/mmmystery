@@ -275,7 +275,7 @@ class Main extends React.Component {
     this.props.navigator.pop();
     this.setState({
       resetSettings: true,
-      dollar: [false, false, false],
+      dollar: [false,false,false],
       defaultRadius: defaultRadius,
       categoryFilter: [],
     });

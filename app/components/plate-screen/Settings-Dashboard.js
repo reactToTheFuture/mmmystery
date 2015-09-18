@@ -25,6 +25,7 @@ let dollarImages = getDollarImages();
 let setsOfSelected= getSetsOfSelected();
   // Category names
 let subTitles = getSubTitles();
+let resetRadius = 10;
 
 class SettingsDashboard extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class SettingsDashboard extends React.Component {
   }
 
   resetSettings() {
-    this.setState({value: 5,});
+    this.setState({value: resetRadius,});
     dollarImages = resetFilter(dollarImages, true);
     setsOfSelected =  resetFilter(setsOfSelected, false);
   }

@@ -16,6 +16,10 @@ import CameraDashboard from '../camera/Camera-Dashboard';
 import globals from '../../../globalVariables';
 import firebase_api from '../../utils/firebase-api';
 
+import Dimensions from 'Dimensions';
+var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
+
+
 var {
   StyleSheet,
   AlertIOS,
@@ -129,6 +133,12 @@ var {
     });
   }
 
+  componentWillMount() {
+
+    console.log('vw, vh, vmin, vmax', vw, vh, vmin, vmax); //4s 3.2, 4.8, 3.2, 4.8
+    console.log('window', window);
+  }
+
   switchToMain(userInfo) {
     this.props.navigator.push({
       component: Main,
@@ -196,38 +206,52 @@ var {
     );
   }
 };
-
 export default Login;
 
+
+// Adjustments depending on the device
+var window = Dimensions.get('window');
+var marginHorizontal = window.width <= 320 ? 40 : 20;
+//-----
+
+
 var styles = StyleSheet.create({
-  navigator: {
-    backgroundColor: '#FFC900',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  bgImage: {
+    flex: 1,
+    overflow: 'visible'
+  },
   textContainer: {
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    marginHorizontal: marginHorizontal,
   },
-  headline: {
-    marginBottom: 50,
-    fontFamily: 'SanFranciscoDisplay-Semibold',
-    fontSize: 40,
-  },
-  subHeadline: {
-    textAlign: 'center',
-    fontSize: 25,
+  text: {
+    fontFamily: 'SanFranciscoDisplay-SemiBold',
+    color: '#ffffff',
+    fontSize: 20 * window.width/375,
   },
   loginContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 50,
+    justifyContent: 'center',
+  },
+  headline: {
+    marginBottom: 50,
+    fontFamily: 'SanFranciscoDisplay-Semibold',
+    fontSize: 40 * window.width/375,
+  },
+  subHeadline: {
+    textAlign: 'center',
+    fontSize: 25 * window.width/375,
+  },
+  navigator: {
+    backgroundColor: '#FFC900',
   },
   innerBtn: {
     flexDirection: 'row',
@@ -235,31 +259,22 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 30 * window.width/375,
+    height: 30 * window.height/667,
     marginRight: 10,
   },
   loginButton: {
-    width: 295,
-    height: 67,
+    width: 295 * window.width/375,
+    height: 67 * window.height/667,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: 30 * window.height/667,
     borderRadius: 30,
     borderColor: '#ffffff',
     borderWidth: 1,
     backgroundColor: globals.primary,
   },
-  text: {
-    fontFamily: 'SanFranciscoDisplay-SemiBold',
-    color: '#ffffff',
-    fontSize: 20,
-  },
   emphasis: {
     fontWeight: 'bold',
-  },
-  bgImage: {
-    flex: 1,
-    overflow: 'visible'
   },
 });
