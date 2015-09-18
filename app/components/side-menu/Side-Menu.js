@@ -181,9 +181,10 @@ class SideMenu extends React.Component {
             </View>
             <View style={styles.links}>
               <View style={styles.mainLinks}> 
-                {links.map(function(link) {
+                {links.map(function(link, i) {
                   return (
                     <TouchableHighlight
+                      key={i}
                       style={styles.button}
                       underlayColor={globals.primary}
                       onPress={link.onPress}>

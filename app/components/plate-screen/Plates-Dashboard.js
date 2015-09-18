@@ -231,7 +231,7 @@ var styles = StyleSheet.create({
   imageCrop: {
     width: window.width - 30,
     height: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     position: 'absolute',
     bottom: 0,
     left: -1
@@ -243,6 +243,7 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   yup: {
+    backgroundColor: '#ffffff',
     borderColor: 'green',
     borderWidth: 2,
     position: 'absolute',
@@ -256,6 +257,7 @@ var styles = StyleSheet.create({
     color: 'green',
   },
   nope: {
+    backgroundColor: '#ffffff',
     borderColor: 'red',
     borderWidth: 2,
     position: 'absolute',
