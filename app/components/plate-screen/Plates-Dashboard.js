@@ -221,7 +221,7 @@ var styles = StyleSheet.create({
     }
   },
   img: {
-    flex: 11,
+    flex: 2,
     borderRadius: 12,
     borderColor: 'transparent',
     borderWidth: 1,
@@ -273,6 +273,7 @@ var styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: window.width,
   },
 });

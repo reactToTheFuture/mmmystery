@@ -168,8 +168,8 @@ var styles = StyleSheet.create({
   },
   loadingIcon: {
     position: 'absolute',
-    top: (deviceScreen.height/2 - 36),
-    left: (deviceScreen.width/2 - 36),
+    top: (deviceScreen.height/2 - 18),
+    left: (deviceScreen.width/2 - 18),
     backgroundColor: "transparent",
   },
   button: {

@@ -16,13 +16,15 @@ class PlatesUser extends React.Component {
         <Image
           style={styles.picture}
           source={{uri: this.props.user.profile_image}}/>
-        <Text style={styles.name}>{this.props.user.first_name}</Text>
+        <Text style={styles.name}>mmm'd by {this.props.user.first_name}</Text>
       </View>
     );
   }
 }
 
 export default PlatesUser;
+
+var avatarWidth = 32;
 
 let styles = StyleSheet.create({
   container: {
@@ -31,10 +33,10 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   picture: {
-    width:28,
-    height: 28,
+    width: avatarWidth,
+    height: avatarWidth,
     backgroundColor: Colors.yellowWhite,
-    borderRadius: 28/2,
+    borderRadius: avatarWidth/2,
     marginRight: 5,
   },
   name: {
@@ -42,4 +44,4 @@ let styles = StyleSheet.create({
     color: Colors.lightText,
     fontSize: 16
   },
-})
+});
