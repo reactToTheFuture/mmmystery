@@ -126,12 +126,12 @@ export default CameraDashboard;
 let styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   bgImg: {
     width: window.width,
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   imageTipContainer: {
     flex: 5,

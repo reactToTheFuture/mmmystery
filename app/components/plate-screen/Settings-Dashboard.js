@@ -173,7 +173,7 @@ class SettingsDashboard extends React.Component {
 
 export default SettingsDashboard;
 
-var categoryWidth = (window.width - 80)/3;
+var categoryWidth = (window.width * 0.65)/3;
 
 var styles = StyleSheet.create({
   container: {

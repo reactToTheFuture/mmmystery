@@ -221,7 +221,7 @@ var styles = StyleSheet.create({
     }
   },
   img: {
-    flex: 3,
+    flex: 2,
     borderRadius: 12,
     borderColor: 'transparent',
     borderWidth: 1,
