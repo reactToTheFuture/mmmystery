@@ -21,7 +21,7 @@ import { filterByDistance, filterByCategory, filterByPrice, formatCategory } fro
 var platesTimer;
 var allPlates = [];
 var filteredPlates = [];
-var defaultRadius = 5;
+var defaultRadius = 10;
 var noFilteredPlatesResults = false;
 
 let {
