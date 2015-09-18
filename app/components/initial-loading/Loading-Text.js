@@ -20,8 +20,8 @@ class LoadingText extends React.Component {
 
     this.state = {
       fadeAnim: new Animated.Value(0),
-      title: "Finding your location",
-      subtitle: "One moment while we find the restaurants within walking distance",
+      title: 'Finding your location',
+      subtitle: 'One moment while we find the restaurants within walking distance',
       switched: false
     };
   }
@@ -46,8 +46,8 @@ class LoadingText extends React.Component {
       this.getFadeAnimation(0, 400);
       setTimeout(() => {
         this.setState({
-          title: "Fetching Mmmysteries",
-          subtitle: "Bear with us as we grab all the Mmmystery meals from fellow members",
+          title: 'Fetching Mmmysteries',
+          subtitle: 'Bear with us as we grab all the Mmmystery meals from fellow members',
           switched: true,
         });
         this.getFadeAnimation(1, 500);
