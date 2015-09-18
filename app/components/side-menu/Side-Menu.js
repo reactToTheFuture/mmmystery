@@ -38,7 +38,6 @@ class SideMenu extends React.Component {
     };
   }
 
-
   onPressProfile() {
     this.props.navigator.push({
       title: 'Profile',
@@ -49,7 +48,6 @@ class SideMenu extends React.Component {
       )
     });
   }
-
 
   onPressHowWorks() {
     this.props.navigator.push({
@@ -81,7 +79,7 @@ class SideMenu extends React.Component {
   }
 
   onPressContact() {
-  this.props.navigator.push({
+    this.props.navigator.push({
       component: Contact,
       navigationBar: (
         <NavigationBar
@@ -135,6 +133,28 @@ class SideMenu extends React.Component {
       );
     }
 
+    var links = [{
+      icon: require('image!icon-menu-profile'),
+      text: 'Profile',
+      onPress: this.onPressProfile.bind(this)
+    }, {
+      icon: require('image!icon-menu-works'),
+      text: 'How it Works',
+      onPress: this.onPressHowWorks.bind(this)
+    }, {
+      icon: require('image!icon-menu-about'),
+      text: 'About',
+      onPress: this.onPressAbout.bind(this)
+    }, {
+      icon: require('image!icon-menu-contact'),
+      text: 'F.A.Q',
+      onPress: this.onPressFaq.bind(this)
+    }, {
+      icon: require('image!icon-menu-question'),
+      text: 'Contact Us',
+      onPress: this.onPressContact.bind(this)
+    }];
+
     return (
       <View style={[styles.container]}>
         <Animated.View
@@ -161,43 +181,33 @@ class SideMenu extends React.Component {
             </View>
             <View style={styles.links}>
               <View style={styles.mainLinks}> 
-                <TouchableHighlight
-                  style={styles.button}
-                  underlayColor={globals.primary}
-                  onPress={this.onPressProfile.bind(this)}>
-                    <Text style={styles.buttonText}>Profile</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={styles.button}
-                  underlayColor={globals.primary}
-                  onPress={this.onPressHowWorks.bind(this)}>
-                    <Text style={styles.buttonText}>How it works</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={styles.button}
-                  underlayColor={globals.primary}
-                  onPress={this.onPressAbout.bind(this)}>
-                    <Text style={styles.buttonText}>About</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={styles.button}
-                  underlayColor={globals.primary}
-                  onPress={this.onPressFaq.bind(this)}>
-                    <Text style={styles.buttonText}>FAQ</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={styles.button}
-                  underlayColor={globals.primary}
-                  onPress={this.onPressContact.bind(this)}>
-                    <Text style={styles.buttonText}>Contact Us</Text>
-                </TouchableHighlight>
+                {links.map(function(link) {
+                  return (
+                    <TouchableHighlight
+                      style={styles.button}
+                      underlayColor={globals.primary}
+                      onPress={link.onPress}>
+                      <View style={styles.innerButton}>
+                        <Image
+                          style={styles.icon}
+                          source={link.icon}/>
+                        <Text style={styles.buttonText}>{link.text}</Text>
+                      </View>
+                    </TouchableHighlight>
+                  );
+                })}
               </View>
               <View style={styles.logoutContainer}>
                 <TouchableHighlight
                   style={styles.button}
                   underlayColor={globals.primary}
                   onPress={this.onLogOut.bind(this)}>
+                  <View style={styles.innerButton}>
+                    <Image
+                      style={styles.icon}
+                      source={require('image!icon-menu-logout')}/>
                     <Text style={styles.buttonText}>Logout</Text>
+                  </View>
                 </TouchableHighlight>
               </View>
             </View>
@@ -285,6 +295,7 @@ const styles = StyleSheet.create({
   },
   logoutContainer: {
     flex: 1,
+    marginBottom: 25,
   },
   button: {
     width: menuWidth,
@@ -292,6 +303,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+  },
+  innerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 10,
   },
 });
