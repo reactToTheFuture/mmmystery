@@ -16,7 +16,6 @@ import CameraDashboard from '../camera/Camera-Dashboard';
 import globals from '../../../globalVariables';
 import firebase_api from '../../utils/firebase-api';
 
-import Dimensions from 'Dimensions';
 var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
 
 
@@ -135,8 +134,6 @@ var {
 
   componentWillMount() {
 
-    console.log('vw, vh, vmin, vmax', vw, vh, vmin, vmax); //4s 3.2, 4.8, 3.2, 4.8
-    console.log('window', window);
   }
 
   switchToMain(userInfo) {
@@ -210,6 +207,7 @@ export default Login;
 
 
 // Adjustments depending on the device
+import Dimensions from 'Dimensions';
 var window = Dimensions.get('window');
 var marginHorizontal = window.width <= 320 ? 40 : 20;
 //-----
