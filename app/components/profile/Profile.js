@@ -41,6 +41,8 @@ class Profile extends React.Component {
       adventures: ds.cloneWithRows([]),
       isLoadingImages: true,
       isLoadingAdventrues: true,
+      imagesUploadedCount: 0,
+      adventuresCount: 0
     };
   }
 
@@ -54,6 +56,7 @@ class Profile extends React.Component {
     }).reverse();
 
     this.setState({
+      imagesUploadedCount: _imagesUploadedData.length,
       imagesUploaded: this.getMoreImages(),
       isLoadingImages: false,
       totalLikes
@@ -62,6 +65,7 @@ class Profile extends React.Component {
 
   updateAdventuresState() {
     this.setState({
+      adventuresCount: _adventuresData.length,
       adventures: this.getMoreAdventures(),
       isLoadingAdventures: false
     });
@@ -114,6 +118,10 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
+    _imagesUploadedData = [];
+    _adventuresData = [];
+    totalLikes = 0;
+
     this.getImagesUploaded();
     this.getAdventuresTaken();
   }
@@ -151,7 +159,6 @@ class Profile extends React.Component {
   }
 
   _renderImageRow(imgData, wow) {
-
     var likes = null;
     var dateData;
     var dateMonth = '';
@@ -200,9 +207,6 @@ class Profile extends React.Component {
   }
 
   render () {
-    var adventures = _adventuresData.length;
-    var imagesUploaded = _imagesUploadedData.length;
-
     var loading = (
       <View style={styles.loadingContainer}>
         <Text style={[styles.text, styles.loadingText]}>Loading your stats...</Text>
@@ -213,13 +217,13 @@ class Profile extends React.Component {
       <View>
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
-            <Text style={styles.number}>{adventures}</Text>
-            <Text style={styles.text}>adventure{adventures !== 1 ? 's' : ''}</Text>
+            <Text style={styles.number}>{this.state.adventuresCount}</Text>
+            <Text style={styles.text}>adventure{this.state.adventuresCount !== 1 ? 's' : ''}</Text>
             <Text style={styles.text}>complete</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.number}>{imagesUploaded}</Text>
-            <Text style={styles.text}>mmmeal{imagesUploaded !== 1 ? 's' : ''}</Text>
+            <Text style={styles.number}>{this.state.imagesUploadedCount}</Text>
+            <Text style={styles.text}>mmmeal{this.state.imagesUploadedCount !== 1 ? 's' : ''}</Text>
             <Text style={styles.text}>uploaded</Text>
           </View>
           <View style={styles.stat}>
@@ -231,7 +235,7 @@ class Profile extends React.Component {
 
         <View style={styles.imagesContainer}>
           <Text style={[styles.text, styles.headline]}>Mmmeals Uploaded:</Text>
-          {imagesUploaded ?
+          {this.state.imagesUploadedCount ?
             <ListView
               style={styles.list}
               scrollRenderAheadDistance={0}
@@ -251,7 +255,7 @@ class Profile extends React.Component {
 
         <View style={styles.imagesContainer}>
           <Text style={[styles.text, styles.headline]}>Adventures Completed:</Text>
-          {adventures ?
+          {this.state.adventuresCount ?
             <ListView
               style={styles.list}
               scrollRenderAheadDistance={0}
