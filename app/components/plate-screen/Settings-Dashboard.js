@@ -1,7 +1,12 @@
 import Slider from 'react-native-slider';
 import React from 'react-native';
+
+import Dimensions from 'Dimensions';
+
 import { createSettingsFilter, resetFilter } from '../../utils/filters';
 import { getDollarImages, getSetsOfSelected, gatCategoryNames, getFoodImages, getSubTitles, } from '../../utils/filters-data';
+
+var window = Dimensions.get('window');
 
 let {
   StyleSheet,
@@ -121,41 +126,45 @@ class SettingsDashboard extends React.Component {
                 underlayColor={'transparent'}
                 style={styles.categoryButton}
                 onPress={this.onPressImage.bind(this, i)}>
-                <View style={this.pictureSelected(i) ? styles.iconContainerSelected : styles.iconContainer}>
-                  <Image
-                  key={i}
-                  style={styles.image}
-                  source={image}/>
-                  <Text style={this.pictureSelected(i) ? styles.subTitlesSelected : styles.subTitles}>{subTitles[i]}</Text>
+                <View>
+                  <View style={[styles.iconContainer, this.pictureSelected(i) && styles.iconContainerSelected]}>
+                    <Image
+                    key={i}
+                    style={styles.image}
+                    source={image}/>
+                  </View>
+                  <Text style={[styles.subTitles, this.pictureSelected(i) && styles.subTitlesSelected]}>{subTitles[i]}</Text>
                 </View>
               </TouchableHighlight>
             );
           })}
         </View>
+        <View style={styles.bottomSettings}>
         <View style={styles.containerSlider}>
-          <View style={styles.distanceInfo}><Text style={styles.distanceText}>Distance</Text><Text style={styles.distanceValue}>{this.state.value} Miles</Text></View>
-          <Slider
-            minimumTrackTintColor='#FCAE2B'
-            trackStyle={sliderStyle.track}
-            thumbStyle={sliderStyle.thumb}
-            value={this.state.value}
-            minimumValue={this.state.minimumValue}
-            maximumValue={this.state.maximumValue}
-            onSlidingComplete={this.onSlidingComplete.bind(this)}
-            onValueChange={(value) => {this.setState({value: Math.round(value)});}} />
-        </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.priceText}>Price</Text>
-          {this.state.dollarImages.map((image, i) => {
-            return (
-              <TouchableHighlight
-                key={i}
-                onPress={this.dollarOnPress.bind(this, i)}
-                style={dollarImages[i][1] ? styles.pressDollarSelected : styles.pressDollar}>
-                  <Text style={styles.dollarSign}>{i === 0 ? <Text>$</Text> : i === 1 ? <Text>$$</Text> : <Text>$$$</Text>}</Text>
-              </TouchableHighlight>
-            );
-          })}
+            <View style={styles.distanceInfo}><Text style={styles.distanceText}>Distance</Text><Text style={styles.distanceValue}>{this.state.value} Miles</Text></View>
+            <Slider
+              minimumTrackTintColor='#FCAE2B'
+              trackStyle={sliderStyle.track}
+              thumbStyle={sliderStyle.thumb}
+              value={this.state.value}
+              minimumValue={this.state.minimumValue}
+              maximumValue={this.state.maximumValue}
+              onSlidingComplete={this.onSlidingComplete.bind(this)}
+              onValueChange={(value) => {this.setState({value: Math.round(value)});}} />
+          </View>
+          <View style={styles.priceContainer}>
+            <Text style={styles.priceText}>Price</Text>
+            {this.state.dollarImages.map((image, i) => {
+              return (
+                <TouchableHighlight
+                  key={i}
+                  onPress={this.dollarOnPress.bind(this, i)}
+                  style={dollarImages[i][1] ? styles.pressDollarSelected : styles.pressDollar}>
+                    <Text style={styles.dollarSign}>{i === 0 ? <Text>$</Text> : i === 1 ? <Text>$$</Text> : <Text>$$$</Text>}</Text>
+                </TouchableHighlight>
+              );
+            })}
+          </View>
         </View>
       </View>
     );
@@ -164,57 +173,50 @@ class SettingsDashboard extends React.Component {
 
 export default SettingsDashboard;
 
+var categoryWidth = (window.width - 80)/3;
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
   categoriesContainer: {
-    flex: 1,
+    flex: 3,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    paddingTop: 15,
+    alignItems: 'flex-start',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
   },
   categoryButton: {
-    width: 95,
-    height: 95,
+    width: categoryWidth,
+    height: categoryWidth + 20,
+    marginBottom: 20,
+    marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 38
   },
   iconContainer: {
-    flex: 1,
-    width: 100,
-    height: 80,
+    width: categoryWidth,
+    height: categoryWidth,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#EDF6FF',
-    borderRadius:50,
+    borderRadius: categoryWidth/2,
   },
   iconContainerSelected: {
-    flex: 1,
-    width: 100,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#FDEDBF',
-    borderRadius:50,
   },
   subTitles: {
     paddingTop: 8,
     fontSize: 17,
-    justifyContent: 'center',
+    textAlign: 'center',
     fontFamily: 'SanFranciscoText-Semibold',
     backgroundColor: 'transparent',
   },
   subTitlesSelected: {
-    paddingTop: 8,
-    fontSize: 17,
-    justifyContent: 'center',
-    fontFamily: 'SanFranciscoText-Semibold',
     color: '#FCAE2B',
-    backgroundColor: 'transparent',
   },
   textSet: {
     fontSize: 15,
@@ -223,8 +225,8 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 58,
-    height: 58,
+    width: categoryWidth/2,
+    height: categoryWidth/2,
     backgroundColor: 'transparent',
   },
   distanceValue: {
@@ -281,6 +283,10 @@ var styles = StyleSheet.create({
     marginHorizontal: 10,
     backgroundColor: '#FCAE2B',
   },
+  bottomSettings: {
+    flex: 1,
+    justifyContent: 'flex-end'
+  }
 });
 
 var sliderStyle = StyleSheet.create({

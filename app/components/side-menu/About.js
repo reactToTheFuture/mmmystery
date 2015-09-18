@@ -1,4 +1,7 @@
 import React from 'react-native';
+import Dimensions from 'Dimensions';
+
+const window = Dimensions.get('window');
 
 import globals from '../../../globalVariables';
 
@@ -60,6 +63,7 @@ var styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
+    width: window.width,
   },
 });
 

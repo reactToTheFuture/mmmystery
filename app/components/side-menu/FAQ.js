@@ -1,4 +1,7 @@
 import React from 'react-native';
+import Dimensions from 'Dimensions';
+
+const window = Dimensions.get('window');
 
 import { getFaqs } from '../../utils/faqs';
 
@@ -48,6 +51,7 @@ class FAQ extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
   },
   text: {
     fontFamily: 'SanFranciscoText-Regular',
@@ -68,6 +72,7 @@ var styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
+    width: window.width,
   },
 });
 

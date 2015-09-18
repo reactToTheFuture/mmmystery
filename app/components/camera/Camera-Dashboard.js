@@ -82,7 +82,8 @@ class CameraDashboard extends React.Component {
     return (
       <View style={styles.container}>
         <Image
-          source={require('image!white-pattern-bg')}>
+          source={require('image!white-pattern-bg')}
+          style={styles.bgImg}>
           <View style={styles.headlineContainer}>
             <Text style={styles.headline}>Upload a photo of your meal!</Text>
           </View>
@@ -128,6 +129,9 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  bgImg: {
+    width: window.width,
   },
   imageTipContainer: {
     flex: 5,
