@@ -161,7 +161,7 @@ var {
         style={styles.container}>
         <Image
           source={require('image!food-bg')}
-          style={styles.loginImage}>
+          style={styles.bgImage}>
           <View style={styles.textContainer}>
             <Text style={[styles.text, styles.headline]}>Mmmystery</Text>
             <Text style={[styles.text, styles.subHeadline]}>
@@ -255,7 +255,7 @@ var styles = StyleSheet.create({
   emphasis: {
     fontWeight: 'bold',
   },
-  loginImage: {
+  bgImage: {
     flex: 1,
     overflow: 'visible'
   },

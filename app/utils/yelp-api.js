@@ -38,4 +38,4 @@ var yelp_api = {
   }
 };
  
-module.exports = yelp_api;
+export default yelp_api;

@@ -11,4 +11,4 @@ img_api = {
   }
 }
 
-module.exports = img_api;
+export default img_api;

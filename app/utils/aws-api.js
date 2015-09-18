@@ -1,4 +1,4 @@
-var aws = require('./config').aws;
+import { aws } from './config';
 
 var aws_api = {
   uploadToS3(base64, key) {
@@ -16,4 +16,4 @@ var aws_api = {
   }
 };
  
-module.exports = aws_api;
+export default aws_api;
