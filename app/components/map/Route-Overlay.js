@@ -84,7 +84,6 @@ let styles = StyleSheet.create({
     alignItems: 'center',
     flex: 3,
     width: width - 30,
-    textAlign: 'center',
   },
   button: {
     width: width,

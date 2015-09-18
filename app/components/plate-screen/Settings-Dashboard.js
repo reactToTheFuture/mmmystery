@@ -1,6 +1,7 @@
 import Slider from 'react-native-slider';
 import React from 'react-native';
 import { createSettingsFilter, resetFilter } from '../../utils/filters';
+import { getDollarImages, getSetsOfSelected, gatCategoryNames, getFoodImages, getSubTitles, } from '../../utils/filters-data';
 
 let {
   StyleSheet,
@@ -15,34 +16,18 @@ let {
 } = React;
 
 // = [$, $$, $$$];
-let dollarImages = [['http://www.cedarpostnj.com/icon-dollar.png', false],
-                    ['http://www.cedarpostnj.com/icon-dollar.png', false],
-                    ['http://www.cedarpostnj.com/icon-dollar.png', false]];
-
-let setsOfSelected= [false,false,false,false,false,false,false,false,false];
-
-let foodImages= [require('image!icon-american'), require('image!icon-mexican'), require('image!icon-deli'),
-                 require('image!icon-breakfast'), require('image!icon-italian'), require('image!icon-asian'),
-                 require('image!icon-seafood'), require('image!icon-healthy'), require('image!icon-other')];
+let dollarImages = getDollarImages();
+let setsOfSelected= getSetsOfSelected();
   // Category names
-let subTitles = ['American', 'Mexican', 'Deli','Breakfast','Italian','Asian','Seafood','Healthy','Other'];
-let categoryNames= [['American', 'newamerican', 'tradamerican', 'hotdogs', 'hotdog', 'burgers'],
-                  ['Mexican & Latin', 'mexican', 'tex-mex', 'latin'],
-                  ['Delis & Sandwiches', 'delis', 'sandwiches'],
-                  ['Breakfast', 'Brunch & Bakeries', 'breakfast_brunch', 'bakeries', 'cafes'],
-                  ['Italian & Pizza', 'italian', 'pizza'],
-                  ['Asian', 'japanese', 'sushi', 'asianfusion', 'thai', 'ramen', 'vietnamese', 'indpak', 'chinese', 'korean'],
-                  ['Seafood or Raw', 'seafood', 'raw_food'],
-                  ['Healthy','salad','juicebars','vegan','gluten_free'],
-                  ['Other']];
+let subTitles = getSubTitles();
 
 class SettingsDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dollarImages,
-      setsOfNinePics: foodImages,
-      setsOfNineNames: categoryNames,
+      setsOfNinePics: getFoodImages(),
+      setsOfNineNames: gatCategoryNames(),
       selected: false,
       minimumValue: 0,
       maximumValue: 10,

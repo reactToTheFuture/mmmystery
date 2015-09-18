@@ -13,6 +13,8 @@ import mapbox_api from '../../utils/mapbox-api';
 import firebase_api from '../../utils/firebase-api';
 import { formatNameString } from '../../utils/helpers';
 
+import { findIconForCategory } from '../../utils/filters-data'
+
 var {
   View,
   StyleSheet
@@ -35,6 +37,7 @@ class MapDashBoard extends React.Component {
     };
   }
 
+  // [] gets an array of categories for the chosen plate
   componentWillMount() {
     var userCoords = this.props.route.props.userPosition.coords;
 
@@ -45,7 +48,7 @@ class MapDashBoard extends React.Component {
 
     var timeStart = Date.now();
 
-    this.getAsyncDirections(userPosition, this.props.route.props.image.location)
+    this.getAsyncDirections(userPosition, this.props.route.props.image.location, this.props.route.props.image.category)
     .then((res) => {
       var wait = 0;
       var timeEnd = Date.now();
@@ -55,7 +58,6 @@ class MapDashBoard extends React.Component {
       if( timeElapsed < 1000 ) {
         wait = 1000 - timeElapsed;
       }
-
       setTimeout(() => {
         this.setState({
           steps: res.steps,
@@ -70,15 +72,18 @@ class MapDashBoard extends React.Component {
     .catch((err) => { console.log(`Problem getting directions: ${err}`); });
   }
 
-  async getAsyncDirections(origin, destination) {
+  async getAsyncDirections(origin, destination, category) {
     var responseDirections = await (mapbox_api.getDirections(origin, destination)
       .then((data) => {
+        console.log('category of dish', category);
         var steps = data.routes[0].steps;
+        var url = findIconForCategory(category);
+        console.log('url result', url);
         var annotationImage = {
-          url: 'http://img1.wikia.nocookie.net/__cb20130425161142/scribblenauts/images/a/a4/Hamburger.png',
-          height: 25,
-          width: 25
-        };
+              url: url,
+              height: 50,
+              width: 50,
+            };
 
         var stepAnnotations = steps.map((step) => {
           var coords = step.maneuver.location.coordinates;
