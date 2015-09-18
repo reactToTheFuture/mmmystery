@@ -18,7 +18,6 @@ let {
 } = React;
 
 class FAQ extends React.Component {
-
   render() {
     return (
       <View style={styles.container}>
@@ -59,7 +58,7 @@ var styles = StyleSheet.create({
     fontSize: 18,
   },
   listView: {
-    paddingHorizontal: 25,
+    paddingHorizontal: 20,
   },
   faq: {
     marginBottom: 15,
