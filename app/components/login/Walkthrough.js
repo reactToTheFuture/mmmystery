@@ -8,6 +8,24 @@ import globals from '../../../globalVariables';
 
 var window = Dimensions.get('window');
 
+var dishes = [{
+  name: 'The GodMother',
+  image: require('image!GodMother'),
+  location: 'Santa Monica, CA',
+  date: '2d ago'
+},{
+  name: 'In N Out',
+  image: require('image!InNOut'),
+  location: 'Salt Lake City, Ut',
+  date: '1w ago'
+},
+{
+  name: 'Pad Thai',
+  image: require('image!padThai'),
+  location: 'New York, NY',
+  date: '2w ago'
+}];
+
 var {
   StyleSheet,
   Text,
@@ -78,20 +96,26 @@ class Walkthrough extends React.Component {
                 style={styles.bg}
                 source={require('image!walkthrough-bg-3')}>
                 <View style={styles.imageContainer}>
-                  <View style={styles.shareCard}>
-                    <Image
-                      style={styles.shareImage}
-                      source={require('image!InNOut')}>
-                    </Image>
-                    <View style={styles.middleShareText}>
-                      <Text style={styles.textLight}>Shared by you</Text>
-                      <Text style={styles.plateName}>The GodMother</Text>
-                      <Text style={styles.text}>Santa Monica, CA</Text>
-                    </View>
-                    <View>
-                      <Text style={styles.textLight}>1w ago</Text>
-                    </View>
-                  </View>
+                  {dishes.map(function(dish, i) {
+                    return (
+                      <View style={styles.shareCard} key={i}>
+                        <View style={styles.imageInner}>
+                          <Image
+                            style={styles.shareImage}
+                            source={dish.image}>
+                          </Image>
+                        </View>
+                        <View style={styles.middleShareText}>
+                          <Text style={styles.textLight}>Shared by you</Text>
+                          <Text style={styles.plateName}>{dish.name}</Text>
+                          <Text style={styles.text}>{dish.location}</Text>
+                        </View>
+                        <View style={styles.date}>
+                          <Text style={styles.textLight}>{dish.date}</Text>
+                        </View>
+                      </View>
+                    );
+                  })}
                 </View>
                 <View style={styles.textContainer}>
                   <Text style={styles.headline}>Sharing is caring</Text>
@@ -118,6 +142,9 @@ class Walkthrough extends React.Component {
 }
 
 export default Walkthrough;
+
+var padding = 20;
+var middleWidth = (window.width * 1/3) + 20;
 
 var styles = StyleSheet.create({
   container: {
@@ -166,9 +193,7 @@ var styles = StyleSheet.create({
   },
   shareCard: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-    padding: 8,
+    marginBottom: 10,
     backgroundColor: '#fff',
   },
   activeDot: {
@@ -177,16 +202,16 @@ var styles = StyleSheet.create({
   button: {
     width: 100,
     position: 'absolute',
-    top: 20,
-    right: 20,
+    top: 30,
+    right: padding,
     padding: 10,
     borderWidth: 1,
     borderColor: '#fff',
   },
   logo: {
     position: 'absolute',
-    top: 20,
-    left: 20,
+    top: 30,
+    left: padding,
   },
   buttonText: {
     color: '#fff',
@@ -197,12 +222,14 @@ var styles = StyleSheet.create({
   imageContainer: {
     flex: 2,
     justifyContent: 'center',
-    marginVertical: 40,
+    marginTop: 100,
+  },
+  imageInner: {
+    justifyContent: 'center'
   },
   shareImage: {
     width: 100,
     height: 100,
-    marginLeft: -25,
     borderWidth: 4,
     borderColor: '#ffffff',
   },
@@ -213,20 +240,22 @@ var styles = StyleSheet.create({
     fontFamily: 'SanFranciscoText-Regular',
     color: globals.lightText,
   },
+  date: {
+    width: 50,
+  },
   plateName: {
-    marginVertical: 10,
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: 'SanFranciscoText-SemiBold',
     color: globals.primaryDark,
   },
   middleShareText: {
-    height: 100,
-    marginHorizontal: 20,
+    width: middleWidth,
+    paddingHorizontal: 5,
     justifyContent: 'center'
   },
   textContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingHorizontal: 20,
+    paddingHorizontal: padding,
   } 
 });
