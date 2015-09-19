@@ -132,10 +132,6 @@ var {
     });
   }
 
-  componentWillMount() {
-
-  }
-
   switchToMain(userInfo) {
     this.props.navigator.push({
       component: Main,

@@ -31,7 +31,6 @@ class MapDashBoard extends React.Component {
       lastStepIndex: null,
       isLoading: true,
       timetoAnnotation: null,
-      timetoDestination: null,
       isConfirmed: false,
       hasArrived: false
     };
@@ -58,11 +57,12 @@ class MapDashBoard extends React.Component {
       if( timeElapsed < 3000 ) {
         wait = 4000 - timeElapsed;
       }
+
       setTimeout(() => {
         this.setState({
           steps: res.steps,
           stepDirections: res.stepDirections,
-          endStepIndex: res.stepDirections.length-1,
+          lastStepIndex: res.stepDirections.length-1,
           stepAnnotations: res.stepAnnotations,
           isLoading: false
         });
@@ -130,27 +130,15 @@ class MapDashBoard extends React.Component {
     });
   }
 
-  handleStepIncrement() {
-    var stepIndex = this.state.stepIndex + 1;
-
-    if( stepIndex >= this.state.endStepIndex ) {
-      this.setState({
-        hasArrived: true
-      });
-
-      firebase_api.addAdventureToUser(this.props.user.id, this.props.route.props.image.img_key);
-      return;
-    }
-
+  handleStepIncrement(stepIndex) {
     this.setState({
       stepIndex
     });
   }
 
-  handleLocationChange(timeToAnnotation, timeToDestination) {
+  handleLocationChange(timeToAnnotation) {
     this.setState({
-      timeToAnnotation,
-      timeToDestination
+      timeToAnnotation
     });
   }
 
@@ -158,6 +146,15 @@ class MapDashBoard extends React.Component {
     this.setState({
       timeToAnnotation
     });
+  }
+
+  handleArrival() {
+    this.setState({
+      hasArrived: true
+    });
+
+    firebase_api.addAdventureToUser(this.props.user.id, this.props.route.props.image.img_key);
+    return;
   }
 
   handleArrivalConfirmation() {
@@ -180,23 +177,25 @@ class MapDashBoard extends React.Component {
   }
 
   render() {
+
+    console.log(this.state.stepIndex, this.state.lastStepIndex, this.state.stepAnnotations);
+
     return (
       <View style={styles.container}>
         <Directions
           stepDirections={this.state.stepDirections}
           stepIndex={this.state.stepIndex}
-          endStepIndex={this.state.endStepIndex}
-          timeToAnnotation={this.state.timeToAnnotation}
-          timeToDestination={this.state.timeToDestination} />
+          timeToAnnotation={this.state.timeToAnnotation} />
         <Map
           userPosition={this.props.route.props.userPosition}
           restaurantLocation={this.props.route.props.image.location}
           stepAnnotations={this.state.stepAnnotations}
           onStepIncrement={this.handleStepIncrement.bind(this)}
+          onArrival={this.handleArrival.bind(this)}
           onLocationChange={this.handleLocationChange.bind(this)}
           onAnnotationChange={this.handleAnnotationChange.bind(this)}
           stepIndex={this.state.stepIndex}
-          endStepIndex={this.state.endStepIndex} />
+          lastStepIndex={this.state.lastStepIndex} />
         <RouteOverlay
           isLoading={this.state.isLoading}
           isVisible={this.state.isLoading || !this.state.isConfirmed}

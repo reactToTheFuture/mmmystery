@@ -37,7 +37,7 @@ class Directions extends React.Component {
     }
 
     return (
-      <View style={styles.directions}>
+      <View style={styles.container}>
         <Text style={[styles.text, styles.direction]}>{this.props.stepDirections[this.props.stepIndex]}</Text>
         { this.props.timeToAnnotation && <View style={styles.nextStep}>
             <Image
@@ -49,8 +49,8 @@ class Directions extends React.Component {
             </Text>
           </View>
         }
-        <View style={[{width: this.getProgressBarWidth()}, styles.progressBar]}></View>
         <View style={styles.progressBarContainer}></View>
+        <View style={[{width: this.getProgressBarWidth()}, styles.progressBar]}></View>
       </View>
     );
   };
@@ -61,7 +61,7 @@ export default Directions;
 let styles = StyleSheet.create({
   progressBar: {
     height: 5,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primaryDark,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -72,18 +72,16 @@ let styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: '#ffe8a3',
   },
   nextStep: {
     flex: 1,
     flexDirection: 'row'
   },
-  directions: {
+  container: {
     height: 80,
-    flex: 0,
-    //width: window.width - 30,
     backgroundColor: 'white',
-    alignSelf: 'center',
+    alignItems: 'center',
   },
   text: {
     color: Colors.mediumText,
@@ -99,12 +97,11 @@ let styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'SanFranciscoDisplay-Semibold',
     color: Colors.darkText,
-    paddingLeft: 10,
+    textAlign: 'center'
   },
   timeAway: {
     fontFamily: 'SanFranciscoText-Regular',
     fontSize: 16,
     flex: 1,
-    paddingLeft: 10,
   }
 });
