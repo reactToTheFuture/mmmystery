@@ -43,7 +43,8 @@ class FetchingItems extends React.Component {
     this.state = {
       panAnim: new Animated.Value(0),
       secondPanAnim: new Animated.Value(0),
-      itemIcons: [0]
+      item: foodImages[this.getRandomItem()],
+      right: this.getRandomNumber(-25, 25)
     };
   }
   componentWillMount() {
@@ -80,10 +81,9 @@ class FetchingItems extends React.Component {
   }
 
   render() {
-    var right = this.getRandomNumber(-25, 25);
     return (
-      <Animated.View style={[this.getPan(), styles.position, {right: right}, this.props.style]}>
-        <Image source={foodImages[this.getRandomItem()]} style={styles.icon} />
+      <Animated.View style={[this.getPan(), styles.position, {right: this.state.right}, this.props.style]}>
+        <Image source={this.state.item} style={styles.icon} />
       </Animated.View>
     )
   }

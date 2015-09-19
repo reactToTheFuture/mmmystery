@@ -149,12 +149,15 @@ class MapDashBoard extends React.Component {
   }
 
   handleArrival() {
+    if(this.state.hasArrived) {
+      return;
+    }
+
     this.setState({
       hasArrived: true
     });
 
     firebase_api.addAdventureToUser(this.props.user.id, this.props.route.props.image.img_key);
-    return;
   }
 
   handleArrivalConfirmation() {

@@ -138,16 +138,16 @@ var Map = React.createClass({
   },
 
   getZoomLevel(distance) {
-    if (distance >= 11) return 9;
-    if (distance < 11 && distance >= 5) return 10;
-    if (distance < 5 && distance >= 4) return 11;
-    if (distance < 4 && distance >= 2.5) return 12;
-    if (distance < 2 && distance >= 1.5) return 13;
-    if (distance < 1.5 && distance >= 0.6) return 14;
-    if (distance < 0.6 && distance >= 0.375) return 15;
-    if (distance < 0.375 && distance >= 0.1875) return 16;
-    if (distance < 0.1875 && distance >= 0.09375) return 17;
-    if (distance < 0.09375) return 18;
+    if (distance >= 11) return 8;
+    if (distance < 11 && distance >= 5) return 9;
+    if (distance < 5 && distance >= 4) return 10;
+    if (distance < 4 && distance >= 2.5) return 11;
+    if (distance < 2 && distance >= 1.5) return 12;
+    if (distance < 1.5 && distance >= 0.6) return 13;
+    if (distance < 0.6 && distance >= 0.375) return 14;
+    if (distance < 0.375 && distance >= 0.1875) return 15;
+    if (distance < 0.1875 && distance >= 0.09375) return 16;
+    if (distance < 0.09375) return 17;
   },
 
   adjustMapPosition(userLocation, nextAnnotation) {
