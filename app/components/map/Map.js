@@ -59,7 +59,7 @@ var Map = React.createClass({
 
     // returns kilometers
     var d = getDistance([userLat, userLng], [annotationLat, annotationLng]);
-
+    
     return kilometersToMiles(d);
   },
 
@@ -108,7 +108,8 @@ var Map = React.createClass({
 
     this.props.onLocationChange(timeToAnnotation, timeToRestaurant);
 
-    if( distanceToNextAnnotation <= 0.1 ) {
+    // (in miles)
+    if( distanceToNextAnnotation <= 0.05 ) {
       this.addNextAnnotation(userLocation, this.props.stepAnnotations);
     }
   },
