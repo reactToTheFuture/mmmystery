@@ -41,7 +41,7 @@ let styles = StyleSheet.create({
     marginHorizontal: 15,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: 'transparent'
+    backgroundColor: 'rgba(0,0,0,0)'
   },
   footerLocation: {
     color: '#ffffff',

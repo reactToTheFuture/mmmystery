@@ -55,8 +55,8 @@ class MapDashBoard extends React.Component {
       var timeElapsed = timeEnd - timeStart;
 
       // we get route so fast, make sure we wait at least 1 sec
-      if( timeElapsed < 1000 ) {
-        wait = 1000 - timeElapsed;
+      if( timeElapsed < 3000 ) {
+        wait = 4000 - timeElapsed;
       }
       setTimeout(() => {
         this.setState({
@@ -182,6 +182,12 @@ class MapDashBoard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Directions
+          stepDirections={this.state.stepDirections}
+          stepIndex={this.state.stepIndex}
+          endStepIndex={this.state.endStepIndex}
+          timeToAnnotation={this.state.timeToAnnotation}
+          timeToDestination={this.state.timeToDestination} />
         <Map
           userPosition={this.props.route.props.userPosition}
           restaurantLocation={this.props.route.props.image.location}
@@ -191,12 +197,6 @@ class MapDashBoard extends React.Component {
           onAnnotationChange={this.handleAnnotationChange.bind(this)}
           stepIndex={this.state.stepIndex}
           endStepIndex={this.state.endStepIndex} />
-        <Directions
-          stepDirections={this.state.stepDirections}
-          stepIndex={this.state.stepIndex}
-          endStepIndex={this.state.endStepIndex}
-          timeToAnnotation={this.state.timeToAnnotation}
-          timeToDestination={this.state.timeToDestination} />
         <RouteOverlay
           isLoading={this.state.isLoading}
           isVisible={this.state.isLoading || !this.state.isConfirmed}

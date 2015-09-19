@@ -1,8 +1,10 @@
 import React from 'react-native';
-
 import Dimensions from 'Dimensions';
 
+import { Icon } from 'react-native-icons';
 import globals from '../../../globalVariables';
+import Colors from '../../../globalVariables';
+
 
 var window = Dimensions.get('window');
 var directionsBoxWidth = window.width * 0.85;
@@ -37,9 +39,18 @@ class Directions extends React.Component {
     return (
       <View style={styles.directions}>
         <Text style={[styles.text, styles.direction]}>{this.props.stepDirections[this.props.stepIndex]}</Text>
-        { this.props.timeToAnnotation && <Text style={[styles.text, styles.timeAway]}>{this.formatTimeString(this.props.timeToAnnotation)} from next step...</Text> }
-        { this.props.timeToDestination && <Text style={[styles.text, styles.timeAway]}>{this.formatTimeString(this.props.timeToDestination)} from your meal!</Text> }
+        { this.props.timeToAnnotation && <View style={styles.nextStep}>
+            <Image
+              style={styles.icon}
+              source={require('image!icon-directions-walker')}
+            />
+            <Text style={[styles.text, styles.timeAway]}>
+              {this.formatTimeString(this.props.timeToAnnotation)} from next step...
+            </Text>
+          </View>
+        }
         <View style={[{width: this.getProgressBarWidth()}, styles.progressBar]}></View>
+        <View style={styles.progressBarContainer}></View>
       </View>
     );
   };
@@ -50,29 +61,50 @@ export default Directions;
 let styles = StyleSheet.create({
   progressBar: {
     height: 5,
-    backgroundColor: '#ffffff'
+    backgroundColor: Colors.primary,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+  },
+  progressBarContainer: {
+    height: 5,
+    width: window.width,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    backgroundColor: Colors.primaryLight,
+  },
+  nextStep: {
+    flex: 1,
+    flexDirection: 'row'
   },
   directions: {
-    width: directionsBoxWidth,
-    position: 'absolute',
-    top: 10,
-    left: window.width/2,
-    transform: [{translateX: -directionsBoxWidth/2}],
-    padding: 10,
-    backgroundColor: globals.primaryDark,
+    height: 80,
+    flex: 0,
+    //width: window.width - 30,
+    backgroundColor: 'white',
+    alignSelf: 'center',
   },
   text: {
-    color: '#ffffff',
-    textAlign: 'center',
+    color: Colors.mediumText,
+  },
+  icon: {
+    height: 18,
+    width: 10,
+    flex: 0,
+    marginRight: 10
   },
   direction: {
     marginBottom: 5,
     fontSize: 22,
-    fontFamily: 'SanFranciscoDisplay-Light',
+    fontFamily: 'SanFranciscoDisplay-Semibold',
+    color: Colors.darkText,
+    paddingLeft: 10,
   },
   timeAway: {
-    marginBottom: 5,
     fontFamily: 'SanFranciscoText-Regular',
     fontSize: 16,
+    flex: 1,
+    paddingLeft: 10,
   }
 });
