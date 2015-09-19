@@ -9,7 +9,7 @@ import globals from '../../../globalVariables';
 var window = Dimensions.get('window');
 
 var dishes = [{
-  name: 'The GodMother',
+  name: 'Italiano',
   image: require('image!GodMother'),
   location: 'Santa Monica, CA',
   date: '2d ago'
@@ -106,9 +106,13 @@ class Walkthrough extends React.Component {
                           </Image>
                         </View>
                         <View style={styles.middleShareText}>
-                          <Text style={styles.textLight}>Shared by you</Text>
-                          <Text style={styles.plateName}>{dish.name}</Text>
-                          <Text style={styles.text}>{dish.location}</Text>
+                          <View style={styles.textLightContainer}>
+                            <Text style={styles.textLight}>Shared by you</Text>
+                          </View>
+                          <View style={styles.plateNameContainer}>
+                            <Text style={styles.plateName}>{dish.name}</Text>
+                            <Text style={styles.text}>{dish.location}</Text>
+                          </View>
                         </View>
                         <View style={styles.date}>
                           <Text style={styles.textLight}>{dish.date}</Text>
@@ -193,20 +197,28 @@ var styles = StyleSheet.create({
   },
   shareCard: {
     flexDirection: 'row',
+    flex: 0,
+    height: 110,
     marginBottom: 10,
+    paddingRight: 5,
+    paddingLeft: 5,
+    paddingTop: 5,
+    borderRadius: 3,
     backgroundColor: '#fff',
+    justifyContent: 'center'
   },
   activeDot: {
     backgroundColor: globals.primaryDark,
   },
   button: {
-    width: 100,
+    width: 90,
     position: 'absolute',
     top: 30,
     right: padding,
-    padding: 10,
+    padding: 7,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: globals.primaryLight,
+    borderRadius: 2
   },
   logo: {
     position: 'absolute',
@@ -215,7 +227,7 @@ var styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
     fontFamily: 'SanFranciscoDisplay-SemiBold',
   },
@@ -223,39 +235,64 @@ var styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     marginTop: 100,
+    alignSelf: 'center',
   },
   imageInner: {
-    justifyContent: 'center'
-  },
-  shareImage: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 0,
     width: 100,
     height: 100,
-    borderWidth: 4,
-    borderColor: '#ffffff',
+    backgroundColor: 'white',
+    borderRadius: 3,
+    marginLeft: -20,
+  },
+  shareImage: {
+    width: 87,
+    height: 87,
+    borderRadius: 2,
   },
   text: {
     fontFamily: 'SanFranciscoText-Regular',
   },
+  textLightContainer: {
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    flex: 1,
+  },
   textLight: {
     fontFamily: 'SanFranciscoText-Regular',
     color: globals.lightText,
+
+    marginBottom: 5,
   },
   date: {
     width: 50,
+    paddingTop: 5,
+  },
+  plateNameContainer: {
+    flex:3,
+    justifyContent: 'flex-start',
+    flexDirection: 'column'
   },
   plateName: {
-    fontSize: 18,
+    fontSize: 22,
     fontFamily: 'SanFranciscoText-SemiBold',
     color: globals.primaryDark,
+    marginBottom: 4,
   },
   middleShareText: {
+    flexDirection: 'column',
     width: middleWidth,
     paddingHorizontal: 5,
-    justifyContent: 'center'
+    paddingTop: 5,
+    justifyContent: 'center',
+    flex: 1
   },
   textContainer: {
     flex: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: padding,
-  } 
+  }
 });
