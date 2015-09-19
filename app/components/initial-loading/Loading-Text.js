@@ -26,6 +26,19 @@ class LoadingText extends React.Component {
     };
   }
   componentWillMount() {
+    console.log(this.props.status);
+    if (this.props.status === 1) {
+      this.setState({
+        title: "Finding your location",
+        subtitle: "One moment while we find the restaurants within walking distance",
+      })
+    } else if (this.props.status === 4) {
+      console.log('hit');
+      this.setState({
+        title: "Configuring route",
+        subtitle: "One moment while we put together the steps to successfully get there",
+      })
+    }
     this._opacityAnimation = this.state.fadeAnim.interpolate({
       inputRange: [0, 0.5, 1],
       outputRange: [0, 0.3, 1]

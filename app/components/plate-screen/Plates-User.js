@@ -16,7 +16,7 @@ class PlatesUser extends React.Component {
         <Image
           style={styles.picture}
           source={{uri: this.props.user.profile_image}}/>
-        <Text style={styles.name}>mmm'd by {this.props.user.first_name}</Text>
+        <Text style={styles.name}>Mmm'd by {this.props.user.first_name}</Text>
       </View>
     );
   }
@@ -24,7 +24,7 @@ class PlatesUser extends React.Component {
 
 export default PlatesUser;
 
-var avatarWidth = 32;
+var avatarWidth = 25;
 
 let styles = StyleSheet.create({
   container: {

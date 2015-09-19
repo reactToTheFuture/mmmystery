@@ -61,14 +61,15 @@ switch(window.height) {
 
 let styles = StyleSheet.create({
   imageFooter: {
-    flex: 1,
+    flex: 4,
     marginHorizontal: 15,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   footerTop: {
-    flex: 3,
-    justifyContent: 'center'
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'flex-start'
   },
   footerBottom: {
     flex: 1,
@@ -81,13 +82,12 @@ let styles = StyleSheet.create({
   border: {
     width: 150,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.lightText,
+    borderBottomColor: '#DEE5F5',
   },
   plate: {
     marginBottom: 5,
   },
   plateName: {
-    flex: 1,
     fontSize: 28 * window.height/667,
     lineHeight: 32,
     fontFamily: 'SanFranciscoDisplay-Regular',
@@ -113,7 +113,7 @@ let styles = StyleSheet.create({
     marginBottom: 4,
     fontFamily: 'SanFranciscoText-Regular',
     color: Colors.mediumText,
-    alignSelf: 'flex-start'
+    // alignSelf: 'flex-end'
   },
   minutes: {
     color: '#FEBB27',

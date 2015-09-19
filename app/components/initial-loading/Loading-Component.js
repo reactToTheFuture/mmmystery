@@ -80,7 +80,7 @@ var LoadingComponent = React.createClass({
         }
         <CenterCircle currentStep={this.state.currentStep}/>
         <View style={{flex: 3}}>
-          <LoadingText currentStep={this.state.currentStep}/>
+          <LoadingText status={this.props.status} currentStep={this.state.currentStep}/>
         </View>
       </View>
     );

@@ -40,9 +40,10 @@ export default PlatesPriceFactor;
 let styles = StyleSheet.create({
   dollarSignBold: {
     color: Colors.primaryDark,
+    fontFamily: 'SanFranciscoDisplay-Semibold'
   },
   dollarSign: {
-    fontSize: 22,
+    fontSize: 20,
     color: Colors.yellowWhite,
     fontFamily: 'SanFranciscoDisplay-Regular'
   }
