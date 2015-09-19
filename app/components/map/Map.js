@@ -100,16 +100,15 @@ var Map = React.createClass({
   onUpdateUserLocation(userLocation) {
     var distanceToNextAnnotation = this.getDistanceToNextAnnotation(userLocation);
     var timeToAnnotation = milesToMins(distanceToNextAnnotation);
-    var timeToRestaurant = milesToMins(this.getDistanceToRestaurant(userLocation));
 
     this.setState({
       currentPosition: userLocation
     });
 
-    this.props.onLocationChange(timeToAnnotation, timeToRestaurant);
+    this.props.onLocationChange(timeToAnnotation);
 
     // (in miles)
-    if( distanceToNextAnnotation <= 0.05 ) {
+    if( distanceToNextAnnotation <= 0.025 ) {
       this.addNextAnnotation(userLocation, this.props.stepAnnotations);
     }
   },
@@ -118,11 +117,12 @@ var Map = React.createClass({
     var nextAnnotation;
     var nextAnnotationIndex = this.props.stepIndex + 1;
 
-    this.props.onStepIncrement();
-
-    if( nextAnnotationIndex >= this.props.endStepIndex ) {
+    if( nextAnnotationIndex > this.props.lastStepIndex ) {
+      this.props.onArrival();
       return;
     }
+
+    this.props.onStepIncrement(nextAnnotationIndex);
 
     nextAnnotation = annotations[nextAnnotationIndex];
 

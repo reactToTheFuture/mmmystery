@@ -35,7 +35,7 @@ class SettingsDashboard extends React.Component {
       setsOfNinePics: getFoodImages(),
       setsOfNineNames: gatCategoryNames(),
       selected: false,
-      minimumValue: 0,
+      minimumValue: 1,
       maximumValue: 10,
       selected: false,
       value: null,
