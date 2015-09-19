@@ -30,9 +30,6 @@ class Walkthrough extends React.Component {
     return (
       <View
         style={styles.container}>
-        <Image
-          style={styles.bg}
-          source={require('image!food-bg')}>
           <Swiper
             loop={false}
             onMomentumScrollEnd={this.onMomentumScrollEnd.bind(this)}
@@ -42,50 +39,79 @@ class Walkthrough extends React.Component {
             activeDot={<View style={[styles.dot, styles.activeDot]}></View>}>
             <View style={[styles.slide]}>
               <Image
-                style={styles.image}
-                source={require('image!GodMother')}>
+                style={styles.bg}
+                source={require('image!food-bg')}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('image!card')}>
+                  </Image>
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.headline}>Taken at face value</Text>
+                  <Text style={styles.paragraph}>
+                    <Text style={styles.emphasis}>No stars.</Text> <Text style={styles.emphasis}>No reviews. </Text>
+                    <Text>No restaurant name. Swipe right based solely off the looks of the plate to begin your adventure!</Text>
+                  </Text>
+                </View>
               </Image>
-              <Text style={styles.headline}>Pick a meal</Text>
-              <Text style={styles.paragraph}>
-                When you see a meal that you can't resist, swipe right to begin your adventure!
-                Swipe left to move on to other choices.
-              </Text>
             </View>
             <View style={[styles.slide]}>
               <Image
-                style={styles.image}
-                source={require('image!GodMother')}>
+                style={styles.bg}
+                source={require('image!walkthrough-bg-2')}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('image!step-card')}>
+                  </Image>
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.headline}>Follow the markers</Text>
+                  <Text style={styles.paragraph}>
+                    To keep it a mmmystery, you'll be given walking directions
+                    one step at a time right up until you arrive at your restaurant!
+                  </Text>
+                </View>
               </Image>
-              <Text style={styles.headline}>Mmmystery Walk</Text>
-              <Text style={styles.paragraph}>
-                You will then be given step by step walking directions to the restaurant of your selected meal.
-              </Text>
-              <Text style={styles.paragraph}>
-                The catch? We only give you one step at a time!
-                You will be given your next step each time you reach the current hamburger marker.
-              </Text>
             </View>
             <View style={[styles.slide]}>
               <Image
-                style={styles.image}
-                source={require('image!GodMother')}>
+                style={styles.bg}
+                source={require('image!walkthrough-bg-3')}>
+                <View style={styles.imageContainer}>
+                  <View style={styles.shareCard}>
+                    <Image
+                      style={styles.shareImage}
+                      source={require('image!InNOut')}>
+                    </Image>
+                    <View style={styles.middleShareText}>
+                      <Text style={styles.textLight}>Shared by you</Text>
+                      <Text style={styles.plateName}>The GodMother</Text>
+                      <Text style={styles.text}>Santa Monica, CA</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.textLight}>1w ago</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.headline}>Sharing is caring</Text>
+                  <Text style={styles.paragraph}>
+                    Help fellow mmmystery members start their own adventures by snapping and uploading pictures of your meals.
+                  </Text>
+                </View>
               </Image>
-              <Text style={styles.headline}>Snap a photo</Text>
-              <Text style={styles.paragraph}>
-                When you arrive at your destination, you can upload your own photo of the meal.
-              </Text>
-              <Text style={styles.paragraph}>
-                Your pic may become the beginning of someone else's next adventure!
-              </Text>
             </View>
           </Swiper>
+          <Image
+            style={styles.logo}
+            source={require('image!logo-orange')}>
+          </Image>
           <TouchableHighlight
             underlayColor={globals.primaryDark}
             style={styles.button}
             onPress={this.onButtonPress.bind(this)}>
             <Text style={styles.buttonText}>{this.props.route.props.isSignedIn ? 'Back' : 'Sign in!'}</Text>
           </TouchableHighlight>
-        </Image>
       </View>
     );
   }
@@ -102,24 +128,29 @@ var styles = StyleSheet.create({
   },
   bg: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: 'visible'
+  },
+  emphasis: {
+    fontWeight: 'bold',
   },
   slide: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    paddingHorizontal: 40,
   },
   headline: {
-    marginBottom: 25,
+    marginBottom: 10,
     color: '#fff',
     fontSize: 25,
+    textAlign: 'center',
     fontFamily: 'SanFranciscoDisplay-Semibold',
   },
   paragraph: {
     marginBottom: 20,
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
     fontFamily: 'SanFranciscoText-Medium',
   },
@@ -133,27 +164,69 @@ var styles = StyleSheet.create({
     marginBottom: 3,
     marginLeft: 3,
   },
+  shareCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    padding: 8,
+    backgroundColor: '#fff',
+  },
   activeDot: {
     backgroundColor: globals.primaryDark,
   },
   button: {
     width: 100,
     position: 'absolute',
-    top: 40,
-    left: window.width/2 - 50,
+    top: 20,
+    right: 20,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#ffffff',
-    borderRadius: 20,
-    backgroundColor: globals.primaryDark,
+    borderColor: '#fff',
+  },
+  logo: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
   },
   buttonText: {
-    color: '#ffffff',
+    color: '#fff',
     fontSize: 20,
     textAlign: 'center',
     fontFamily: 'SanFranciscoDisplay-SemiBold',
   },
-  image: {
-    marginBottom: 25,
-  }
+  imageContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    marginVertical: 40,
+  },
+  shareImage: {
+    width: 100,
+    height: 100,
+    marginLeft: -25,
+    borderWidth: 4,
+    borderColor: '#ffffff',
+  },
+  text: {
+    fontFamily: 'SanFranciscoText-Regular',
+  },
+  textLight: {
+    fontFamily: 'SanFranciscoText-Regular',
+    color: globals.lightText,
+  },
+  plateName: {
+    marginVertical: 10,
+    fontSize: 22,
+    fontFamily: 'SanFranciscoText-SemiBold',
+    color: globals.primaryDark,
+  },
+  middleShareText: {
+    height: 100,
+    marginHorizontal: 20,
+    justifyContent: 'center'
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingHorizontal: 20,
+  } 
 });
