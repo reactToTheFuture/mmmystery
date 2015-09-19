@@ -57,7 +57,7 @@
 		<string>SanFranciscoText-Regular.otf</string>
 		<string>SanFranciscoText-RegularItalic.otf</string>
 		<string>SanFranciscoText-Semibold.otf</string>
-    <string>SanFranciscoDisplay-Bold.otf</string>
+		<string>SanFranciscoDisplay-Bold.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -65,6 +65,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

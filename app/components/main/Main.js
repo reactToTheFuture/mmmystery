@@ -21,7 +21,7 @@ import { filterByDistance, filterByCategory, filterByPrice, formatCategory } fro
 var platesTimer;
 var allPlates = [];
 var filteredPlates = [];
-var defaultRadius = 5;
+var defaultRadius = 10;
 var noFilteredPlatesResults = false;
 
 let {
@@ -275,7 +275,7 @@ class Main extends React.Component {
     this.props.navigator.pop();
     this.setState({
       resetSettings: true,
-      dollar: [false, false, false],
+      dollar: [false,false,false],
       defaultRadius: defaultRadius,
       categoryFilter: [],
     });

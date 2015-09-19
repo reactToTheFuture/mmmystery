@@ -25,6 +25,7 @@ let dollarImages = getDollarImages();
 let setsOfSelected= getSetsOfSelected();
   // Category names
 let subTitles = getSubTitles();
+let resetRadius = 10;
 
 class SettingsDashboard extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class SettingsDashboard extends React.Component {
   }
 
   resetSettings() {
-    this.setState({value: 5,});
+    this.setState({value: resetRadius,});
     dollarImages = resetFilter(dollarImages, true);
     setsOfSelected =  resetFilter(setsOfSelected, false);
   }
@@ -173,8 +174,36 @@ class SettingsDashboard extends React.Component {
 
 export default SettingsDashboard;
 
+// Adjustments
 var categoryWidth = (window.width * 0.65)/3;
-
+var marginBottomCategory;
+var paddingBottomSlider;
+var distanceInfo;
+switch(window.height) {
+    case 480: // iPhone 4s
+        marginBottomCategory = 5;
+        paddingBottomSlider = 0;
+        distanceInfo = 5;
+        break;
+    case 568: // iPhone 5 and 5s
+        marginBottomCategory = 30;
+        paddingBottomSlider = 15;
+        break;
+    case 667: // iPhone 6
+        marginBottomCategory = 30;
+        paddingBottomSlider = 30;
+        break;
+    case 736: // iPhone 6s
+        marginBottomCategory = 50;
+        paddingBottomSlider = 35;
+        break;
+    default:
+        distanceInfo =null;
+        paddingBottomSlider = null;
+        marginBottomCategory = null;
+        break;
+}
+//-----
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -192,7 +221,7 @@ var styles = StyleSheet.create({
   categoryButton: {
     width: categoryWidth,
     height: categoryWidth + 20,
-    marginBottom: 20,
+    marginBottom: marginBottomCategory,
     marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',
@@ -210,7 +239,7 @@ var styles = StyleSheet.create({
   },
   subTitles: {
     paddingTop: 8,
-    fontSize: 17,
+    fontSize: 17 * window.width/375,
     textAlign: 'center',
     fontFamily: 'SanFranciscoText-Semibold',
     backgroundColor: 'transparent',
@@ -231,37 +260,36 @@ var styles = StyleSheet.create({
   },
   distanceValue: {
     fontFamily: 'SanFranciscoText-Regular',
-    fontSize: 17,
+    fontSize: 17 * window.width/375,
   },
   distanceText: {
     fontWeight: 'bold',
     fontFamily: 'SanFranciscoText-Semibold',
-    fontSize: 17
+    fontSize: 17 * window.width/375,
   },
   distanceInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 16,
+    paddingBottom: distanceInfo || 16,
   },
   containerSlider: {
-    paddingBottom: 62,
-    height: 40,
+    paddingBottom: paddingBottomSlider,
     marginHorizontal: 30,
     justifyContent: 'center',
   },
   dollarSign: {
     color: '#5B6674',
     fontFamily: 'SanFranciscoText-Semibold',
-    fontSize: 20,
+    fontSize: 20 * window.width/375,
   },
   priceText: {
     fontFamily: 'SanFranciscoText-Semibold',
     fontWeight: 'bold',
-    fontSize: 17,
+    fontSize: 17 * window.width/375,
   },
   priceContainer: {
-    paddingBottom: 30,
-    marginHorizontal: 20,
+    paddingBottom: 30 * window.height/667,
+    marginHorizontal: 20 * window.width/375,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -269,8 +297,8 @@ var styles = StyleSheet.create({
   },
   pressDollar: {
     justifyContent: 'center',
-    width: 80,
-    height: 45,
+    width: 80 * window.width/375,
+    height: 45 * window.height/667,
     alignItems: 'center',
     marginHorizontal: 10,
     backgroundColor: '#EDF2FE',
@@ -278,8 +306,8 @@ var styles = StyleSheet.create({
   pressDollarSelected: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 80,
-    height: 45,
+    width: 80 * window.width/375,
+    height: 45 * window.height/667,
     marginHorizontal: 10,
     backgroundColor: '#FCAE2B',
   },
@@ -296,8 +324,8 @@ var sliderStyle = StyleSheet.create({
     backgroundColor: '#AEBCCD',
   },
   thumb: {
-    width: 30,
-    height: 30,
+    width: 30 * window.width/375,
+    height: 30 * window.height/667,
     borderRadius: 30 / 2,
     backgroundColor: '#EDF2FE',
     shadowColor: 'black',

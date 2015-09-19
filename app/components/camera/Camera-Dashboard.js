@@ -101,7 +101,7 @@ class CameraDashboard extends React.Component {
               <View style={styles.innerBtn}>
                 <Icon
                   name='ion|ios-camera-outline'
-                  size={30}
+                  size={30 * window.width/375}
                   color='#ffffff'
                   style={styles.icon}
                 />
@@ -122,6 +122,28 @@ class CameraDashboard extends React.Component {
 }
 
 export default CameraDashboard;
+// Adjustments
+var borderRadiusImgCenter;
+var fontSizeBtnText;
+switch(window.height) {
+    case 480: // iPhone 4s
+        borderRadiusImgCenter  = 65;
+        break;
+    case 568: // iPhone 5 and 5s
+        borderRadiusImgCenter  = 65;
+        break;
+    case 667: // iPhone 6
+        borderRadiusImgCenter  = 75;
+        break;
+    case 736: // iPhone 6s
+        borderRadiusImgCenter  = 80;
+        fontSizeBtnText = 20;
+        break;
+    default:
+        fontSizeBtnText = null;
+        break;
+}
+//-----
 
 let styles = StyleSheet.create({
   container: {
@@ -145,14 +167,14 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    fontSize: 36,
+    fontSize: 36 * window.width/375,
     textAlign: 'center',
     fontFamily: 'SanFranciscoDisplay-Light',
     color: globals.darkText,
   },
   headlineContainer: {
     flex: 2,
-    paddingTop: 15,
+    paddingTop: 10 * window.width/375,
     paddingLeft: 50,
     paddingRight: 50,
     justifyContent: 'center',
@@ -165,14 +187,14 @@ let styles = StyleSheet.create({
   img: {
     alignSelf: 'center',
     marginBottom: 15,
-    width: 150,
-    height: 150,
-    borderRadius: 150/2,
+    width: 150 * window.width/375,
+    height: 150 * window.width/375,
+    borderRadius: borderRadiusImgCenter,
   },
   tip: {
     color: globals.mediumText,
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 18 * window.width/375,
     fontFamily: 'SanFranciscoText-Regular',
   },
   btnContainer: {
@@ -181,22 +203,25 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainBtn: {
-    width: window.width - 30,
+    width: 345 * window.width/375,
+    height: 63 * window.height/667,
     marginBottom: 20,
     paddingTop: 17,
     paddingBottom: 17,
     borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: globals.primaryDark,
   },
   btnText: {
-    fontSize: 20,
+    fontSize: fontSizeBtnText  || 20 * window.width/375,
     textAlign: 'center',
     color: '#ffffff',
     fontFamily: 'SanFranciscoText-Semibold',
   },
   secondaryBtn: {
     width: window.width - 30,
-    fontSize: 18,
+    fontSize: 18 * window.width/375,
     textAlign: 'center',
     color: globals.primaryDark,
     fontFamily: 'SanFranciscoText-Regular',

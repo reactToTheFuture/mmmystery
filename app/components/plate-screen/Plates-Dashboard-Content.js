@@ -49,6 +49,16 @@ class PlatesDashboardContent extends React.Component {
 
 export default PlatesDashboardContent;
 
+switch(window.height) {
+    case 480: // iPhone 4s
+        introTimeFontSize = 18;
+        sizeCardHeight = 360;
+        break;
+    default:
+      introTimeFontSize =null;
+        break;
+}
+
 let styles = StyleSheet.create({
   imageFooter: {
     flex: 1,
@@ -78,13 +88,13 @@ let styles = StyleSheet.create({
   },
   plateName: {
     flex: 1,
-    fontSize: 28,
+    fontSize: 28 * window.height/667,
     lineHeight: 32,
     fontFamily: 'SanFranciscoDisplay-Regular',
     color: Colors.darkText
   },
   plateNameLarge: {
-    fontSize: 32,
+    fontSize: 32 * window.height/667,
     lineHeight: 35,
     marginTop: 5,
     marginBottom: 7,
@@ -99,7 +109,7 @@ let styles = StyleSheet.create({
     color: Colors.darkText
   },
   introTime: {
-    fontSize: 16,
+    fontSize: introTimeFontSize || 16 * window.height/667,
     marginBottom: 4,
     fontFamily: 'SanFranciscoText-Regular',
     color: Colors.mediumText,
