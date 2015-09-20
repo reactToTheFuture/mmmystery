@@ -1,7 +1,7 @@
 import React from 'react-native';
 import Overlay from 'react-native-overlay';
 import Dimensions from 'Dimensions';
-import Colors from '../../../globalVariables';
+import globals from '../../../globalVariables';
 import { Icon, } from 'react-native-icons';
 
 import InitialLoadingOverlay from '../initial-loading/Initial-Loading-Overlay';
@@ -100,9 +100,9 @@ let styles = StyleSheet.create({
   },
   announcement: {
     marginBottom: 10,
-    fontFamily: 'SanFranciscoDisplay-Regular',
+    fontFamily: globals.fontDisplayRegular,
     fontSize: 28,
-    color: Colors.darkText,
+    color: globals.darkText,
   },
   content: {
     flex: 4,
@@ -119,14 +119,14 @@ let styles = StyleSheet.create({
     width: window.width,
     height: 60,
     flex: 0,
-    backgroundColor: Colors.primary,
+    backgroundColor: globals.primary,
     justifyContent: 'center',
     alignItems: 'center'
   },
   buttonText: {
     color: 'white',
     fontSize: 20,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
   },
   loadingOverlay: {
     backgroundColor: 'orange',
@@ -143,8 +143,8 @@ let styles = StyleSheet.create({
   reminderText: {
     flex: 1,
     textAlign: 'left',
-    fontFamily: 'SanFranciscoDisplay-Regular',
-    color: Colors.mediumText,
+    fontFamily: globals.fontDisplayRegular,
+    color: globals.mediumText,
     fontSize: 17,
     lineHeight: 25
   },
@@ -155,8 +155,8 @@ let styles = StyleSheet.create({
   },
   reminderHeaderText: {
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Semibold',
-    color: Colors.primaryDark,
+    fontFamily: globals.fontDisplaySemibold,
+    color: globals.primaryDark,
     fontSize: 18,
     marginBottom: 15
   }

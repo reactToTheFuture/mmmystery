@@ -226,7 +226,7 @@ var styles = StyleSheet.create({
     marginHorizontal: marginHorizontal,
   },
   text: {
-    fontFamily: 'SanFranciscoDisplay-SemiBold',
+    fontFamily: globals.fontDisplaySemibold,
     color: '#ffffff',
     fontSize: 20 * window.width/375,
   },
@@ -237,7 +237,7 @@ var styles = StyleSheet.create({
   },
   headline: {
     marginBottom: 50,
-    fontFamily: 'SanFranciscoDisplay-Semibold',
+    fontFamily: globals.fontDisplaySemibold,
     fontSize: 40 * window.width/375,
   },
   subHeadline: {

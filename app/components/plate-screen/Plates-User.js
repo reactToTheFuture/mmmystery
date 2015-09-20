@@ -1,5 +1,5 @@
 import React from 'react-native';
-import Colors from '../../../globalVariables';
+import globals from '../../../globalVariables';
 
 var {
   View,
@@ -35,13 +35,13 @@ let styles = StyleSheet.create({
   picture: {
     width: avatarWidth,
     height: avatarWidth,
-    backgroundColor: Colors.yellowWhite,
+    backgroundColor: globals.yellowWhite,
     borderRadius: avatarWidth/2,
     marginRight: 5,
   },
   name: {
-    fontFamily: 'SanFranciscoText-Regular',
-    color: Colors.lightText,
+    fontFamily: globals.fontTextRegular,
+    color: globals.lightText,
     fontSize: 16
   },
 });

@@ -1,6 +1,6 @@
 import React from 'react-native';
 import Dimensions from 'Dimensions';
-import Colors from '../../../globalVariables';
+import globals from '../../../globalVariables';
 import PlatesPriceFactor from './Plates-Price-Factor';
 import PlatesUser from './Plates-User';
 
@@ -90,29 +90,29 @@ let styles = StyleSheet.create({
   plateName: {
     fontSize: 28 * window.height/667,
     lineHeight: 32,
-    fontFamily: 'SanFranciscoDisplay-Regular',
-    color: Colors.darkText
+    fontFamily: globals.fontDisplayRegular,
+    color: globals.darkText
   },
   plateNameLarge: {
     fontSize: 32 * window.height/667,
     lineHeight: 35,
     marginTop: 5,
     marginBottom: 7,
-    fontFamily: 'SanFranciscoDisplay-Light',
-    color: Colors.darkText
+    fontFamily: globals.fontDisplayLight,
+    color: globals.darkText
   },
   plateNameSmall: {
     fontSize: 20,
     lineHeight: 25,
     marginBottom: 5,
-    fontFamily: 'SanFranciscoDisplay-Light',
-    color: Colors.darkText
+    fontFamily: globals.fontDisplayLight,
+    color: globals.darkText
   },
   introTime: {
     fontSize: introTimeFontSize || 16 * window.height/667,
     marginBottom: 4,
-    fontFamily: 'SanFranciscoText-Regular',
-    color: Colors.mediumText,
+    fontFamily: globals.fontTextRegular,
+    color: globals.mediumText,
     // alignSelf: 'flex-end'
   },
   minutes: {

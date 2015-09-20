@@ -1,7 +1,7 @@
 import React from 'react-native';
 import { Icon } from 'react-native-icons';
 
-import Colors from '../../../globalVariables';
+import globals from '../../../globalVariables';
 import Button from './Button';
 import Dimensions from 'Dimensions';
 
@@ -86,7 +86,7 @@ class CameraCrop extends React.Component {
                     <Icon
                       name='ion|ios-close-empty'
                       size={40}
-                      color={Colors.darkBackgroundText}
+                      color={globals.darkBackgroundText}
                       style={styles.cameraCancelIcon}
                     />
                   </View>
@@ -239,18 +239,18 @@ export default CameraCrop;
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
   },
   imageCropper: {
     alignSelf: 'center',
     flex: 0,
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
   },
   cameraTopCancel: {
     alignSelf: 'center',
@@ -265,7 +265,7 @@ var styles = StyleSheet.create({
     marginRight: 10,
   },
   cameraTop: {
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -280,8 +280,8 @@ var styles = StyleSheet.create({
   cameraTopText: {
     flex: 7,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Regular',
-    color: Colors.darkBackgroundText,
+    fontFamily: globals.fontDisplayRegular,
+    color: globals.darkBackgroundText,
     fontSize: 18,
   },
   cropButtonTouchable: {
@@ -300,7 +300,7 @@ var styles = StyleSheet.create({
   },
   cropBottom: {
     flex: 7,
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
     flexDirection: 'column',
     alignItems: 'center',
     width: fullWidth,
@@ -335,7 +335,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
   },
   usePhotoText: {
-    fontFamily: 'SanFranciscoText-Semibold'
+    fontFamily: globals.fontTextSemiBold
   },
   resetText: {
     color: '#949597',

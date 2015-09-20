@@ -4,7 +4,7 @@ var {
   width,
   height
 } = Dimensions.get('window');
-var Colors = require('../../../globalVariables');
+var globals = require('../../../globalVariables');
 
 var {
   StyleSheet,
@@ -26,14 +26,12 @@ class LoadingText extends React.Component {
     };
   }
   componentWillMount() {
-    console.log(this.props.status);
-    if (this.props.status === 1) {
+    if ( this.props.status === 1 ) {
       this.setState({
         title: "Finding your location",
         subtitle: "One moment while we find the restaurants within walking distance",
       })
-    } else if (this.props.status === 4) {
-      console.log('hit');
+    } else if ( this.props.status === 4 ) {
       this.setState({
         title: "Configuring route",
         subtitle: "One moment while we put together the steps to successfully get there",
@@ -89,14 +87,14 @@ let styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 10,
     color: '#394453',
-    fontFamily: 'SanFranciscoDisplay-Regular',
-    color: Colors.darkText
+    fontFamily: globals.fontDisplayRegular,
+    color: globals.darkText
   },
   subheader: {
     textAlign: 'center',
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Regular',
-    color: Colors.lightText
+    fontFamily: globals.fontTextRegular,
+    color: globals.lightText
   },
   notificationTextAnim: {
     paddingLeft: 35,

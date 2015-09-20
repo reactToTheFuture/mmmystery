@@ -281,11 +281,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: avatarWidth + 5,
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
   links: {
     flex: 1,

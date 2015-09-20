@@ -1,5 +1,5 @@
 var React = require('react-native');
-var Colors = require('../../../globalVariables');
+var globals = require('../../../globalVariables');
 
 var {
   View,
@@ -39,12 +39,12 @@ export default PlatesPriceFactor;
 
 let styles = StyleSheet.create({
   dollarSignBold: {
-    color: Colors.primaryDark,
-    fontFamily: 'SanFranciscoDisplay-Semibold'
+    color: globals.primaryDark,
+    fontFamily: globals.fontDisplaySemibold
   },
   dollarSign: {
     fontSize: 20,
-    color: Colors.yellowWhite,
-    fontFamily: 'SanFranciscoDisplay-Regular'
+    color: globals.yellowWhite,
+    fontFamily: globals.fontDisplayRegular
   }
 });

@@ -45,11 +45,11 @@ let styles = StyleSheet.create({
   },
   footerLocation: {
     color: '#ffffff',
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     fontSize: 15
   },
   footerLocationNear: {
-    fontFamily: 'SanFranciscoText-Semibold'
+    fontFamily: globals.fontTextSemibold
   },
   categories: {
     width: 32,

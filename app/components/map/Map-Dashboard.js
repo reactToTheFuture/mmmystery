@@ -75,10 +75,8 @@ class MapDashBoard extends React.Component {
   async getAsyncDirections(origin, destination, category) {
     var responseDirections = await (mapbox_api.getDirections(origin, destination)
       .then((data) => {
-        console.log('category of dish', category);
         var steps = data.routes[0].steps;
         var url = findIconForCategory(category);
-        console.log('url result', url);
         var annotationImage = {
               url: url,
               height: 50,
@@ -180,9 +178,6 @@ class MapDashBoard extends React.Component {
   }
 
   render() {
-
-    console.log(this.state.stepIndex, this.state.lastStepIndex, this.state.stepAnnotations);
-
     return (
       <View style={styles.container}>
         <Directions

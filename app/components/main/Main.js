@@ -15,7 +15,7 @@ import SideMenu from '../side-menu/Side-Menu';
 
 import firebase_api from '../../utils/firebase-api';
 import helpers from '../../utils/helpers';
-import Colors from '../../../globalVariables';
+
 import { filterByDistance, filterByCategory, filterByPrice, formatCategory } from '../../utils/filters';
 
 var platesTimer;
@@ -315,7 +315,7 @@ class Main extends React.Component {
           'No plates found with this selection.',
           [
             {text: 'All plates', onPress: this.onPressResetSettings.bind(this)},
-            {text: 'OK', onPress: () => console.log('OK Pressed!')},
+            {text: 'OK'},
           ]
         )
         noFilteredPlatesResults = true;

@@ -3,8 +3,6 @@ import Dimensions from 'Dimensions';
 
 import { Icon } from 'react-native-icons';
 import globals from '../../../globalVariables';
-import Colors from '../../../globalVariables';
-
 
 var window = Dimensions.get('window');
 var directionsBoxWidth = window.width * 0.85;
@@ -61,7 +59,7 @@ export default Directions;
 let styles = StyleSheet.create({
   progressBar: {
     height: 5,
-    backgroundColor: Colors.primaryDark,
+    backgroundColor: globals.primaryDark,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -84,7 +82,7 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: Colors.mediumText,
+    color: globals.mediumText,
   },
   icon: {
     height: 18,
@@ -95,12 +93,12 @@ let styles = StyleSheet.create({
   direction: {
     marginBottom: 5,
     fontSize: 22,
-    fontFamily: 'SanFranciscoDisplay-Semibold',
-    color: Colors.darkText,
+    fontFamily: globals.fontDisplaySemibold,
+    color: globals.darkText,
     textAlign: 'center'
   },
   timeAway: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     fontSize: 16,
     flex: 1,
   }

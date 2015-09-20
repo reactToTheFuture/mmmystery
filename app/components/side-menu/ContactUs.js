@@ -1,6 +1,8 @@
 import React from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
+import globals from '../../../globalVariables';
+
 var Mailer = require('NativeModules').RNMail;
 
 let {
@@ -48,14 +50,13 @@ class Contact extends React.Component {
   }
 
   onPressCall() {
-    console.log('onPress Call');
     var url = 'tel:1-408-555-5555';
     LinkingIOS.canOpenURL(url, (supported) => {
     if (!supported) {
-        console.log('Can\'t handle url: ' + url);
-      } else {
-        LinkingIOS.openURL(url);
-      }
+      console.warn('Can\'t handle url: ' + url);
+      return;
+    }
+    LinkingIOS.openURL(url);
     });
   }
 
@@ -96,7 +97,7 @@ var styles = StyleSheet.create({
     textDecorationColor: 'yellow',
     textAlign: 'center',
     fontSize: 33,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
   },
   baseText: {
     alignItems: 'center',
@@ -105,7 +106,7 @@ var styles = StyleSheet.create({
     marginTop: 150,
     marginBottom: 40,
     marginHorizontal: 10,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
   buttomItemEmail: {
     width: 340,
@@ -143,11 +144,11 @@ var styles = StyleSheet.create({
   text1: {
     fontSize: 19,
     color: 'white',
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
   },
   text2: {
     fontSize: 19,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
   },
 });
 

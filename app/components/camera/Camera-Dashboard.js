@@ -169,7 +169,7 @@ let styles = StyleSheet.create({
   headline: {
     fontSize: 36 * window.width/375,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Light',
+    fontFamily: globals.fontDisplayLight,
     color: globals.darkText,
   },
   headlineContainer: {
@@ -195,7 +195,7 @@ let styles = StyleSheet.create({
     color: globals.mediumText,
     textAlign: 'center',
     fontSize: 18 * window.width/375,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
   btnContainer: {
     flex: 3,
@@ -217,13 +217,13 @@ let styles = StyleSheet.create({
     fontSize: fontSizeBtnText  || 20 * window.width/375,
     textAlign: 'center',
     color: '#ffffff',
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
   },
   secondaryBtn: {
     width: window.width - 30,
     fontSize: 18 * window.width/375,
     textAlign: 'center',
     color: globals.primaryDark,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
 });
