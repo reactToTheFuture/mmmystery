@@ -60,6 +60,7 @@ class Walkthrough extends React.Component {
                 source={require('image!food-bg')}>
                 <View style={styles.imageContainer}>
                   <Image
+                    style={styles.imageCard1}
                     source={require('image!card')}>
                   </Image>
                 </View>
@@ -78,6 +79,7 @@ class Walkthrough extends React.Component {
                 source={require('image!walkthrough-bg-2')}>
                 <View style={styles.imageContainer}>
                   <Image
+                    style={styles.imageCard2}
                     source={require('image!step-card')}>
                   </Image>
                 </View>
@@ -145,11 +147,44 @@ class Walkthrough extends React.Component {
 }
 
 export default Walkthrough;
-
+// Adjustments
+var imageCard1Width =309 * window.width/375,
+    imageCard1Height = 365 * window.height/667,
+    shareImageWidth = 87 * window.width/375,
+    shareImageHeight = 87 * window.width/375,
+    imageInnerWidth = 100 * window.width/375,
+    imageInnerHeight = 100 * window.height/667;
+switch(window.height) {
+    case 480: // iPhone 4s
+        imageCard1Width = 220;
+        imageCard1Height = 260;
+        shareImageWidth = 60;
+        shareImageHeight = 60;
+        imageInnerWidth = 70;
+        imageInnerHeight = 70;
+        break;
+    case 568: // iPhone 5 and 5s
+        break;
+    case 667: // iPhone 6
+        break;
+    case 736: // iPhone 6s
+        break;
+    default:
+        break;
+}
+//-----
 var padding = 20;
 var middleWidth = (window.width * 1/3) + 20;
 
 var styles = StyleSheet.create({
+  imageCard2: {
+    width: 325 * window.width/375,
+    height: 142 * window.height/667,
+  },
+  imageCard1: {
+    width: imageCard1Width,
+    height: imageCard1Height,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -173,35 +208,35 @@ var styles = StyleSheet.create({
   headline: {
     marginBottom: 10,
     color: '#fff',
-    fontSize: 25,
+    fontSize: 25 * window.width/375,
     textAlign: 'center',
     fontFamily: globals.fontDisplaySemibold,
   },
   paragraph: {
     marginBottom: 20,
     color: '#fff',
-    fontSize: 18,
+    fontSize: 18 * window.width/375,
     textAlign: 'center',
     fontFamily: globals.fontTextMedium,
+    paddingHorizontal: 20 * window.width/375,
   },
   dot: {
     backgroundColor: globals.primaryLight,
-    width: 12,
-    height: 12,
+    width: 12 * window.width/375,
+    height: 12 * window.height/667,
     borderRadius: 6,
     marginRight: 3,
     marginTop: 3,
-    marginBottom: 3,
+    marginBottom: -5 -(5*window.height/667),
     marginLeft: 3,
   },
   shareCard: {
     flexDirection: 'row',
     flex: 0,
-    height: 110,
-    marginBottom: 10,
-    paddingRight: 5,
-    paddingLeft: 5,
-    paddingTop: 5,
+    height: 110 * window.height/667,
+    marginBottom: 10 * window.height/667,
+    paddingHorizontal: 5 * window.width/375,
+    paddingTop: 5 * window.height/667,
     borderRadius: 3,
     backgroundColor: '#fff',
     justifyContent: 'center'
@@ -233,22 +268,32 @@ var styles = StyleSheet.create({
   imageContainer: {
     flex: 2,
     justifyContent: 'center',
-    marginTop: 100,
+    marginTop: 100 * window.height/667,
     alignSelf: 'center',
+  },
+  imageInnerCard1: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 0,
+    width: imageInnerWidth,
+    height: imageInnerHeight,
+    backgroundColor: 'white',
+    borderRadius: 3,
+    marginLeft: -20,
   },
   imageInner: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 0,
-    width: 100,
-    height: 100,
+    width: imageInnerWidth,
+    height: imageInnerHeight,
     backgroundColor: 'white',
     borderRadius: 3,
     marginLeft: -20,
   },
   shareImage: {
-    width: 87,
-    height: 87,
+    width: shareImageWidth,
+    height: shareImageHeight,
     borderRadius: 2,
   },
   text: {
