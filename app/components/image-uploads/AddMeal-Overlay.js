@@ -113,7 +113,7 @@ let styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 10,
     borderColor: globals.lightText,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     borderWidth: 1,
   },
   centerText: {
@@ -122,13 +122,13 @@ let styles = StyleSheet.create({
   status: {
     marginBottom: 25,
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.darkText,
   },
   button: {
     marginBottom: 20,
     fontSize: 20,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.primaryDark,
   },
   loadingIcon: {

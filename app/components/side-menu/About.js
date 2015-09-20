@@ -47,7 +47,7 @@ var styles = StyleSheet.create({
   },
   titleText: {
     marginBottom: 25,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.primary,
     textAlign: 'center',
     fontSize: 35,
@@ -57,7 +57,7 @@ var styles = StyleSheet.create({
   },
   bodyText: {
     marginBottom: 10,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     textAlign: 'auto',
     fontSize: 20,
   },

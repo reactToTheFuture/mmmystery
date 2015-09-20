@@ -9,7 +9,7 @@ var {
   StyleSheet
 } = React;
 
-var globals = require('../../../globalVariables');
+import globals from '../../../globalVariables';
 
 class MealSubmittedOverlay extends React.Component {
   render() {
@@ -47,14 +47,14 @@ let styles = StyleSheet.create({
     marginBottom: 75,
     fontSize: 32,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Regular',
+    fontFamily: globals.fontDisplayRegular,
     color: globals.darkText,
   },
   button: {
     marginBottom: 20,
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.primary,
   },
 });

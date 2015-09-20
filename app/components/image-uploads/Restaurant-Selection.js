@@ -192,11 +192,11 @@ var styles = StyleSheet.create({
   headline: {
     marginBottom: 5,
     fontSize: 16,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.darkText,
   },
   subheadline: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     fontSize: 16,
     color: globals.lightText,
   },
@@ -222,7 +222,7 @@ var styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 10,
     borderColor: globals.lightText,
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     borderWidth: 1,
   }
 });

@@ -216,7 +216,7 @@ var styles = StyleSheet.create({
   restaurantTitle: {
     padding: 15,
     backgroundColor: globals.secondary,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     fontSize: 16,
     color: globals.darkText,
   },
@@ -249,7 +249,7 @@ var styles = StyleSheet.create({
   },
   headline: {
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.darkText,
   },
   subheadline: {
@@ -265,7 +265,7 @@ var styles = StyleSheet.create({
   },
   button: {
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.primaryDark,
   },
   status: {

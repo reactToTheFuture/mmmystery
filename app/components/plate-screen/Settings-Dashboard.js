@@ -3,6 +3,7 @@ import React from 'react-native';
 
 import Dimensions from 'Dimensions';
 
+import globals from '../../../globalVariables';
 import { createSettingsFilter, resetFilter } from '../../utils/filters';
 import { getDollarImages, getSetsOfSelected, gatCategoryNames, getFoodImages, getSubTitles, } from '../../utils/filters-data';
 
@@ -50,7 +51,6 @@ class SettingsDashboard extends React.Component {
   }
 
   onPressImage(i){
-    console.log('press Image');
     this.setState({selected: !this.state.selected});
     setsOfSelected[i] = !setsOfSelected[i];
     var filterCategories = createSettingsFilter(setsOfSelected, this.state.setsOfNineNames)
@@ -62,7 +62,6 @@ class SettingsDashboard extends React.Component {
   }
 
   onSlidingComplete() {
-    console.log('slide Image');
     this.props.route.props.handleSettingsConfig('keepRadius', this.state.value);
   }
 
@@ -241,7 +240,7 @@ var styles = StyleSheet.create({
     paddingTop: 8,
     fontSize: 17 * window.width/375,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     backgroundColor: 'transparent',
   },
   subTitlesSelected: {
@@ -259,12 +258,12 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   distanceValue: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     fontSize: 17 * window.width/375,
   },
   distanceText: {
     fontWeight: 'bold',
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     fontSize: 17 * window.width/375,
   },
   distanceInfo: {
@@ -279,11 +278,11 @@ var styles = StyleSheet.create({
   },
   dollarSign: {
     color: '#5B6674',
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     fontSize: 20 * window.width/375,
   },
   priceText: {
-    fontFamily: 'SanFranciscoText-Semibold',
+    fontFamily: globals.fontTextSemibold,
     fontWeight: 'bold',
     fontSize: 17 * window.width/375,
   },

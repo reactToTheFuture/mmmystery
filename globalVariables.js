@@ -14,4 +14,12 @@ module.exports = {
 
   yellowWhite: '#fdeebd',
   cameraBackground: '#25272a',
-}
+  
+  fontDisplayLight: 'SanFranciscoDisplay-Light',
+  fontDisplayRegular: 'SanFranciscoDisplay-Regular',
+  fontDisplaySemibold: 'SanFranciscoDisplay-Semibold',
+  fontTextRegular: 'SanFranciscoText-Regular',
+  fontTextRegularItalic: 'SanFranciscoText-RegularItalic',
+  fontTextMedium: 'SanFranciscoText-Medium',
+  fontTextSemibold: 'SanFranciscoText-Semibold'
+};

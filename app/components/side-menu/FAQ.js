@@ -3,6 +3,8 @@ import Dimensions from 'Dimensions';
 
 const window = Dimensions.get('window');
 
+import globals from '../../../globalVariables';
+
 import { getFaqs } from '../../utils/faqs';
 
 let {
@@ -54,7 +56,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
   question: {
     marginBottom: 5,

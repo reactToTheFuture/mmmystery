@@ -305,7 +305,7 @@ let styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   text: {
-    fontFamily: 'SanFranciscoText-Regular'
+    fontFamily: globals.fontTextRegular
   },
   headline: {
     marginBottom: 5,
@@ -324,7 +324,7 @@ let styles = StyleSheet.create({
   name: {
     marginLeft: 15,
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-SemiBold'
+    fontFamily: globals.fontTextSemibold
   },
   statsContainer: {
     flexDirection: 'row',
@@ -343,7 +343,7 @@ let styles = StyleSheet.create({
   },
   number: {
     fontSize: 20,
-    fontFamily: 'SanFranciscoText-SemiBold'
+    fontFamily: globals.fontTextSemibold
   },
   imagesContainer: {
     flex: 1,
@@ -370,7 +370,7 @@ let styles = StyleSheet.create({
     marginBottom: 5,
     color: globals.primaryDark,
     fontSize: 18,
-    fontFamily: 'SanFranciscoText-SemiBold',
+    fontFamily: globals.fontTextSemibold,
   },
   restaurant: {
     marginBottom: 5,
@@ -392,6 +392,6 @@ let styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
-    fontFamily: 'SanFranciscoText-SemiBold'
+    fontFamily: globals.fontTextSemibold
   }
 });

@@ -6,6 +6,8 @@ var  {
   StyleSheet,
 } = React;
 
+import globals from '../../../globalVariables';
+
 class Button extends React.Component {
   render() {
     return (
@@ -24,7 +26,7 @@ var styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   }
 })
 

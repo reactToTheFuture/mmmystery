@@ -14,7 +14,7 @@ var dishes = [{
   location: 'Santa Monica, CA',
   date: '2d ago'
 },{
-  name: 'In N Out',
+  name: 'Double Cheeseburger',
   image: require('image!InNOut'),
   location: 'Salt Lake City, Ut',
   date: '1w ago'
@@ -40,7 +40,6 @@ class Walkthrough extends React.Component {
     // console.log(state, context.state);
   }
   onButtonPress() {
-    console.log('pressed');
     this.props.navigator.pop();
   }
 
@@ -176,14 +175,14 @@ var styles = StyleSheet.create({
     color: '#fff',
     fontSize: 25,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Semibold',
+    fontFamily: globals.fontDisplaySemibold,
   },
   paragraph: {
     marginBottom: 20,
     color: '#fff',
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoText-Medium',
+    fontFamily: globals.fontTextMedium,
   },
   dot: {
     backgroundColor: globals.primaryLight,
@@ -214,7 +213,7 @@ var styles = StyleSheet.create({
     width: 90,
     position: 'absolute',
     top: 30,
-    right: padding,
+    left: padding,
     padding: 7,
     borderWidth: 1,
     borderColor: globals.primaryLight,
@@ -223,13 +222,13 @@ var styles = StyleSheet.create({
   logo: {
     position: 'absolute',
     top: 30,
-    left: padding,
+    right: padding,
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-SemiBold',
+    fontFamily: globals.fontDisplaySemibold,
   },
   imageContainer: {
     flex: 2,
@@ -253,7 +252,7 @@ var styles = StyleSheet.create({
     borderRadius: 2,
   },
   text: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
   },
   textLightContainer: {
     alignSelf: 'flex-start',
@@ -262,7 +261,7 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   textLight: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     color: globals.lightText,
 
     marginBottom: 5,
@@ -278,7 +277,7 @@ var styles = StyleSheet.create({
   },
   plateName: {
     fontSize: 22,
-    fontFamily: 'SanFranciscoText-SemiBold',
+    fontFamily: globals.fontTextSemibold,
     color: globals.primaryDark,
     marginBottom: 4,
   },

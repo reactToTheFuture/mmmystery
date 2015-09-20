@@ -94,13 +94,13 @@ let styles = StyleSheet.create({
     overflow: 'visible',
   },
   text: {
-    fontFamily: 'SanFranciscoText-Regular',
+    fontFamily: globals.fontTextRegular,
     color: '#ffffff',
     fontSize: 22,
     textAlign: 'center',
   },
   title: {
-    fontFamily: 'SanFranciscoDisplay-SemiBold',
+    fontFamily: globals.fontDisplaySemibold,
     fontSize: 30,
   },
   subtitle: {

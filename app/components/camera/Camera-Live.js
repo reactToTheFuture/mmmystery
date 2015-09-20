@@ -10,7 +10,7 @@ import CameraCrop from './Camera-Crop';
 import RestaurantSelection from '../image-uploads/Restaurant-Selection';
 import MealSelection from '../image-uploads/Meal-Selection';
 
-import Colors from '../../../globalVariables';
+import globals from '../../../globalVariables';
 
 var {
   StyleSheet,
@@ -138,7 +138,7 @@ class CameraLive extends React.Component {
                     <Icon
                       name='ion|ios-close-empty'
                       size={40}
-                      color={Colors.darkBackgroundText}
+                      color={globals.darkBackgroundText}
                       style={styles.cameraReverseIcon}
                     />
                   </View>
@@ -154,7 +154,7 @@ class CameraLive extends React.Component {
                     <Icon
                       name='ion|ios-reverse-camera-outline'
                       size={40}
-                      color={Colors.darkBackgroundText}
+                      color={globals.darkBackgroundText}
                       style={styles.cameraReverseIcon}
                     />
                   </View>
@@ -205,7 +205,7 @@ var styles = StyleSheet.create({
     height: 40,
   },
   cameraTop: {
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -222,8 +222,8 @@ var styles = StyleSheet.create({
   cameraTopText: {
     flex: 7,
     textAlign: 'center',
-    fontFamily: 'SanFranciscoDisplay-Regular',
-    color: Colors.darkBackgroundText,
+    fontFamily: globals.fontDisplayRegular,
+    color: globals.darkBackgroundText,
     fontSize: 18,
   },
 
@@ -253,7 +253,7 @@ var styles = StyleSheet.create({
     width: fullWidth
   },
   cameraBottom: {
-    backgroundColor: Colors.cameraBackground,
+    backgroundColor: globals.cameraBackground,
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
