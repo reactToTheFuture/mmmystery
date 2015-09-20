@@ -186,7 +186,7 @@ class SideMenu extends React.Component {
                     <TouchableHighlight
                       key={i}
                       style={styles.button}
-                      underlayColor={globals.primary}
+                      underlayColor={globals.secondary}
                       onPress={link.onPress}>
                       <View style={styles.innerButton}>
                         <Image
