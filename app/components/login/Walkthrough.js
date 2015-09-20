@@ -14,7 +14,7 @@ var dishes = [{
   location: 'Santa Monica, CA',
   date: '2d ago'
 },{
-  name: 'Double Cheeseburger',
+  name: 'Dbl Cheese',
   image: require('image!InNOut'),
   location: 'Salt Lake City, Ut',
   date: '1w ago'
