@@ -39,6 +39,13 @@ class About extends React.Component {
   }
 }
 
+export default About;
+
+// Adjustments depending on the device
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
+//-----
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -47,10 +54,10 @@ var styles = StyleSheet.create({
   },
   titleText: {
     marginBottom: 25,
-    fontFamily: globals.fontTextSemibold,
+    fontFamily: globals.fontLogoRegular,
     color: globals.primary,
     textAlign: 'center',
-    fontSize: 35,
+    fontSize: 55 * widthRatio,
   },
   textContainer: {
     paddingHorizontal: 20,
@@ -67,4 +74,3 @@ var styles = StyleSheet.create({
   },
 });
 
-export default About;
