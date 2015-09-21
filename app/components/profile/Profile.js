@@ -214,7 +214,7 @@ class Profile extends React.Component {
     );
 
     var stats = (
-      <View>
+      <View style={styles.contentUser}>
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
             <Text style={styles.number}>{this.state.adventuresCount}</Text>
@@ -233,7 +233,7 @@ class Profile extends React.Component {
           </View>
         </View>
 
-        <View style={styles.imagesContainer}>
+        <View style={styles.imagesContainerUp}>
           <Text style={[styles.text, styles.headline]}>Mmmeals Uploaded:</Text>
           {this.state.imagesUploadedCount ?
             <ListView
@@ -253,7 +253,7 @@ class Profile extends React.Component {
           }
         </View>
 
-        <View style={styles.imagesContainer}>
+        <View style={styles.imagesContainerAd}>
           <Text style={[styles.text, styles.headline]}>Adventures Completed:</Text>
           {this.state.adventuresCount ?
             <ListView
@@ -283,7 +283,7 @@ class Profile extends React.Component {
         { (this.state.isLoadingImages || this.state.isLoadingAdventures) && loading }
         { (!this.state.isLoadingImages && !this.state.isLoadingAdventures) && stats }
 
-      </View>
+      </View >
     );
   };
 }
@@ -291,6 +291,9 @@ class Profile extends React.Component {
 export default Profile;
 
 let styles = StyleSheet.create({
+  contentUser: {
+    flex: 10,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -310,8 +313,10 @@ let styles = StyleSheet.create({
   headline: {
     marginBottom: 5,
     fontSize: 18,
+    fontFamily: globals.fontTextSemibold
   },
   avatarContainer: {
+    flex:1,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
@@ -327,6 +332,7 @@ let styles = StyleSheet.create({
     fontFamily: globals.fontTextSemibold
   },
   statsContainer: {
+    flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -345,9 +351,15 @@ let styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: globals.fontTextSemibold
   },
-  imagesContainer: {
-    flex: 1,
-    marginBottom: 20,
+  imagesContainerUp: {
+    flex: 2,
+    marginBottom: 5,
+    borderBottomWidth: 2,
+    borderBottomColor: globals.primaryDark,
+  },
+  imagesContainerAd: {
+    flex: 1.5,
+    marginBottom: 5,
     borderBottomWidth: 2,
     borderBottomColor: globals.primaryDark,
   },
@@ -355,7 +367,7 @@ let styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 2,
     borderBottomColor: globals.secondary,
-    paddingVertical: 2.5 
+    paddingVertical: 2.5
   },
   mainImageInfo: {
     flex: 3,
