@@ -18,7 +18,8 @@ var {
   Text,
   TextInput,
   ListView,
-  View
+  View,
+  Image
 } = React;
 
 var window = Dimensions.get('window');
@@ -146,15 +147,27 @@ class MealSelection extends React.Component {
     var addMealButton = (
       <TouchableHighlight
         underlayColor={'#ffffff'}
-        onPress={this.handleOverlayOpen.bind(this)}>
-        <Text style={[styles.centerText, styles.button]}>Add a new meal +</Text>
+        onPress={this.handleOverlayOpen.bind(this)}
+        style={styles.newMealButton}>
+        <Text style={[styles.centerText, styles.newMealButtonText]}>Sweet, let's add it!</Text>
       </TouchableHighlight>
     );
 
     var noPlatesView = (
-      <View style={[styles.textContainer]}>
-        <Text style={[styles.centerText, styles.headline, styles.callout]}>Oh no! There are no meals</Text>
-        <Text style={[styles.centerText, styles.headline, styles.subheadline]}>Add your meal so others can find it too!</Text>
+      <View style={styles.noPlatesContainer}>
+        <View style={styles.noPlatesContainer}>
+          <View style={styles.noPlatesIconContainer}>
+            <Image
+              style={styles.noPlatesIcon}
+              source={require('image!icon-first-meal')}
+            />
+          </View>
+          <View style={styles.noPlatesText}>
+            <Text style={[styles.centerText, styles.headline, styles.noPlatesSubheader]}>You're the first Mmmystery at</Text>
+            <Text style={[styles.centerText, styles.headline, styles.noPlatesHeader]}>{this.props.route.props.restaurant.name}</Text>
+            <Text style={[styles.centerText, styles.headline, styles.subheadline]}>It would be so wonderful if you would take a moment to add your meal</Text>
+          </View>
+        </View>
         {addMealButton}
       </View>
     );
@@ -183,13 +196,17 @@ class MealSelection extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
-
-        <Text style={[styles.centerText, styles.headline, styles.status]}>{status}</Text>
-
-        <View style={[styles.innerContainer, this.state.noPlates && styles.noPlates]}>
-          { this.state.noPlates ? noPlatesView : platesView }
-        </View>
+          { this.state.noPlates ?
+              {noPlatesView}
+            :
+            <View>
+              <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
+              <Text style={[styles.centerText, styles.headline, styles.status]}>{status}</Text>
+              <View style={[styles.innerContainer, this.state.noPlates && styles.noPlates]}>
+                {platesView}
+              </View>
+            </View>
+          }
 
         <AddMealOverlay
           status={this.state.status}
@@ -253,9 +270,11 @@ var styles = StyleSheet.create({
     color: globals.darkText,
   },
   subheadline: {
-    marginBottom: 50,
-    fontSize: 16,
+    fontSize: 17,
+    lineHeight: 23,
+    paddingHorizontal: 15,
     color: globals.lightText,
+    fontFamily: globals.fontTextRegular,
   },
   restaurantsContainer: {
     flex: 1,
@@ -278,6 +297,17 @@ var styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
   },
+  noPlatesSubheader: {
+    fontSize: 20,
+    color: globals.lightText,
+    fontFamily: globals.fontDisplayRegular,
+    marginBottom: 5,
+  },
+  noPlatesHeader: {
+    fontSize: 28,
+    fontFamily: globals.fontDisplayRegular,
+    marginBottom: 30,
+  },
   meal: {
     paddingTop: 15,
     paddingRight: 5,
@@ -285,5 +315,41 @@ var styles = StyleSheet.create({
     paddingLeft: 5,
     borderBottomColor: globals.mediumText,
     borderBottomWidth: 1,
+  },
+  noPlatesIconContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  noPlatesIcon: {
+    height: 180,
+    width: 84,
+    flex: 0,
+  },
+  noPlatesText: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  noPlatesContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  newMealButton: {
+    width: window.width,
+    height: 60,
+    flex: 0,
+    backgroundColor: globals.primary,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  newMealButtonText: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: globals.fontTextSemibold,
   },
 });

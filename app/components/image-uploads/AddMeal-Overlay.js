@@ -11,7 +11,8 @@ var {
   TextInput,
   ActivityIndicatorIOS,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  Image,
 } = React;
 
 var window = Dimensions.get('window');
@@ -46,25 +47,27 @@ class AddMealOverlay extends React.Component {
         visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
           <Text style={[styles.centerText, styles.status]}>{this.props.status}</Text>
-          <View style={styles.inputContainer}>
-            <Icon
-              name='ion|fork'
-              size={30}
-              color={globals.lightText}
-              style={styles.searchIcon}
+          <View style={styles.addMealIconContainer}>
+            <Image
+              style={styles.addMealIcon}
+              source={require('image!icon-add-mystery')}
             />
+          </View>
+          <Text style={[styles.leftText, styles.inputLabel]}>What did you have to eat?</Text>
+          <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
               onChangeText={this.handleTextInput.bind(this)}
-              placeholder="What did you have?"
+              placeholder="Ex. Grilled Turkey Breast Sandwich"
               placeholderTextColor="grey"
               value={this.state.searchText}
             />
           </View>
           <TouchableHighlight
             underlayColor={'#ffffff'}
-            onPress={this.handleMealAdd.bind(this)}>
-            <Text style={[styles.centerText, styles.button]}>Add Meal and Upload Image!</Text>
+            onPress={this.handleMealAdd.bind(this)}
+            style={styles.mainBtn}>
+            <Text style={[styles.centerText, styles.btnText]}>Add my Mmmystery</Text>
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={'#ffffff'}
@@ -77,6 +80,7 @@ class AddMealOverlay extends React.Component {
             size="large"
           />
         </View>
+        <View style={styles.keyboardSpace}></View>
       </Modal>
     );
   }
@@ -85,25 +89,22 @@ class AddMealOverlay extends React.Component {
 export default AddMealOverlay;
 
 let styles = StyleSheet.create({
-  searchIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
   addMealOverlay: {
-    flex: 1,
+    flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
+  },
+  keyboardSpace: {
+    flex: 2,
+    backgroundColor: 'white'
   },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    width: window.width,
-    paddingRight: 20,
-    paddingLeft: 20,
-    marginBottom: 50,
+    width: 345 * window.width/375,
+    marginBottom: 20,
   },
   textInput: {
     flex: 3,
@@ -112,12 +113,30 @@ let styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 15,
     paddingLeft: 10,
-    borderColor: globals.lightText,
+    borderColor: '#DEE5F5',
     fontFamily: globals.fontTextRegular,
     borderWidth: 1,
   },
   centerText: {
     textAlign: 'center',
+  },
+  leftText: {
+    textAlign: 'left'
+  },
+  inputLabel: {
+    marginBottom: 25,
+    fontSize: 18,
+    fontFamily: globals.fontTextSemibold,
+    color: globals.darkText,
+  },
+  addMealIcon: {
+    height: 111,
+    width: 231,
+    flex: 0,
+    padding: 3,
+  },
+  addMealIconContainer: {
+    marginBottom: 35,
   },
   status: {
     marginBottom: 25,
@@ -127,7 +146,7 @@ let styles = StyleSheet.create({
   },
   button: {
     marginBottom: 20,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: globals.fontTextSemibold,
     color: globals.primaryDark,
   },
@@ -136,5 +155,22 @@ let styles = StyleSheet.create({
     top: 100,
     left: (window.width/2 - 18),
     backgroundColor: "transparent",
+  },
+  mainBtn: {
+    width: 345 * window.width/375,
+    height: 63 * window.height/667,
+    marginBottom: 20,
+    paddingTop: 17,
+    paddingBottom: 17,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: globals.primary,
+  },
+  btnText: {
+    fontSize: 20 * window.width/375,
+    textAlign: 'center',
+    color: '#ffffff',
+    fontFamily: globals.fontTextSemibold,
   },
 });
