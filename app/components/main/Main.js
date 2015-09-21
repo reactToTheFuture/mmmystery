@@ -192,8 +192,16 @@ class Main extends React.Component {
     fetch(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true`)
     .then((response) => response.json())
     .then((responseData) => {
+
+      var addressData = responseData.results[0].formatted_address.split(',');
+      var searchAddress = `${addressData[0]}, ${addressData[1]}`.substr(0, 35);
+
+      if( searchAddress.length === 35 ) {
+        searchAddress += '...';
+      }
+
       this.setState({
-        searchAddress: responseData.results[0].formatted_address.slice(0, 30) + '...'
+        searchAddress
       });
     });
   }
