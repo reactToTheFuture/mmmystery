@@ -59,7 +59,7 @@ class AddMealOverlay extends React.Component {
               style={styles.textInput}
               onChangeText={this.handleTextInput.bind(this)}
               placeholder="Ex. Grilled Turkey Breast Sandwich"
-              placeholderTextColor="grey"
+              placeholderTextColor="#7F90A6"
               value={this.state.searchText}
             />
           </View>
