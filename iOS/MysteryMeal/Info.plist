@@ -58,6 +58,7 @@
 		<string>SanFranciscoText-RegularItalic.otf</string>
 		<string>SanFranciscoText-Semibold.otf</string>
 		<string>SanFranciscoDisplay-Bold.otf</string>
+		<string>JustAnotherHand.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
