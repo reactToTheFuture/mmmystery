@@ -164,7 +164,7 @@ class CameraLive extends React.Component {
           <Camera
             ref="cam"
             aspect="fill"
-            style={[styles.camera, this.state.measuredSize]}
+            style={[styles.camera]}
             type={this.state.cameraType}>
           </Camera>
           <View style={styles.cameraBottom}>
@@ -191,6 +191,8 @@ var styles = StyleSheet.create({
   camera: {
     flex: 0,
     backgroundColor: 'transparent',
+    height: fullWidth + 55,
+    width: fullWidth,
   },
 
 
