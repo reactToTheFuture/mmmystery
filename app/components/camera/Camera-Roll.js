@@ -110,8 +110,8 @@ class CameraRollView extends React.Component {
       image: {
         uri: image.uri,
         type: 'file',
-        width: fullWidth,
-        height: fullWidth + 55
+        width: image.width,
+        height: image.height
       }
     });
   }

@@ -35,7 +35,7 @@ class CameraLive extends React.Component {
       cameraType: Camera.constants.Type.back,
       measuredSize: {
         width: fullWidth,
-        height: fullWidth + 55,
+        height: fullHeight,
       },
       isCroppingPhoto: false,
       imageFrom: 'Camera',
