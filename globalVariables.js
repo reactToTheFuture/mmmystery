@@ -22,5 +22,5 @@ module.exports = {
   fontTextRegularItalic: 'SanFranciscoText-RegularItalic',
   fontTextMedium: 'SanFranciscoText-Medium',
   fontTextSemibold: 'SanFranciscoText-Semibold',
-  fontLogoRegular: 'JustAnotherHand',
+  fontLogoRegular: 'JustAnotherHand-Regular',
 };

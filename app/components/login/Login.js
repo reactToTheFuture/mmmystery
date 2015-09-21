@@ -236,8 +236,8 @@ var styles = StyleSheet.create({
   },
   headline: {
     marginBottom: 50,
-    fontFamily: globals.fontDisplaySemibold,
-    fontSize: 40 * widthRatio,
+    fontFamily: globals.fontLogoRegular,
+    fontSize: 65 * widthRatio,
   },
   subHeadline: {
     textAlign: 'center',
