@@ -52,7 +52,11 @@ class Profile extends React.Component {
         return 0;
       }
 
-      return Object.keys(data.likes).length;
+      var likes = Object.keys(data.likes).length;
+
+      totalLikes += likes;
+
+      return likes;
     }).reverse();
 
     this.setState({
@@ -72,21 +76,14 @@ class Profile extends React.Component {
   }
 
   getImagesUploaded() {
-    firebase_api.getImagesByUser(this.props.user.id, (image) => {
-      _imagesUploadedData.push(image);
+    firebase_api.getImagesByUser(this.props.user.id)
+    .then((images) => {
 
-      if(image.likes) {
-        totalLikes += Object.keys(image.likes).length
+      if(images) {
+        _imagesUploadedData = images;
       }
 
-      // initial build is over, immediately update state
-      if(!this.state.isLoadingImages) {
-        this.updateImageState();
-        return;
-      }
-
-      clearTimeout(imagesTimer);
-      imagesTimer = setTimeout(this.updateImagesState.bind(this), 500);
+      this.updateImagesState();
     });
   }
 
@@ -114,6 +111,7 @@ class Profile extends React.Component {
     })
     .catch((err) => {
       console.warn(err);
+      this.updateAdventuresState();
     });
   }
 
@@ -168,6 +166,8 @@ class Profile extends React.Component {
       likes = Object.keys(imgData.likes).length;
       likes = this._formatAmount(likes, 'like');
     }
+
+    // console.log(imgData);
 
     dateData = imgData.date.split(' ');
 
@@ -385,7 +385,7 @@ let styles = StyleSheet.create({
   none: {
     marginVertical: 50,
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: 18,
   },
   button: {
     backgroundColor: globals.primaryDark,
