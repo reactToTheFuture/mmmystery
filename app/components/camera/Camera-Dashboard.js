@@ -71,12 +71,10 @@ class CameraDashboard extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-          <View style={styles.topImageContainer}>
             <Image
               style={styles.topImage}
               source={require('image!icon-camera-dashboard')}
             />
-          </View>
           <View style={styles.headlineContainer}>
             <Text style={styles.headline}>Take a photo when your meal arrives</Text>
             <Text style={[styles.headline, styles.subHeadline]}>Sharing your meal helps make other's decision choosing a Mmmystery easy!</Text>
@@ -139,6 +137,9 @@ switch(window.height) {
 let styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    paddingTop: 20 * heightRatio,
+
   },
   innerBtn: {
     flexDirection: 'row',
@@ -146,26 +147,25 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    fontSize: 32 * widthRatio,
+    fontSize: 25 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontDisplayLight,
     color: globals.darkText,
-    marginBottom: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
+    marginBottom: 10 * heightRatio,
+    paddingHorizontal: 10 * widthRatio,
   },
   subHeadline: {
-    fontSize: 18,
+    fontSize: 18 * widthRatio,
     lineHeight: 24,
     textAlign: 'center',
     fontFamily: globals.fontTextRegular,
     color: globals.mediumText,
-    paddingLeft: 25,
-    paddingRight: 25,
+    paddingLeft: 25  * widthRatio,
+    paddingRight: 25  * widthRatio,
   },
   headlineContainer: {
     flex: 1,
-    paddingTop: 10 * window.width/375,
+    paddingTop: 30 * widthRatio,
     justifyContent: 'center',
   },
   icon: {
@@ -184,14 +184,13 @@ let styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 30
+    marginBottom: 30 * widthRatio,
   },
   mainBtn: {
     width: 345 * widthRatio,
     height: 63 * heightRatio,
     marginBottom: 20,
-    paddingTop: 17,
-    paddingBottom: 17,
+    paddingVertical: 17 * heightRatio,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -210,16 +209,12 @@ let styles = StyleSheet.create({
     color: globals.primaryDark,
     fontFamily: globals.fontTextRegular,
   },
-  topImageContainer: {
-    flex: 1,
+  topImage: {
+    overflow: 'visible',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  topImage: {
-    height: 149,
-    width: 259,
-    flex: 0,
+    height: 149 * heightRatio,
+    width: 259 * widthRatio,
+    flex: 1,
   },
 });
