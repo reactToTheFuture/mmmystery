@@ -199,6 +199,8 @@ class PlatesDashBoard extends React.Component {
 export default PlatesDashBoard;
 
 // Adjustments
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
 var sizeCardWidth,
     sizeCardHeight;
 switch(window.height) {
@@ -207,16 +209,16 @@ switch(window.height) {
         sizeCardHeight = 360;
         break;
     case 568 : // iPhone 5 and 5s
-        sizeCardWidth = 345 *  window.width/375;
-        sizeCardHeight = 533 * window.height/667;
+        sizeCardWidth = 345 *  widthRatio;
+        sizeCardHeight = 533 * heightRatio;
         break;
     case 667: // iPhone 6
         sizeCardWidth  = 345;
         sizeCardHeight = 533;
         break;
     case 736: // iPhone 5 and 5s
-        sizeCardWidth = 345 *  window.width/375;
-        sizeCardHeight = 533 * window.height/667;
+        sizeCardWidth = 345 *  widthRatio;
+        sizeCardHeight = 533 * heightRatio;
     default:
         break;
 }
@@ -253,7 +255,7 @@ var styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   imageCrop: {
-    width: 345 *  window.width/375,
+    width: 345 *  widthRatio,
     height: 10,
     backgroundColor: '#ffffff',
     position: 'absolute',

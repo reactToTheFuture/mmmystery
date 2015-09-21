@@ -148,12 +148,14 @@ class Walkthrough extends React.Component {
 
 export default Walkthrough;
 // Adjustments
-var imageCard1Width =309 * window.width/375,
-    imageCard1Height = 365 * window.height/667,
-    shareImageWidth = 87 * window.width/375,
-    shareImageHeight = 87 * window.width/375,
-    imageInnerWidth = 100 * window.width/375,
-    imageInnerHeight = 100 * window.height/667;
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
+var imageCard1Width =309 * widthRatio,
+    imageCard1Height = 365 * heightRatio,
+    shareImageWidth = 87 * widthRatio,
+    shareImageHeight = 87 * widthRatio,
+    imageInnerWidth = 100 * widthRatio,
+    imageInnerHeight = 100 * heightRatio;
 switch(window.height) {
     case 480: // iPhone 4s
         imageCard1Width = 220;
@@ -162,12 +164,6 @@ switch(window.height) {
         shareImageHeight = 60;
         imageInnerWidth = 70;
         imageInnerHeight = 70;
-        break;
-    case 568: // iPhone 5 and 5s
-        break;
-    case 667: // iPhone 6
-        break;
-    case 736: // iPhone 6s
         break;
     default:
         break;
@@ -178,8 +174,8 @@ var middleWidth = (window.width * 1/3) + 20;
 
 var styles = StyleSheet.create({
   imageCard2: {
-    width: 325 * window.width/375,
-    height: 142 * window.height/667,
+    width: 325 * widthRatio,
+    height: 142 * heightRatio,
   },
   imageCard1: {
     width: imageCard1Width,
@@ -208,35 +204,35 @@ var styles = StyleSheet.create({
   headline: {
     marginBottom: 10,
     color: '#fff',
-    fontSize: 25 * window.width/375,
+    fontSize: 25 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontDisplaySemibold,
   },
   paragraph: {
     marginBottom: 20,
     color: '#fff',
-    fontSize: 18 * window.width/375,
+    fontSize: 18 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontTextMedium,
-    paddingHorizontal: 20 * window.width/375,
+    paddingHorizontal: 20 * widthRatio,
   },
   dot: {
     backgroundColor: globals.primaryLight,
-    width: 12 * window.width/375,
-    height: 12 * window.height/667,
+    width: 12 * widthRatio,
+    height: 12 * heightRatio,
     borderRadius: 6,
     marginRight: 3,
     marginTop: 3,
-    marginBottom: -5 -(5*window.height/667),
+    marginBottom: -5 -(5*heightRatio),
     marginLeft: 3,
   },
   shareCard: {
     flexDirection: 'row',
     flex: 0,
-    height: 110 * window.height/667,
-    marginBottom: 10 * window.height/667,
-    paddingHorizontal: 5 * window.width/375,
-    paddingTop: 5 * window.height/667,
+    height: 110 * heightRatio,
+    marginBottom: 10 * heightRatio,
+    paddingHorizontal: 5 * widthRatio,
+    paddingTop: 5 * heightRatio,
     borderRadius: 3,
     backgroundColor: '#fff',
     justifyContent: 'center'
@@ -268,7 +264,7 @@ var styles = StyleSheet.create({
   imageContainer: {
     flex: 2,
     justifyContent: 'center',
-    marginTop: 100 * window.height/667,
+    marginTop: 100 * heightRatio,
     alignSelf: 'center',
   },
   imageInnerCard1: {

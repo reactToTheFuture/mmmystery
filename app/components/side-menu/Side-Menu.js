@@ -180,7 +180,7 @@ class SideMenu extends React.Component {
               <Text style={[styles.text, styles.name]}>{this.props.user.first_name} {this.props.user.last_name}</Text>
             </View>
             <View style={styles.links}>
-              <View style={styles.mainLinks}> 
+              <View style={styles.mainLinks}>
                 {links.map(function(link, i) {
                   return (
                     <TouchableHighlight
@@ -200,7 +200,7 @@ class SideMenu extends React.Component {
               </View>
               <View style={styles.logoutContainer}>
                 <TouchableHighlight
-                  style={styles.button}
+                  style={styles.buttonLogout}
                   underlayColor={globals.primary}
                   onPress={this.onLogOut.bind(this)}>
                   <View style={styles.innerButton}>
@@ -220,8 +220,22 @@ class SideMenu extends React.Component {
 
 export default SideMenu;
 
+var widthRatio = window.width/375,
+    heightRatio = window.height/667,
+    marginBottomButton;
 var menuWidth = window.width * 0.70;
 var avatarWidth = 24;
+switch(window.height) {
+    case 480: // iPhone 4s
+        paddingVertical=0.5;
+        marginBottomButton = 0.5;
+        break;
+    default:
+        paddingVertical=null;
+        marginBottomButton = null;
+        break;
+}
+//-----
 
 const styles = StyleSheet.create({
   container: {
@@ -266,7 +280,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginVertical: 25,
   },
-  // absolute positioning to ensure, 
+  // absolute positioning to ensure,
   // a flexDirection of 'column' so text will
   // never overflow container
   avatar: {
@@ -284,7 +298,7 @@ const styles = StyleSheet.create({
     fontFamily: globals.fontTextRegular,
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 18 * widthRatio,
     fontFamily: globals.fontTextRegular,
   },
   links: {
@@ -304,13 +318,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: marginBottomButton || 10 * heightRatio,
+  },
+  buttonLogout: {
+    width: menuWidth,
+    paddingVertical: paddingVertical || 10 * heightRatio,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: marginBottomButton || 10 * heightRatio,
   },
   innerButton: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   icon: {
+    height: 30 * widthRatio,
+    width: 30 * widthRatio,
     marginRight: 10,
   },
 });

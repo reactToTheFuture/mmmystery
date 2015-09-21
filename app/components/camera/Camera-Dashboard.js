@@ -123,6 +123,8 @@ class CameraDashboard extends React.Component {
 
 export default CameraDashboard;
 // Adjustments
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
 var borderRadiusImgCenter;
 var fontSizeBtnText;
 switch(window.height) {
@@ -167,14 +169,14 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   headline: {
-    fontSize: 36 * window.width/375,
+    fontSize: 36 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontDisplayLight,
     color: globals.darkText,
   },
   headlineContainer: {
     flex: 2,
-    paddingTop: 10 * window.width/375,
+    paddingTop: 10 * widthRatio,
     paddingLeft: 50,
     paddingRight: 50,
     justifyContent: 'center',
@@ -187,14 +189,14 @@ let styles = StyleSheet.create({
   img: {
     alignSelf: 'center',
     marginBottom: 15,
-    width: 150 * window.width/375,
-    height: 150 * window.width/375,
+    width: 150 * widthRatio,
+    height: 150 * widthRatio,
     borderRadius: borderRadiusImgCenter,
   },
   tip: {
     color: globals.mediumText,
     textAlign: 'center',
-    fontSize: 18 * window.width/375,
+    fontSize: 18 * widthRatio,
     fontFamily: globals.fontTextRegular,
   },
   btnContainer: {
@@ -203,8 +205,8 @@ let styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainBtn: {
-    width: 345 * window.width/375,
-    height: 63 * window.height/667,
+    width: 345 * widthRatio,
+    height: 63 * heightRatio,
     marginBottom: 20,
     paddingTop: 17,
     paddingBottom: 17,
@@ -214,14 +216,14 @@ let styles = StyleSheet.create({
     backgroundColor: globals.primaryDark,
   },
   btnText: {
-    fontSize: fontSizeBtnText  || 20 * window.width/375,
+    fontSize: fontSizeBtnText  || 20 * widthRatio,
     textAlign: 'center',
     color: '#ffffff',
     fontFamily: globals.fontTextSemibold,
   },
   secondaryBtn: {
     width: window.width - 30,
-    fontSize: 18 * window.width/375,
+    fontSize: 18 * widthRatio,
     textAlign: 'center',
     color: globals.primaryDark,
     fontFamily: globals.fontTextRegular,
