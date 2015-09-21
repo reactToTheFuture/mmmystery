@@ -157,9 +157,13 @@ var firebase_api = {
     return deferred.promise;
   },
   getImagesByUser(user_id, cb) {
-    imageDataRef.orderByChild('user_id').equalTo(user_id).on('child_added', (snapshot) => {
-      cb(snapshot.val());
+    var deferred = Q.defer();
+
+    imageDataRef.orderByChild('user_id').equalTo(user_id).on('value', (snapshot) => {
+      deferred.resolve(snapshot.val());
     });
+
+    return deferred.promise;
   },
   getImageById(img_id) {
     var deferred = Q.defer();
