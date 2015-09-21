@@ -112,7 +112,7 @@ class RestaurantSelection extends React.Component {
       props,
       navigationBar: (
         <NavigationBar
-          title="Find your meal" />
+          title="Add your meal" />
       )
     });
   }
@@ -249,5 +249,5 @@ var styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     fontFamily: globals.fontTextRegular,
     borderWidth: 1,
-  }
+  },
 });

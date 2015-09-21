@@ -6,9 +6,6 @@ import Dimensions from 'Dimensions';
 import CameraRollView from './Camera-Roll';
 import CameraLiveView from './Camera-Live';
 
-import tips_api from '../../utils/tips.js';
-import img_api from '../../utils/img.js';
-
 import globals from '../../../globalVariables';
 
 var window = Dimensions.get('window');
@@ -71,27 +68,20 @@ class CameraDashboard extends React.Component {
     })
   }
 
-  componentWillMount() {
-    this.setState({
-      tip: tips_api.getRandomTip(),
-      img: img_api.getRandomImg()
-    });
-  }
-
   render () {
     return (
       <View style={styles.container}>
-        <Image
-          source={require('image!white-pattern-bg')}
-          style={styles.bgImg}>
+          <View style={styles.topImageContainer}>
+            <Image
+              style={styles.topImage}
+              source={require('image!icon-camera-dashboard')}
+            />
+          </View>
           <View style={styles.headlineContainer}>
-            <Text style={styles.headline}>Upload a photo of your meal!</Text>
+            <Text style={styles.headline}>Take a photo when your meal arrives</Text>
+            <Text style={[styles.headline, styles.subHeadline]}>Sharing your meal helps make other's decision choosing a Mmmystery easy!</Text>
           </View>
 
-          <View style={styles.imageTipContainer}>
-            <Image style={styles.img} source={this.state.img} />
-            <Text style={styles.tip}>{this.state.tip}</Text>
-          </View>
 
           <View style={styles.btnContainer}>
             <TouchableHighlight
@@ -115,7 +105,6 @@ class CameraDashboard extends React.Component {
               <Text style={styles.secondaryBtn}>Choose from my camera roll</Text>
             </TouchableHighlight>
           </View>
-        </Image>
       </View>
     );
   }
@@ -151,34 +140,32 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  bgImg: {
-    width: window.width,
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  imageTipContainer: {
-    flex: 5,
-    justifyContent: 'center',
-    paddingLeft: 50,
-    paddingRight: 50,
-  },
   innerBtn: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   headline: {
-    fontSize: 36 * widthRatio,
+    fontSize: 32 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontDisplayLight,
     color: globals.darkText,
+    marginBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  subHeadline: {
+    fontSize: 18,
+    lineHeight: 24,
+    textAlign: 'center',
+    fontFamily: globals.fontTextRegular,
+    color: globals.mediumText,
+    paddingLeft: 25,
+    paddingRight: 25,
   },
   headlineContainer: {
-    flex: 2,
-    paddingTop: 10 * widthRatio,
-    paddingLeft: 50,
-    paddingRight: 50,
+    flex: 1,
+    paddingTop: 10 * window.width/375,
     justifyContent: 'center',
   },
   icon: {
@@ -193,16 +180,11 @@ let styles = StyleSheet.create({
     height: 150 * widthRatio,
     borderRadius: borderRadiusImgCenter,
   },
-  tip: {
-    color: globals.mediumText,
-    textAlign: 'center',
-    fontSize: 18 * widthRatio,
-    fontFamily: globals.fontTextRegular,
-  },
   btnContainer: {
-    flex: 3,
-    justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    marginBottom: 30
   },
   mainBtn: {
     width: 345 * widthRatio,
@@ -227,5 +209,17 @@ let styles = StyleSheet.create({
     textAlign: 'center',
     color: globals.primaryDark,
     fontFamily: globals.fontTextRegular,
+  },
+  topImageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  topImage: {
+    height: 149,
+    width: 259,
+    flex: 0,
   },
 });
