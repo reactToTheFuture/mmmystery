@@ -198,9 +198,8 @@ var styles = StyleSheet.create({
   },
   nearbyLabel: {
     backgroundColor: globals.secondary,
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
+    padding: 15,
+    marginBottom: 10,
   },
   nearbyLabelText: {
     fontFamily: 'SanFranciscoText-Regular',
@@ -222,8 +221,7 @@ var styles = StyleSheet.create({
     color: globals.lightText,
   },
   restaurantContainer: {
-    marginLeft: 10,
-    paddingRight: 20,
+    paddingHorizontal: 10,
     borderBottomColor: '#EDF2FE',
     borderBottomWidth: 1,
   },

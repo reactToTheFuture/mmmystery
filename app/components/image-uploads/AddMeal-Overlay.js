@@ -64,7 +64,7 @@ class AddMealOverlay extends React.Component {
             />
           </View>
           <TouchableHighlight
-            underlayColor={'#ffffff'}
+            underlayColor={globals.primaryLight}
             onPress={this.handleMealAdd.bind(this)}
             style={styles.mainBtn}>
             <Text style={[styles.centerText, styles.btnText]}>Add my Mmmystery</Text>

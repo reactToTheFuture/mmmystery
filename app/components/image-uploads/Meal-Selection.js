@@ -146,7 +146,7 @@ class MealSelection extends React.Component {
 
     var addMealButton = (
       <TouchableHighlight
-        underlayColor={'#ffffff'}
+        underlayColor={globals.primaryLight}
         onPress={this.handleOverlayOpen.bind(this)}
         style={styles.newMealButton}>
         <Text style={[styles.centerText, styles.newMealButtonText]}>Sweet, let's add it!</Text>
@@ -173,14 +173,16 @@ class MealSelection extends React.Component {
     );
 
     var platesView = (
-      <View style={styles.restaurantsContainer}>
-        <ListView
-          style={styles.restaurantsList}
-          dataSource={this.state.meals}
-          renderRow={this._renderMeal.bind(this)}>
-        </ListView>
-        <View style={styles.outerTextContainer}>
-          <View style={[styles.textContainer]}>
+      <View style={styles.platesContainer}>
+        <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
+        <Text style={[styles.centerText, styles.headline, styles.status]}>{status}</Text>
+        <View style={styles.restaurantsContainer}>
+          <ListView
+            style={styles.restaurantsList}
+            dataSource={this.state.meals}
+            renderRow={this._renderMeal.bind(this)}>
+          </ListView>
+          <View style={styles.textContainer}>
             <Text style={[styles.centerText, styles.headline, styles.callout]}>Don't see what you're looking for?</Text>
             {addMealButton}
           </View>
@@ -194,19 +196,19 @@ class MealSelection extends React.Component {
       status = !this.state.status ? 'Click on a meal to upload your image!' : this.state.status;
     }
 
+    if(this.state.isLoading) {
+      return (
+        <ActivityIndicatorIOS
+          animating={this.state.isLoading}
+          style={styles.loadingIcon}
+          size="large"
+        />
+      );
+    }
+
     return (
       <View style={styles.container}>
-          { this.state.noPlates ?
-              {noPlatesView}
-            :
-            <View>
-              <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
-              <Text style={[styles.centerText, styles.headline, styles.status]}>{status}</Text>
-              <View style={[styles.innerContainer, this.state.noPlates && styles.noPlates]}>
-                {platesView}
-              </View>
-            </View>
-          }
+        { this.state.noPlates ? {noPlatesView} : {platesView} }
 
         <AddMealOverlay
           status={this.state.status}
@@ -217,11 +219,6 @@ class MealSelection extends React.Component {
           isVisible={this.state.isMealSubmitted}
           onUploadAnother={this.uploadAnother.bind(this)}
           onReturnHome={this.returnHome.bind(this)} />
-        <ActivityIndicatorIOS
-          animating={this.state.isLoading}
-          style={styles.loadingIcon}
-          size="large"
-        />
       </View>
     );
   }
@@ -239,23 +236,17 @@ var styles = StyleSheet.create({
   },
   loadingIcon: {
     position: 'absolute',
-    top: (window.height/2 - 36),
-    left: (window.width/2 - 36),
+    top: (window.height/2 - 18),
+    left: (window.width/2 - 18),
     backgroundColor: 'transparent',
   },
   container: {
     flex: 1,
   },
-  innerContainer: {
-    flex: 1,
-  },
-  outerTextContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   textContainer: {
-    width: window.width * 0.75,
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   centerText: {
     textAlign: 'center',
@@ -338,6 +329,9 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center'
+  },
+  platesContainer: {
+    flex: 1,
   },
   newMealButton: {
     width: window.width,
