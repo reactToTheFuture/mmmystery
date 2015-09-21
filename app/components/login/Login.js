@@ -16,9 +16,6 @@ import CameraDashboard from '../camera/Camera-Dashboard';
 import globals from '../../../globalVariables';
 import firebase_api from '../../utils/firebase-api';
 
-var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
-
-
 var {
   StyleSheet,
   AlertIOS,
