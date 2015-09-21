@@ -290,6 +290,13 @@ class Profile extends React.Component {
 
 export default Profile;
 
+// Adjustments depending on the device
+var window = Dimensions.get('window');
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
+
+//-----
+
 let styles = StyleSheet.create({
   contentUser: {
     flex: 10,
@@ -301,7 +308,7 @@ let styles = StyleSheet.create({
   },
   loadingText: {
     color: globals.primaryDark,
-    fontSize: 22,
+    fontSize: 22 * widthRatio,
   },
   container: {
     flex: 1,
@@ -311,8 +318,8 @@ let styles = StyleSheet.create({
     fontFamily: globals.fontTextRegular
   },
   headline: {
-    marginBottom: 5,
-    fontSize: 18,
+    marginBottom: 5 * widthRatio,
+    fontSize: 18 * widthRatio,
     fontFamily: globals.fontTextSemibold
   },
   avatarContainer: {
@@ -322,13 +329,13 @@ let styles = StyleSheet.create({
     marginBottom: 20,
   },
   avatar: {
-    width: 50,
-    height: 50,
+    width: 50 * widthRatio,
+    height: 50 * widthRatio,
     borderRadius: 25,
   },
   name: {
     marginLeft: 15,
-    fontSize: 18,
+    fontSize: 18 * widthRatio,
     fontFamily: globals.fontTextSemibold
   },
   statsContainer: {
@@ -336,19 +343,18 @@ let styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 20 * heightRatio
   },
   stat: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-    marginLeft: 5,
-    marginRight: 5,
+    padding: 10 * widthRatio,
+    marginHorizontal: 5 * widthRatio,
     backgroundColor: globals.secondary,
   },
   number: {
-    fontSize: 20,
+    fontSize: 20 * widthRatio,
     fontFamily: globals.fontTextSemibold
   },
   imagesContainerUp: {
@@ -359,7 +365,7 @@ let styles = StyleSheet.create({
   },
   imagesContainerAd: {
     flex: 1.5,
-    marginBottom: 5,
+    marginBottom: 5 * heightRatio,
     borderBottomWidth: 2,
     borderBottomColor: globals.primaryDark,
   },
@@ -381,23 +387,23 @@ let styles = StyleSheet.create({
   plate: {
     marginBottom: 5,
     color: globals.primaryDark,
-    fontSize: 18,
+    fontSize: 18 * widthRatio,
     fontFamily: globals.fontTextSemibold,
   },
   restaurant: {
     marginBottom: 5,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 100 * heightRatio,
+    height: 100 * heightRatio,
   },
   list: {
     height: 150,
   },
   none: {
-    marginVertical: 50,
+    marginVertical: 50 * heightRatio,
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 18 * widthRatio,
   },
   button: {
     backgroundColor: globals.primaryDark,
