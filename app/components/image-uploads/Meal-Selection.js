@@ -131,7 +131,7 @@ class MealSelection extends React.Component {
           this.setState({
             isLoading: false,
             isAddingMeal: false,
-            isMealSubmitted: true,
+            isMealSubmitted: true
           });
         });
 
@@ -172,6 +172,12 @@ class MealSelection extends React.Component {
       </View>
     );
 
+    var status = '';
+
+    if(!this.state.noPlates) {
+      status = !this.state.status ? 'Click on a meal to upload your image!' : this.state.status;
+    }
+
     var platesView = (
       <View style={styles.platesContainer}>
         <Text style={styles.restaurantTitle}>{this.props.route.props.restaurant.name.toUpperCase()}</Text>
@@ -190,26 +196,14 @@ class MealSelection extends React.Component {
       </View>
     );
 
-    var status = '';
-
-    if(!this.state.noPlates) {
-      status = !this.state.status ? 'Click on a meal to upload your image!' : this.state.status;
-    }
-
-    if(this.state.isLoading) {
-      return (
+    return (
+      <View style={styles.container}>
+        { this.state.noPlates ? {noPlatesView} : {platesView} }
         <ActivityIndicatorIOS
           animating={this.state.isLoading}
           style={styles.loadingIcon}
           size="large"
         />
-      );
-    }
-
-    return (
-      <View style={styles.container}>
-        { this.state.noPlates ? {noPlatesView} : {platesView} }
-
         <AddMealOverlay
           status={this.state.status}
           isVisible={this.state.isAddingMeal}
