@@ -87,31 +87,39 @@ class Contact extends React.Component {
   }
 }
 
+export default Contact;
+
+// Adjustments depending on the device
+import Dimensions from 'Dimensions';
+var window = Dimensions.get('window');
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
+//-----
 
 var styles = StyleSheet.create({
   bodyText: {
-    fontSize: 19,
+    fontSize: 19 * widthRatio,
   },
   title: {
     textDecorationStyle: 'solid',
     textDecorationColor: 'yellow',
     textAlign: 'center',
-    fontSize: 33,
+    fontSize: 33 * widthRatio,
     fontFamily: globals.fontTextSemibold,
   },
   baseText: {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: 150,
-    marginBottom: 40,
+    marginTop: 150 * heightRatio,
+    marginBottom: 40 * heightRatio,
     marginHorizontal: 10,
     fontFamily: globals.fontTextRegular,
   },
   buttomItemEmail: {
-    width: 340,
-    height: 58,
-    marginTop: 20,
+    width: 340 * widthRatio,
+    height: 58 * heightRatio,
+    marginTop: 20 * heightRatio,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFBF00',
@@ -119,9 +127,9 @@ var styles = StyleSheet.create({
   },
   buttomItemCall: {
     borderWidth: 1,
-    width: 340,
-    height: 58,
-    marginTop: 20,
+    width: 340 * widthRatio,
+    height: 58 * heightRatio,
+    marginTop: 20 * heightRatio,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
@@ -131,7 +139,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(253,253,253)',
     justifyContent: 'flex-end',
-    marginBottom: 50,
+    marginBottom: 50 * heightRatio,
   },
   phone: {
     flex: 33,
@@ -142,14 +150,13 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text1: {
-    fontSize: 19,
+    fontSize: 18 * widthRatio,
     color: 'white',
     fontFamily: globals.fontTextSemibold,
   },
   text2: {
-    fontSize: 19,
+    fontSize: 18 * widthRatio,
     fontFamily: globals.fontTextSemibold,
   },
 });
 
-export default Contact;
