@@ -38,8 +38,8 @@ var helpers = {
     return m * 1.60934;
   },
   milesToMins(m) {
-    // 1 mile ~ 15 mins
-    var mins = Math.round(m * 15);
+    // 1 mile ~ 10 mins
+    var mins = Math.round(m * 10);
 
     if( mins === 0 ) {
       return '<1';
