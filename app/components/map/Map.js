@@ -17,6 +17,7 @@ var {
   Text,
   TouchableHighlight,
   View,
+  Image,
 } = React;
 
 var Map = React.createClass({
@@ -59,7 +60,7 @@ var Map = React.createClass({
 
     // returns kilometers
     var d = getDistance([userLat, userLng], [annotationLat, annotationLng]);
-    
+
     return kilometersToMiles(d);
   },
 
@@ -201,14 +202,13 @@ var Map = React.createClass({
           styleURL={'asset://styles/emerald-v7.json'} />
           <TouchableHighlight
             onPress={this.recenterUser}
-            underlayColor='transparent'
+            underlayColor='white'
+            style={styles.currentLocationButton}
             onShowUnderlay={this.onButtonPress}
             onHideUnderlay={this.onButtonRelease}>
-            <Icon
-              name='ion|pinpoint'
-              size={30}
-              color={this.state.buttonDown ? '#ffffff' : globals.primaryDark}
+            <Image
               style={styles.icon}
+              source={require('image!icon-map-current-location')}
             />
           </TouchableHighlight>
       </View>
@@ -227,11 +227,23 @@ var styles = StyleSheet.create({
   map: {
     flex: 1,
   },
+  currentLocationButton: {
+    position: 'absolute',
+    bottom: 40,
+    right: 15,
+    backgroundColor: 'white',
+    padding: 8,
+    borderRadius: 3,
+    shadowColor: globals.lightText,
+    shadowOpacity: 0.5,
+    shadowRadius: .9,
+    shadowOffset: {
+      height: 1.4,
+      width: 0
+    }
+  },
   icon: {
     width: 30,
     height: 30,
-    position: 'absolute',
-    bottom: 30,
-    left: 20,
   },
 });

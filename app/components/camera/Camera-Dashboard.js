@@ -213,7 +213,7 @@ let styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: globals.primaryDark,
+    backgroundColor: globals.primary,
   },
   btnText: {
     fontSize: fontSizeBtnText  || 20 * widthRatio,

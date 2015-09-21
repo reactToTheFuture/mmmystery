@@ -51,7 +51,7 @@ class RestaurantSelection extends React.Component {
 
         return;
       }
-      
+
       this.setState({
         loading: false,
         restaurants: this.state.restaurants.cloneWithRows(_.sortBy(this.state.restaurantKeys, 'distance'))
@@ -62,10 +62,10 @@ class RestaurantSelection extends React.Component {
   _renderRestaurant(restaurant) {
     return (
       <TouchableHighlight
-        underlayColor={globals.primary}
-        style={styles.restaurant}
+        underlayColor={globals.secondary}
+        style={styles.restaurantContainer}
         onPress={this.selectRestaurant.bind(this, restaurant)}>
-        <View>
+        <View style={styles.restaurant}>
           <Text style={styles.headline}>{restaurant.name}</Text>
           <Text style={styles.subheadline}>{restaurant.distance} miles</Text>
         </View>
@@ -99,7 +99,7 @@ class RestaurantSelection extends React.Component {
       });
 
     },1000);
-    
+
     this.setState({
       searchText,
       searchingTimer
@@ -144,18 +144,22 @@ class RestaurantSelection extends React.Component {
           <Icon
             name='ion|ios-search-strong'
             size={30}
-            color={globals.lightText}
+            color='#AEBCCE'
             style={styles.searchIcon}
           />
           <TextInput
             style={styles.textInput}
             onChangeText={this.handleTextInput.bind(this)}
             placeholder="Search for a restaurant"
-            placeholderTextColor="grey"
+            placeholderTextColor={globals.mediumText}
             value={this.state.searchText}
           />
         </View>
+        <View style={styles.nearbyLabel}>
+          <Text style={styles.nearbyLabelText}>Nearby restaurants</Text>
+        </View>
         <ListView
+          style={styles.restaurantList}
           dataSource={this.state.restaurants}
           renderRow={this._renderRestaurant.bind(this)}>
         </ListView>
@@ -175,22 +179,39 @@ var styles = StyleSheet.create({
   searchIcon: {
     width: 30,
     height: 30,
-    marginRight: 10,
+    flex: 0,
   },
   container: {
     flex: 1,
     position: 'relative',
-    paddingLeft: 20,
-    paddingRight: 20,
   },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingBottom: 10,
+    paddingLeft: 15,
+    borderBottomColor: '#DEE5F5',
+    borderBottomWidth: 1,
+    borderTopColor: '#DEE5F5',
+    borderTopWidth: 1,
+    backgroundColor: '#FFFFFF'
+  },
+  nearbyLabel: {
+    backgroundColor: globals.secondary,
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 15,
+  },
+  nearbyLabelText: {
+    fontFamily: 'SanFranciscoText-Regular',
+    fontSize: 16,
+    color: globals.lightText,
+  },
+  restaurantList: {
+    marginTop: -10,
   },
   headline: {
-    marginBottom: 5,
+    marginBottom: 4,
     fontSize: 16,
     fontFamily: globals.fontTextSemibold,
     color: globals.darkText,
@@ -200,13 +221,17 @@ var styles = StyleSheet.create({
     fontSize: 16,
     color: globals.lightText,
   },
-  restaurant: {
-    paddingTop: 10,
-    paddingRight: 5,
-    paddingBottom: 10,
-    paddingLeft: 5,
-    borderBottomColor: globals.mediumText,
+  restaurantContainer: {
+    marginLeft: 10,
+    paddingRight: 20,
+    borderBottomColor: '#EDF2FE',
     borderBottomWidth: 1,
+  },
+  restaurant: {
+    paddingTop: 15,
+    paddingRight: 5,
+    paddingBottom: 15,
+    paddingLeft: 5,
   },
   loadingIcon: {
     position: 'absolute',
@@ -221,7 +246,7 @@ var styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 15,
     paddingLeft: 10,
-    borderColor: globals.lightText,
+    borderColor: '#FFFFFF',
     fontFamily: globals.fontTextRegular,
     borderWidth: 1,
   }

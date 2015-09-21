@@ -32,9 +32,15 @@ class PlatesDashboardContent extends React.Component {
     return (
       <View style={styles.imageFooter}>
         <View style={styles.footerTop}>
-          <Text style={styles.introTime}>Just
-            <Text style={styles.minutes}> {milesToMins(this.props.plate.distance)} minutes </Text> away
-          </Text>
+          <View style={styles.minutesAway}>
+            <Image
+              style={styles.iconWalker}
+              source={require('image!icon-directions-walker')}
+            />
+            <Text style={styles.introTime}>Just
+              <Text style={styles.minutes}> {milesToMins(this.props.plate.distance)} minutes </Text> away
+            </Text>
+          </View>
           <Text style={[styles.plate, plateStyling]}>{this.props.plate ? this.props.plate.name : null} </Text>
         </View>
         <View style={styles.border}></View>
@@ -69,7 +75,18 @@ let styles = StyleSheet.create({
   footerTop: {
     flex: 4,
     justifyContent: 'center',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    flexDirection: 'column'
+  },
+  minutesAway: {
+    flex: 0,
+    flexDirection: 'row'
+  },
+  iconWalker: {
+    height: 18,
+    width: 10,
+    flex: 0,
+    marginRight: 5
   },
   footerBottom: {
     flex: 1,

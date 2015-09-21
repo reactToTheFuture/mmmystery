@@ -77,7 +77,7 @@ let styles = StyleSheet.create({
     flexDirection: 'row'
   },
   container: {
-    height: 80,
+    height: 75,
     backgroundColor: 'white',
     alignItems: 'center',
   },
@@ -91,7 +91,7 @@ let styles = StyleSheet.create({
     marginRight: 10
   },
   direction: {
-    marginBottom: 5,
+    marginBottom: 7,
     fontSize: 22,
     fontFamily: globals.fontDisplaySemibold,
     color: globals.darkText,
