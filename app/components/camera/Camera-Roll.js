@@ -29,10 +29,6 @@ class CameraRollView extends React.Component {
     super(props);
     this.state = {
       images: [],
-      loading: false,
-      selectedImage: null,
-      selectedImageUri: '',
-      selectedImageBase64: null,
       isCroppingPhoto: false,
       imageFrom: 'Camera-Roll',
     };
@@ -43,10 +39,6 @@ class CameraRollView extends React.Component {
       first: 25
     };
 
-    this.setState({
-      loading: true
-    });
-
     CameraRoll.getPhotos(fetchParams, this.storeImages.bind(this), this.logError);
   }
 
@@ -54,7 +46,6 @@ class CameraRollView extends React.Component {
     var assets = data.edges;
     var images = assets.map((asset) => asset.node.image);
     this.setState({
-      loading: false,
       images: images
     });
   }
@@ -120,25 +111,20 @@ class CameraRollView extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.imageGrid}>
-          { this.state.images.map((image, i) => {
+          {this.state.images.map((image, i) => {
             return (
               <TouchableHighlight
                 key={i}
-                underlayColor={'orange'}
+                underlayColor={globals.primary}
                 style={styles.button}
                 onPress={this.handleOverlayOpen.bind(this, image)}>
                 <Image
-                  style={[styles.image, this.state.selected === image.uri && styles.selectedImage]}
-                  source={{ uri: image.uri}} />
+                  style={styles.image}
+                  source={{uri: image.uri}} />
               </TouchableHighlight>
             );
           })}
         </View>
-        <ActivityIndicatorIOS
-          animating={this.state.loading}
-          style={styles.loadingIcon}
-          size="large"
-        />
         <CameraCrop
           isVisible={this.state.isCroppingPhoto}
           image={this.state.image}
@@ -166,12 +152,6 @@ var styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between'
   },
-  loadingIcon: {
-    position: 'absolute',
-    top: (deviceScreen.height/2 - 18),
-    left: (deviceScreen.width/2 - 18),
-    backgroundColor: "transparent",
-  },
   button: {
     width: 110,
     height: 110,
@@ -182,8 +162,5 @@ var styles = StyleSheet.create({
     height: 110,
     borderWidth: 5,
     borderColor: '#ffffff'
-  },
-  selectedImage: {
-    borderColor: 'orange'
   }
 });

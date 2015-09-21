@@ -46,14 +46,13 @@ class AddMealOverlay extends React.Component {
       <Modal
         visible={this.props.isVisible}>
         <View style={styles.addMealOverlay}>
-          <Text style={[styles.centerText, styles.status]}>{this.props.status}</Text>
           <View style={styles.addMealIconContainer}>
             <Image
               style={styles.addMealIcon}
               source={require('image!icon-add-mystery')}
             />
           </View>
-          <Text style={[styles.leftText, styles.inputLabel]}>What did you have to eat?</Text>
+          <Text style={[styles.leftText, styles.inputLabel]}>{this.props.status || 'What did you have to eat?'}</Text>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
@@ -138,12 +137,6 @@ let styles = StyleSheet.create({
   addMealIconContainer: {
     marginBottom: 35,
   },
-  status: {
-    marginBottom: 25,
-    fontSize: 18,
-    fontFamily: globals.fontTextSemibold,
-    color: globals.darkText,
-  },
   button: {
     marginBottom: 20,
     fontSize: 18,
@@ -152,7 +145,7 @@ let styles = StyleSheet.create({
   },
   loadingIcon: {
     position: 'absolute',
-    top: 100,
+    top: (window.height/2 - 18),
     left: (window.width/2 - 18),
     backgroundColor: "transparent",
   },
