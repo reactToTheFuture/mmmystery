@@ -174,6 +174,8 @@ class SettingsDashboard extends React.Component {
 export default SettingsDashboard;
 
 // Adjustments
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
 var categoryWidth = (window.width * 0.65)/3;
 var marginBottomCategory;
 var paddingBottomSlider;
@@ -238,7 +240,7 @@ var styles = StyleSheet.create({
   },
   subTitles: {
     paddingTop: 8,
-    fontSize: 17 * window.width/375,
+    fontSize: 17 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontTextSemibold,
     backgroundColor: 'transparent',
@@ -259,12 +261,12 @@ var styles = StyleSheet.create({
   },
   distanceValue: {
     fontFamily: globals.fontTextRegular,
-    fontSize: 17 * window.width/375,
+    fontSize: 17 * widthRatio,
   },
   distanceText: {
     fontWeight: 'bold',
     fontFamily: globals.fontTextSemibold,
-    fontSize: 17 * window.width/375,
+    fontSize: 17 * widthRatio,
   },
   distanceInfo: {
     flexDirection: 'row',
@@ -279,16 +281,16 @@ var styles = StyleSheet.create({
   dollarSign: {
     color: '#5B6674',
     fontFamily: globals.fontTextSemibold,
-    fontSize: 20 * window.width/375,
+    fontSize: 20 * widthRatio,
   },
   priceText: {
     fontFamily: globals.fontTextSemibold,
     fontWeight: 'bold',
-    fontSize: 17 * window.width/375,
+    fontSize: 17 * widthRatio,
   },
   priceContainer: {
-    paddingBottom: 30 * window.height/667,
-    marginHorizontal: 20 * window.width/375,
+    paddingBottom: 30 * heightRatio,
+    marginHorizontal: 20 * widthRatio,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -296,8 +298,8 @@ var styles = StyleSheet.create({
   },
   pressDollar: {
     justifyContent: 'center',
-    width: 80 * window.width/375,
-    height: 45 * window.height/667,
+    width: 80 * widthRatio,
+    height: 45 * heightRatio,
     alignItems: 'center',
     marginHorizontal: 10,
     backgroundColor: '#EDF2FE',
@@ -305,8 +307,8 @@ var styles = StyleSheet.create({
   pressDollarSelected: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 80 * window.width/375,
-    height: 45 * window.height/667,
+    width: 80 * widthRatio,
+    height: 45 * heightRatio,
     marginHorizontal: 10,
     backgroundColor: '#FCAE2B',
   },
@@ -323,8 +325,8 @@ var sliderStyle = StyleSheet.create({
     backgroundColor: '#AEBCCD',
   },
   thumb: {
-    width: 30 * window.width/375,
-    height: 30 * window.height/667,
+    width: 30 * widthRatio,
+    height: 30 * heightRatio,
     borderRadius: 30 / 2,
     backgroundColor: '#EDF2FE',
     shadowColor: 'black',

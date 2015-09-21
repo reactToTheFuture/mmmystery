@@ -205,6 +205,8 @@ export default Login;
 // Adjustments depending on the device
 import Dimensions from 'Dimensions';
 var window = Dimensions.get('window');
+var widthRatio = window.width/375,
+    heightRatio = window.height/667;
 var marginHorizontal = window.width <= 320 ? 40 : 20;
 //-----
 
@@ -228,7 +230,7 @@ var styles = StyleSheet.create({
   text: {
     fontFamily: globals.fontDisplaySemibold,
     color: '#ffffff',
-    fontSize: 20 * window.width/375,
+    fontSize: 20 * widthRatio,
   },
   loginContainer: {
     flex: 1,
@@ -238,11 +240,11 @@ var styles = StyleSheet.create({
   headline: {
     marginBottom: 50,
     fontFamily: globals.fontDisplaySemibold,
-    fontSize: 40 * window.width/375,
+    fontSize: 40 * widthRatio,
   },
   subHeadline: {
     textAlign: 'center',
-    fontSize: 25 * window.width/375,
+    fontSize: 25 * widthRatio,
   },
   navigator: {
     backgroundColor: '#FFC900',
@@ -253,16 +255,16 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 30 * window.width/375,
-    height: 30 * window.height/667,
+    width: 30 * widthRatio,
+    height: 30 * heightRatio,
     marginRight: 10,
   },
   loginButton: {
-    width: 295 * window.width/375,
-    height: 67 * window.height/667,
+    width: 295 * widthRatio,
+    height: 67 * heightRatio,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30 * window.height/667,
+    marginBottom: 30 * heightRatio,
     borderRadius: 30,
     borderColor: '#ffffff',
     borderWidth: 1,
