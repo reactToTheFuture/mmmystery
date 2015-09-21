@@ -73,7 +73,7 @@ class CameraLive extends React.Component {
       props,
       navigationBar: (
         <NavigationBar
-          title="Where are you at?" />
+          title="Where are you?" />
       )
     });
   }

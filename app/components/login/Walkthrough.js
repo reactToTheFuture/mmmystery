@@ -214,7 +214,7 @@ var styles = StyleSheet.create({
     fontSize: 18 * widthRatio,
     textAlign: 'center',
     fontFamily: globals.fontTextMedium,
-    paddingHorizontal: 20 * widthRatio,
+    paddingHorizontal: 15 * widthRatio,
   },
   dot: {
     backgroundColor: globals.primaryLight,
