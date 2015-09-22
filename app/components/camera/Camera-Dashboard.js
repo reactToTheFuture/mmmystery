@@ -139,7 +139,7 @@ let styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: 20 * heightRatio,
-
+    backgroundColor: '#ffffff',
   },
   innerBtn: {
     flexDirection: 'row',
