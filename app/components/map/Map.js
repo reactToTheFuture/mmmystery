@@ -199,7 +199,7 @@ var Map = React.createClass({
           accessToken={mapbox_keys.token}
           centerCoordinate={this.state.initialPosition}
           style={styles.map}
-          styleURL={'asset://styles/emerald-v7.json'} />
+          styleURL={'asset://styles/emerald-v8.json'} />
           <TouchableHighlight
             onPress={this.recenterUser}
             underlayColor='white'
@@ -230,7 +230,7 @@ var styles = StyleSheet.create({
   currentLocationButton: {
     position: 'absolute',
     bottom: 40,
-    right: 15,
+    left: 15,
     backgroundColor: 'white',
     padding: 8,
     borderRadius: 3,
