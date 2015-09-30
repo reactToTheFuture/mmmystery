@@ -1,16 +1,16 @@
 module.exports = {
-  darkText: '#394453', // dark blue
-  mediumText: '#5B6675', // blue gray
-  lightText: '#7F90A6', // lighter blue gray
+  darkText: '#394453',
+  mediumText: '#5B6675',
+  lightText: '#7F90A6',
 
   darkBackgroundText: '#949597',
 
-  primary: '#FFCE00', // gold
-  primaryDark: '#FEAF00', // dark gold
-  primaryLight: '#FFD968', // light gold
+  primary: '#FFCE00',
+  primaryDark: '#FEAF00',
+  primaryLight: '#FFD968',
 
-  secondary: '#F3F9FE', // lightlight blue gray
-  primaryDeep: '#F78914', // orange
+  secondary: '#F3F9FE',
+  primaryDeep: '#F78914',
 
   yellowWhite: '#fdeebd',
   cameraBackground: '#25272a',
