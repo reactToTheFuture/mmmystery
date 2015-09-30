@@ -1,7 +1,12 @@
-# Mystery Meal - A new way of discovering food
-Thesis project at MKS-20 implemented by using React, React-Native and Relay.
+# Mystery Meal
 
-##When instaling Camera Roll Feature (needed for both cameraroll and live features)
+A new way of discovering food
+
+## Installation
+
+### 1.) npm install
+
+### 2.) install custom camera component
 1. In XCode, go to your `Project` ➜ `Libraries` ➜ `React.xcodeproj` ➜ `React` ➜ `Base`
 2. Right click on `Base` and select `New File...`
 3. Select `Objective-C File` and click `Next`
@@ -10,31 +15,23 @@ Thesis project at MKS-20 implemented by using React, React-Native and Relay.
 6. Press `Enter` after @end to create a newline (XCode specific syntax rule)
 7. `Save`
 
-##After doing an npm install, In react-native-fbsdk-cor/js-modules/FBSDKGraphRequest.ios.js:
-Change line 121 to be FBSDKGraphRequestManager.batchRequests([this], function(){}, timeout)
+### 3.) fix FBSDKGraphRequest node module
 
-##When using the app font system
-###San Francisco Display
-- fontFamily: 'SanFranciscoDisplay-Light'
-- fontFamily: 'SanFranciscoDisplay-Regular'
-- fontFamily: 'SanFranciscoDisplay-Semibold'
+1. Navigate to node_modules/react-native-fbsdkcore/js-modules/FBSDKGraphRequest.ios.js
+2. Change line 121 to be "FBSDKGraphRequestManager.batchRequests([this], function(){}, timeout)"
 
-###San Francisco Text
-- fontFamily: 'SanFranciscoText-Regular'
-- fontFamily: 'SanFranciscoText-RegularItalic'
-- fontFamily: 'SanFranciscoText-Medium'
-- fontFamily: 'SanFranciscoText-Semibold'
+## Font / Color Conventions
 
-##Color Guide
-These are located within the globalVariables.js file at the root of the directory. Just require either the whole set or choose which ones...
+See globalVaribles.js
 
-![Colorguide](https://s3-us-west-2.amazonaws.com/mystery-meal/color-guide.png)
 
-##Icon Guide
-The available icons are located [here](http://ionicons.com/). To see the name you use, just click on one and it's the words after the 'ion'.
+## Icons
+We used [Ion Icons](http://ionicons.com/). Navigate to the Ion Icons site and click on the icon you would like to use. The corresponding name will pop up, "ion-beer" for example. To use this icon as a React Native component, see below.
+
+Note how the name for "ion-beer" becomes "ion|beer".
 
 ```
-var { Icon, } = require('react-native-icons');
+var { Icon } = require('react-native-icons');
 
 <Icon
   name='ion|beer'
@@ -44,7 +41,7 @@ var { Icon, } = require('react-native-icons');
 />
 ```
 
-Do note, you must explicitly include the width and height in the styles for the icon. so for this instance it would be...
+Also note that you must explicitly include the width and height in the styles for the icon. For example...
 
 ```
 styles = StyleSheet.create({
@@ -55,7 +52,21 @@ styles = StyleSheet.create({
 });
 ```
 
-License
--------
+## Tests
+
+Async tests are handled with Jasmine in /spec. Component tests are handled with Jest in \_\_tests\_\_
+
+## Organization
+
+The app is organized by feature in app/components. Any API related functionality or helper functions should go in app/utils.
+
+
+## To Do
+1. More Tests
+2. Add ability to follow friends and share mmmysteries with them
+3. “Venmo-like” news feed that shows current activity in your area
+4. Have users attach feelings to their meals
+
+## License
 
 MIT, see LICENSE.
