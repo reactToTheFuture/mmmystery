@@ -1,9 +1,7 @@
 # OSX
-#
 .DS_Store
 
 # Xcode
-#
 build/
 *.pbxuser
 !default.pbxuser
@@ -21,9 +19,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+iOS/MysteryMeal/main.jsbundle
 
 # node.js
-#
 node_modules/
 npm-debug.log
 
